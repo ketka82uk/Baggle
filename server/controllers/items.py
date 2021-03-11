@@ -4,10 +4,10 @@ from serializers.item import ItemSchema
 from models.comment import Comment
 from serializers.comment import CommentSchema
 from models.comment import Comment
-from decorator.logging import logging
-from decorator.secure_route import secure_route
-from decorator.time_taken import time_taken
-from decorator.logging import logging
+from decorators.logging import logging
+from decorators.secure_route import secure_route
+from decorators.time_taken import time_taken
+from decorators.logging import logging
 
 
 item_schema = ItemSchema()

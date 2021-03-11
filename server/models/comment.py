@@ -9,7 +9,7 @@ class Comment(db.Model, BaseModel):
     __tablename__ = 'comments'
     content = db.Column(db.Text, nullable=False)
 
-    
+    id = db.Column(db.Integer, primary_key=True)
     # ? backref should always be the table name of this current table.
     item_id = db.Column(db.Integer, db.ForeignKey('items.id', ondelete="CASCADE"))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
