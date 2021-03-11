@@ -11,8 +11,8 @@ class Item(db.Model, BaseModel):
     # ? nullable=False means it's required.
     # ? unique=True means its unique.
     name = db.Column(db.String(40), nullable=False, unique=True)
-    typeof = db.Column(db.string(40), nullable=False)
-    category = db.Column(db.string(40), nullable=False)
+    typeof = db.Column(db.String(40), nullable=False)
+    category = db.Column(db.String(40), nullable=False)
     image = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
@@ -21,6 +21,9 @@ class Item(db.Model, BaseModel):
 
     
 
-    offers = db.relationship('Item', backref='sale_item',
-    secondary= item_offers_join,primaryjoin=id== item_offers_join.c.offer_item,
-    secondary=id== item_offers_join.c.item_id)
+    # offers = db.relationship(
+    #     'Item', 
+    #     backref='sale_item',
+    #     secondary= item_offers_join,
+    #     primaryjoin=id== item_offers_join.c.offer_item,
+    #     secondaryjoin=id== item_offers_join.c.item_id)

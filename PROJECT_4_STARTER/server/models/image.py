@@ -1,8 +1,8 @@
-from flask import Flask
+from app import db
 from models.base import BaseModel
 from models.user import User
 
-class Image(db.Model):
+class Image(db.Model, BaseModel):
 
     __tablename__ = 'images'
 

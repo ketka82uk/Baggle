@@ -51,11 +51,11 @@ def update_image(image_id):
     except ValidationError as e:
         return {"errors": e.messages, "messages": "Something went wrong"}
     image.save()
-    return image_schema.jsonify(character), 201
+    return image_schema.jsonify(image), 201
 
 #DELETE image
 
-@router.route("/images/<int:images_id>", methods=["DELETE"])
+@router.route("/images/<int:image_id>", methods=["DELETE"])
 def delete_image(image_id):
     image = Image.query.get(image_id)
     image.remove()

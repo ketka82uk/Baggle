@@ -1,5 +1,6 @@
 from app import db, bcrypt
 from models.base import BaseModel
+from models.item import Item
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 
@@ -31,7 +32,7 @@ class User(db.Model, BaseModel):
 
     password_hash = db.Column(db.String(128), nullable=True)
 
-     @hybrid_property
+    @hybrid_property
     def password(self):
         pass
 
