@@ -11,4 +11,4 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         load_only = ('email', 'password')
 
     password = fields.String(required=True)
-    inventory = fields.Nested('ItemSchema', only=('name', 'owner_id'))
+    inventory = fields.Nested('ItemSchema', only=('name', 'id'))

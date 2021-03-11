@@ -9,6 +9,6 @@ class Image(db.Model, BaseModel):
 
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE')) 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
 
 
