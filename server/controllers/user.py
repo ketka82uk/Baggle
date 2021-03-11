@@ -54,3 +54,5 @@ def delete_user(user_id):
     except ValidationError as e:
         return { "errors": e.messages, "messages": "Something went wrong" }
     return { 'message': 'User deleted successfully' }, 200
+
+

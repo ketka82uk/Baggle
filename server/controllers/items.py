@@ -3,7 +3,8 @@ from models.item import Item
 from serializers.item import ItemSchema
 from models.comment import Comment
 from serializers.comment import CommentSchema
-from models.comment import Comment
+from models.image import Image
+from serializers.image import ImageSchema
 from decorators.logging import logging
 from decorators.secure_route import secure_route
 from decorators.time_taken import time_taken
@@ -11,6 +12,7 @@ from decorators.time_taken import time_taken
 
 item_schema = ItemSchema()
 comment_schema = CommentSchema()
+image_schema = ImageSchema()
 
 from marshmallow.exceptions import ValidationError
 
@@ -43,7 +45,7 @@ def post_item():
     item_dict = request.json
     try:
         item = item_schema.load(item_dict)
-        item.user = g.current_user
+        item.user = g.current_user.id
     except ValidationError as e:
         return {"errors": e.messages, "messages": "Too bad, something went wrong"}
     item.save()
@@ -85,15 +87,14 @@ def test():
 
 # ! COMMENTS
 
-# #GET comment
+#GET comment
 
-# @router.route("/items/<int:item_id>/comments/<int:comment_id>", methods=["GET"])
-# def get_single_comment(comment_id):
-#     comment = Comment.query
-#     item = Item.query.get(item_id)
-#     if not item:
-#         return {" No items buddy"}, 404
-#     return item_schema.jsonify(item), 200
+@router.route("/items/<int:item_id>/comments/<int:comment_id>", methods=["GET"])
+def get_single_comment(item_id, comment_id):
+    comment = Comment.query.get(comment_id)
+    item = Item.query.get(item_id)
+    return comment_schema.jsonify(comment), 200
+
 
 #POST comment
 
@@ -134,3 +135,4 @@ def update_comment(item_id, comment_id):
     comment.save()
     item = Item.query.get(item_id)
     return item_schema.jsonify(item), 201
+

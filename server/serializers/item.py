@@ -10,7 +10,7 @@ class ItemSchema(ma.SQLAlchemyAutoSchema):
         model = Item
         load_instance = True
     
-    user = fields.Nested('UserSchema')
+    owner = fields.Nested('UserSchema')
     comments = fields.Nested('CommentSchema', many=True)
     image = fields.Nested('ImageSchema')
     
