@@ -18,6 +18,10 @@ ma = Marshmallow(app)
 
 bcrypt = Bcrypt(app)
 
+from controllers import users
+
+app.register_blueprint(user.router, url_prefix="/api")
+
 @app.route('/api')
 def index():
     return { 'message': "Hello, World!" }
