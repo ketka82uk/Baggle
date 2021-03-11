@@ -18,6 +18,8 @@ from marshmallow.exceptions import ValidationError
 
 router = Blueprint(__name__, "items")
 
+#GET items
+
 
 @router.route("/items", methods=["GET"])
 @time_taken
@@ -27,6 +29,7 @@ def get_all_the_items():
    
     return item_schema.jsonify(items, many=True), 200
 
+#GET single item
 
 @router.route("/items/<int:item_id>", methods=["GET"])
 @time_taken
@@ -36,22 +39,20 @@ def get_single_item(item_id):
         return {" No items buddy"}, 404
     return item_schema.jsonify(item), 200
 
+#POST item
 
 @router.route("/items", methods=["POST"])
 @secure_route
 def post_item():
     item_dict = request.json
-
     try:
         item = item_schema.load(item_dict)
     except ValidationError as e:
-
         return {"errors": e.messages, "messages": "Too bad, something went wrong"}
-
     item.save()
-
     return item_schema.jsonify(item), 200
 
+#PUT item
 
 @router.route("/items/<int:item_id>", methods=["PUT"])
 @secure_route
@@ -68,6 +69,7 @@ def update_item(item_id):
     item.save()
     return item_schema.jsonify(item), 201
 
+#DELETE item
 
 @router.route("/items/<int:item_id>", methods=["DELETE"])
 @secure_route
@@ -84,54 +86,43 @@ def remove_item(item_id):
 def test():
     return " everything is up and running.", 200
 
+# ! COMMENTS
+
+#POST comment
 
 @router.route("/items/<int:item_id>/comments", methods=["POST"])
 @secure_route
 def create_comment(item_id):
-   
-    comment_dict = request.json
-    
+    comment_dict = request.json 
     item = Item.query.get(item_id)
-    
     comment = comment_schema.load(comment_dict)
-    
     comment.item = item
-    
     comment.save()
-    
     return comment_schema.jsonify(comment)
 
+# DELETE comment
 
 @router.route("/items/<int:item_id>/comments/<int:comment_id>", methods=["DELETE"])
 @secure_route
 def delete_comment(item_id, comment_id):
-
     comment = Comment.query.get(comment_id)
-
     comment.remove()
-
     item = Item.query.get(item_id)
-
     return item_schema.jsonify(item), 202
 
+# UPDATE comment
 
 @router.route("/items/<int:item_id>/comments/<int:comment_id>", methods=["PUT"])
 @secure_route
 def update_comment(item_id, comment_id):
-
     comment_dictionary = request.json
     existing_comment = Comment.query.get(comment_id)
-
     try:
         comment = comment_schema.load(
             comment_dictionary, instance=existing_comment, partial=True
         )
-
     except ValidationError as e:
         return {"errors": e.messages, "messages": "Something went wrong"}
-
     comment.save()
-
     item = Item.query.get(item_id)
-
     return item_schema.jsonify(item), 201

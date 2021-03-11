@@ -7,6 +7,7 @@ from models.base import BaseModel
 class Comment(db.Model, BaseModel):
 
     __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
 
     id = db.Column(db.Integer, primary_key=True)

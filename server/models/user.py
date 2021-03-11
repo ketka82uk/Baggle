@@ -12,6 +12,7 @@ class User(db.Model, BaseModel):
 
     __tablename__ = 'users'
 
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.Text, nullable=False, unique=True)
 
@@ -25,7 +26,8 @@ class User(db.Model, BaseModel):
     location = db.Column(db.Text, nullable=True, unique=False)
     rating = db.Column(db.Integer, nullable=True, unique=False)
     inventory = db.relationship('Item', backref='owner', cascade='all, delete')
-    image = db.Column(db.Text, nullable=True, unique=False)
+    # image = db.Column(db.Text, nullable=True, unique=False)
+    image = db.relationship('Image', backref='user', cascade='all, delete')
     barter_number = db.Column(db.Integer, nullable=True, unique=False)
     successfull_trans = db.Column(db.Integer, nullable=True, unique=False)
     failed_trans = db.Column(db.Integer, nullable=True, unique=False)

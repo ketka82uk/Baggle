@@ -14,7 +14,7 @@ def secure_route(func):
         if not token_with_bearer:
             return { 'Message': 'Unauthorized' }, 401
 
-        token = token_with_bearer.replace('Bearer', '')
+        token = token_with_bearer.replace('Bearer ', '')
         print(token)
 
         try:

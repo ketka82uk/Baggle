@@ -11,6 +11,7 @@ class Item(db.Model, BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     # ? nullable=False means it's required.
     # ? unique=True means its unique.
+   
     name = db.Column(db.String(40), nullable=False, unique=True)
     typeof = db.Column(db.String(40), nullable=False)
     category = db.Column(db.String(40), nullable=False)
@@ -20,13 +21,14 @@ class Item(db.Model, BaseModel):
     private = db.Column(db.Boolean, nullable=False)
     available = db.Column(db.Boolean, nullable= False)
 
-    
+    offers = db.relationship(
+        'Item', 
+        backref='sale_item',
+        secondary= item_offers_join,
+        primaryjoin=id== item_offers_join.c.offer_item,
+        secondaryjoin=id== item_offers_join.c.item_id)
 
-    offers = db.relationship('Item', backref='sale_item', 
-    secondary= item_offers_join,
-    primaryjoin=id== item_offers_join.c.offer_item,
-    secondaryjoin=id== item_offers_join.c.item_id)
     comments = db.relationship('Comment', backref='item', cascade="all, delete")
 
 
-    # secondary= item_offers_join,
+
