@@ -20,7 +20,7 @@ def signup():
     return user_schema.jsonify(user)
 
 
-@router.route("/login", methods={"POST"})
+@router.route("/login", methods=["POST"])
 @logger
 def login():
     user = User.query.filter_by(email=request.json['email']).first()

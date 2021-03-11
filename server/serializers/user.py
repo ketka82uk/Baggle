@@ -1,5 +1,6 @@
 from app import ma
 from models.user import User
+from models.item import Item
 from marshmallow import fields 
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
@@ -11,4 +12,4 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         load_only = ('email', 'password')
 
     password = fields.String(required=True)
-    inventory = fields.Nested('ItemSchema', only=('name', 'owner_id'))
+    inventory = fields.Nested('ItemSchema', only=('name', 'id'), many=True)
