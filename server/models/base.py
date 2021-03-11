@@ -3,7 +3,7 @@ from app import db
 
 class BaseModel:
        
-    id = db.Column(db.Integer, primary_key=True)
+    # id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def save(self):

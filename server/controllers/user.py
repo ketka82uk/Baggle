@@ -16,7 +16,7 @@ def signup():
     try:
         user = user_schema.load(request.json)
     except ValidationError as e:
-    user.save()
+        user.save()
     return user_schema.jsonify(user)
 
 
