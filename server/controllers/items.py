@@ -19,15 +19,20 @@ from marshmallow.exceptions import ValidationError
 router = Blueprint(__name__, "items")
 
 #GET items
-
-
 @router.route("/items", methods=["GET"])
 @time_taken
-@logging
-def get_all_the_items():
+
+def get_all_items():
     items = Item.query.all()
-   
+
     return item_schema.jsonify(items, many=True), 200
+# @router.route("/items", methods=["GET"])
+# @time_taken
+# @logging
+# def get_all_the_items():
+#     items = Item.query.all()
+   
+#     return item_schema.jsonify(items, many=True), 200
 
 #GET single item
 

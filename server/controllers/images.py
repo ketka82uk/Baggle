@@ -3,8 +3,8 @@ from models.image import Image
 from serializers.image import ImageSchema
 from marshmallow.exceptions import ValidationError
 
-router = Blueprint(__name__, 'images')
 image_schema = ImageSchema()
+router = Blueprint(__name__, 'images')
 
 #GET all images
 

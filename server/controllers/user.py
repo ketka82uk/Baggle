@@ -20,8 +20,9 @@ def signup():
     return user_schema.jsonify(user)
 
 
-@router.route("/login", methods={"POST"})
+@router.route("/login", methods=["POST"])
 @logger
+
 def login():
     user = User.query.filter_by(email=request.json['email']).first()
     if not user:
@@ -54,3 +55,9 @@ def delete_user(user_id):
     except ValidationError as e:
         return { "errors": e.messages, "messages": "Something went wrong" }
     return { 'message': 'User deleted successfully' }, 200
+
+
+@router.route('/profile', methods=['GET'])
+@secure_route
+def get_user_profile():
+    return user_schema.jsonify(g.current_user)
