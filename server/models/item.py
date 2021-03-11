@@ -1,6 +1,7 @@
 from app import db
 from models.base import BaseModel
 from models.item_offers import item_offers_join
+from models.comment import Comment
 
 
 class Item(db.Model, BaseModel):
@@ -21,9 +22,19 @@ class Item(db.Model, BaseModel):
 
     
 
+<<<<<<< HEAD:server/models/item.py
     # offers = db.relationship(
     #     'Item', 
     #     backref='sale_item',
     #     secondary= item_offers_join,
     #     primaryjoin=id== item_offers_join.c.offer_item,
     #     secondaryjoin=id== item_offers_join.c.item_id)
+=======
+    offers = db.relationship('Item', backref='sale_item',
+    primaryjoin=id== item_offers_join.c.offer_item,
+    secondary=id== item_offers_join.c.item_id)
+    comments = db.relationship('Comment', backref='item', cascade="all, delete")
+
+
+    # secondary= item_offers_join,
+>>>>>>> development:PROJECT_4_STARTER/server/models/items.py

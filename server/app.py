@@ -13,6 +13,7 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 bcrypt = Bcrypt(app)
 
-from controllers import images
+from controllers import items, images
 
+app.register_blueprint(items.router, url_prefix="/api")
 app.register_blueprint(images.router, url_prefix="/api")

@@ -1,6 +1,7 @@
 from app import db
 from models.base import BaseModel
 from models.user import User
+from app import db
 
 class Image(db.Model, BaseModel):
 
