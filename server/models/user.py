@@ -31,7 +31,7 @@ class User(db.Model, BaseModel):
 
     password_hash = db.Column(db.String(128), nullable=True)
 
-     @hybrid_property
+    @hybrid_property
     def password(self):
         pass
 

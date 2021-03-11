@@ -1,6 +1,7 @@
 from flask import Flask
 from models.base import BaseModel
 from models.user import User
+from app import db
 
 class Image(db.Model):
 
