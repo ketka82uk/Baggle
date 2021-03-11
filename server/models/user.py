@@ -1,6 +1,8 @@
 from app import db, bcrypt
 from models.base import BaseModel
 from models.item import Item
+from models.comment import Comment
+from models.image import Image
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 
@@ -13,6 +15,7 @@ class User(db.Model, BaseModel):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
+
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.Text, nullable=False, unique=True)
 
@@ -25,14 +28,15 @@ class User(db.Model, BaseModel):
     bio = db.Column(db.Text, nullable=True, unique=False)
     location = db.Column(db.Text, nullable=True, unique=False)
     rating = db.Column(db.Integer, nullable=True, unique=False)
-    inventory = db.relationship('Item', backref='owner', cascade='all, delete')
-    # image = db.Column(db.Text, nullable=True, unique=False)
-    image = db.relationship('Image', backref='user', cascade='all, delete')
     barter_number = db.Column(db.Integer, nullable=True, unique=False)
     successfull_trans = db.Column(db.Integer, nullable=True, unique=False)
     failed_trans = db.Column(db.Integer, nullable=True, unique=False)
 
     password_hash = db.Column(db.String(128), nullable=True)
+
+    inventory = db.relationship('Item', backref='owner', cascade='all, delete')
+    image = db.relationship('Image', backref='user', cascade='all, delete')
+    comments = db.relationship('Comment', backref='user', cascade='all, delete')
 
     @hybrid_property
     def password(self):

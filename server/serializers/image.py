@@ -1,4 +1,4 @@
-from app import ma
+from app import db, ma
 from models.image import Image
 from marshmallow import fields
 from serializers.user import UserSchema

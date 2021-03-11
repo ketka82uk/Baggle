@@ -9,22 +9,27 @@ from decorators.secure_route import secure_route
 from decorators.time_taken import time_taken
 from decorators.logging import logging
 
-
 item_schema = ItemSchema()
 comment_schema = CommentSchema()
-
 
 from marshmallow.exceptions import ValidationError
 
 router = Blueprint(__name__, "items")
 
 #GET items
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3c0d73d91a172563d21981503565b25b2945afcc
 @router.route("/items", methods=["GET"])
 @time_taken
 
 def get_all_items():
     items = Item.query.all()
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3c0d73d91a172563d21981503565b25b2945afcc
     return item_schema.jsonify(items, many=True), 200
 # @router.route("/items", methods=["GET"])
 # @time_taken
@@ -52,6 +57,7 @@ def post_item():
     item_dict = request.json
     try:
         item = item_schema.load(item_dict)
+        item.user = g.current_user
     except ValidationError as e:
         return {"errors": e.messages, "messages": "Too bad, something went wrong"}
     item.save()
@@ -93,6 +99,16 @@ def test():
 
 # ! COMMENTS
 
+# #GET comment
+
+# @router.route("/items/<int:item_id>/comments/<int:comment_id>", methods=["GET"])
+# def get_single_comment(comment_id):
+#     comment = Comment.query
+#     item = Item.query.get(item_id)
+#     if not item:
+#         return {" No items buddy"}, 404
+#     return item_schema.jsonify(item), 200
+
 #POST comment
 
 @router.route("/items/<int:item_id>/comments", methods=["POST"])
@@ -101,6 +117,7 @@ def create_comment(item_id):
     comment_dict = request.json 
     item = Item.query.get(item_id)
     comment = comment_schema.load(comment_dict)
+    comment.user = g.current_user
     comment.item = item
     comment.save()
     return comment_schema.jsonify(comment)
