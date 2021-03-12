@@ -9,12 +9,11 @@ class Item(db.Model, BaseModel):
     # * You need this __tablename__ field. It's used by SA.
 
     __tablename__ = 'items'
-
+    id = db.Column(db.Integer, primary_key=True)
     # ? nullable=False means it's required.
     # ? unique=True means its unique.
-    id = db.Column(db.Integer, primary_key=True)
-
-    name = db.Column(db.String(100), nullable=False)
+   
+    name = db.Column(db.String(40), nullable=False, unique=True)
     typeof = db.Column(db.String(40), nullable=False)
     category = db.Column(db.String(40), nullable=False)
     description = db.Column(db.Text, nullable=True)

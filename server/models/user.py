@@ -24,7 +24,7 @@ class User(db.Model, BaseModel):
     def validate_email(self, key, email):
         # assert '@' in email
         return email
-    
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, unique=False)
     bio = db.Column(db.Text, nullable=True, unique=False)
     location = db.Column(db.Text, nullable=True, unique=False)

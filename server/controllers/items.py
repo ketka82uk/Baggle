@@ -8,7 +8,7 @@ from serializers.image import ImageSchema
 from decorators.logging import logging
 from decorators.secure_route import secure_route
 from decorators.time_taken import time_taken
-
+from decorators.logging import logging
 
 item_schema = ItemSchema()
 comment_schema = CommentSchema()
@@ -19,13 +19,27 @@ from marshmallow.exceptions import ValidationError
 router = Blueprint(__name__, "items")
 
 #GET items
+<<<<<<< HEAD
+=======
 
+>>>>>>> 3c0d73d91a172563d21981503565b25b2945afcc
 @router.route("/items", methods=["GET"])
 @time_taken
-@logging
-def get_all_the_items():
+
+def get_all_items():
     items = Item.query.all()
+<<<<<<< HEAD
+
+=======
+>>>>>>> 3c0d73d91a172563d21981503565b25b2945afcc
     return item_schema.jsonify(items, many=True), 200
+# @router.route("/items", methods=["GET"])
+# @time_taken
+# @logging
+# def get_all_the_items():
+#     items = Item.query.all()
+   
+#     return item_schema.jsonify(items, many=True), 200
 
 #GET single item
 

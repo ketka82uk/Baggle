@@ -4,8 +4,8 @@ from serializers.image import ImageSchema
 from marshmallow.exceptions import ValidationError
 from decorators.secure_route import secure_route
 
-router = Blueprint(__name__, 'images')
 image_schema = ImageSchema()
+router = Blueprint(__name__, 'images')
 
 #GET all images
 
