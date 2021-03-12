@@ -29,8 +29,8 @@ const App = () => (
       <Route exact path="/about" component={About} />
       <Route exact path="/add_item" component={ItemAdd} />
       <Route exact path="/items" component={ItemList} />
-      <Route exact path="/items/:itemId" component={UpdateItem} />
-      <Route exact path="/single_item" component={ItemSingle} />
+      <Route exact path="/items/update/:itemid" component={UpdateItem} />
+      <Route exact path="/items/:itemid" component={ItemSingle} />
       <Route exact path="/users" component={UserList} />
       <Route exact path="/login" component={UserLogin} />
       <Route exact path="/users/:userId" component={UserProfile} />

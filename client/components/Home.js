@@ -26,19 +26,22 @@ export default function Home() {
         <p className="title">
           Not for sale
         </p>
-        <p classNmae="subtitle">
+        <p className="subtitle">
           Start bartering...
         </p>
       </div>
     </section>
 
-    {items ?
-      categories.map((category, i) => {
-        return <div className='section' key={i}>
-          <Carousel items={items} category={category} />
-        </div>
-      })
-      : <div></div>}
+    <section>
+      <div className="container is-max-widescreen">
+        {categories.map((category, i) => {
+          return <div className='section' key={i}>
+              <Carousel items={items} category={category}/>
+          </div>
+        })}
+      </div>
+    </section>
+
   </div>
 
 }

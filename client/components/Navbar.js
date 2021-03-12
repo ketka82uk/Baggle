@@ -41,34 +41,53 @@ export default function Navbar() {
   }
 
   return <div className="navbar">
-    <div className="container">
       <div className="container">
-        <h1>NOT FOR SALE</h1>
+        <div className="navbar-brand">
+          <div className="navbar-item">
+            NOT FOR SALE
+          </div>
+          <span className="navbar-item is-active">
+            <Link to={'/'}><p>Home</p></Link>
+          </span>
+          <span className="navbar-item">
+            <Link to={'/users'}><p>Users</p></Link>
+          </span>
+          <span className="navbar-item">
+            <Link to={'/items'}><p>Items</p></Link>
+          </span>
+          <span className="navbar-item">
+            <Link to={'/about'}><p>About</p></Link>
+          </span>
+          <span className="navbar-burger" data-target="navbarMenuHeroA">
+            <span></span>
+          </span>
+        </div>
+        <div className="navbar-menu">
+          <div className="navbar-end">
+            {!logIn ? <span>
+                <div className="navbar-item">
+                  <Link to={'/signup'}><p>Sign up</p></Link>
+                </div>
+                <div className="navbar-item">
+                  <Link to={'/login'}><p>Log in</p></Link>
+                </div> 
+              </span> :
+              <span>
+                <div className="navbar-item">{userName && <strong>Hi {userName}</strong>}</div>
+                <div className="navbar-item">
+                  <Link to={'/profile'}><p>My profile</p></Link>
+                </div>
+                <span className="navbar-item">
+                  <Link to={'/add_item'}><p>Post A baggle</p></Link>
+                </span>
+                <div className="button navbar-item is-primary" onClick={logOut}>
+                  <strong>Log Out</strong>
+                </div>
+              </span>
+            }
+          </div>
+        </div>
       </div>
-      <div className="container">
-        <ul>
-          <li><Link to={'/'}><p>Home</p></Link></li>
-          <li><Link to={'/users'}><p>Users</p></Link></li>
-          <li><Link to={'/items'}><p>Items</p></Link></li>
-          <li><Link to={'/about'}><p>About</p></Link></li>
-
-          {!logIn ?
-            <div>
-              <li><Link to={'/signup'}><p>Sign up</p></Link></li>
-              <li><Link to={'/login'}><p>Log in</p></Link></li>
-            </div> :
-            <div>
-              <div>{userName && <strong>Hi {userName}</strong>}</div>
-              <li><Link to={'/profile'}><p>My profile</p></Link></li>
-              <li><Link to={'/add_item'}><p>Create</p></Link></li>
-              <button className="button is-primary" onClick={logOut}>
-                <strong>Log Out</strong>
-              </button>
-            </div>
-          }
-        </ul>
-      </div>
-    </div>
 
   </div>
 
