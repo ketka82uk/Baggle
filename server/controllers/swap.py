@@ -16,14 +16,28 @@ user_schema = UserSchema()
 router = Blueprint(__name__, "swap")
 
 
-@router.route("/swap/<int:user_id>/<int:item_id>", methods=["PUT"])
+@router.route("/swap/<int:item1_id>/<int:item2_id>", methods=["PUT"])
 @secure_route
-def update_comment(item_id, user_id):
+def swap_item(item1_id, item2_id):
     
-    item = Item.query.get(item_id)
-    user = User.query.get(user_id)
+    item1 = Item.query.get(item1_id)
+    item2 = Item.query.get(item2_id)
 
-    return item_schema.jsonify(item)
+    user1 = item1.owner
+    user2 = item2.owner
+
+    item2.owner = user1
+    item1.owner = user2
+
+    user1.successfull_trans = user1.successfull_trans + 1
+    user2.successfull_trans = user2.successfull_trans + 1
+
+    user1.save()
+    user2.save()
+
+    items = Item.query.all()
+
+    return item_schema.jsonify(items, many=True), 201
     
     
     
@@ -31,14 +45,3 @@ def update_comment(item_id, user_id):
     
     
     
-    # comment_dictionary = request.json
-    # existing_comment = Comment.query.get(comment_id)
-    # try:
-    #     comment = comment_schema.load(
-    #         comment_dictionary, instance=existing_comment, partial=True
-    #     )
-    # except ValidationError as e:
-    #     return {"errors": e.messages, "messages": "Something went wrong"}
-    # comment.save()
-    # item = Item.query.get(item_id)
-    # return item_schema.jsonify(item), 201

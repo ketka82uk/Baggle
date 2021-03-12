@@ -2,7 +2,6 @@ from app import db
 from models.base import BaseModel
 from models.item_offers import item_offers_join
 from models.comment import Comment
-from models.image import Image
 
 
 class Item(db.Model, BaseModel):
@@ -20,6 +19,9 @@ class Item(db.Model, BaseModel):
     description = db.Column(db.Text, nullable=True)
     private = db.Column(db.Boolean, nullable=False)
     available = db.Column(db.Boolean, nullable= False)
+    image = db.Column(db.Text, nullable=True)
+
+    # ! this.Many to this.Many
 
     offers = db.relationship(
         'Item', 
@@ -28,10 +30,11 @@ class Item(db.Model, BaseModel):
         primaryjoin=id== item_offers_join.c.offer_item,
         secondaryjoin=id== item_offers_join.c.item_id)
     
-    # ! One to many
+    # ! this.One to many
     
-    image = db.relationship('Image', backref='item', cascade="all, delete")
     comments = db.relationship('Comment', backref='item', cascade="all, delete")
+
+     # ! this.Many to one
 
     user = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
 

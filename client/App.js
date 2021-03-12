@@ -1,22 +1,45 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter, Switch, Link, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import './styles/style.scss'
 import axios from 'axios'
+
+import About from './components/About.js'
+import Footer from './components/Footer.js'
+import Home from './components/Home.js'
+import ItemAdd from './components/ItemAdd.js'
+import ItemList from './components/ItemList.js'
+import ItemSingle from './components/ItemSingle.js'
+import Navbar from './components/Navbar.js'
+import UserList from './components/UserList.js'
+import UserLogin from './components/UserLogin.js'
+import UserProfile from './components/UserProfile.js'
+import UserSignup from './components/UserSignup.js'
+
 
 // ! Some starter code for your frontend, change this
 // ! however you like.
 const App = () => (
   <BrowserRouter>
+    <Navbar />
     <Switch>
       <Route exact path="/" component={Home} />
       <Route exact path="/test/backend" component={TestBackend} />
+      <Route exact path="/about" component={About} />
+      <Route exact path="/add_item" component={ItemAdd} />
+      <Route exact path="/items" component={ItemList} />
+      <Route exact path="/single_item" component={ItemSingle} />
+      <Route exact path="/users" component={UserList} />
+      <Route exact path="/login" component={UserLogin} />
+      <Route exact path="/profile" component={UserProfile} />
+      <Route exact path="/signup" component={UserSignup} />
     </Switch>
+    <Footer />
   </BrowserRouter>
 )
 
-const Home = () => <Link to={'/test/backend'}>
-  Go to /hello/world page.
-</Link>
+// const Home = () => <Link to={'/test/backend'}>
+//   Go to /hello/world page.
+// </Link>
 
 // ! Just a little component to test that you can talk to your flask server, check if it
 // ! works in network tab.
