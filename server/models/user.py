@@ -3,6 +3,7 @@ from models.base import BaseModel
 from models.item import Item
 from models.comment import Comment
 from models.image import Image
+from models.user_follows import user_follows_join
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 
@@ -31,12 +32,18 @@ class User(db.Model, BaseModel):
     barter_number = db.Column(db.Integer, nullable=True, unique=False)
     successfull_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
     failed_trans = db.Column(db.Integer, nullable=True, unique=False)
-
+    image = db.Column(db.Text, nullable=True)
     password_hash = db.Column(db.String(128), nullable=True)
-
     inventory = db.relationship('Item', backref='owner', cascade='all, delete')
-    image = db.relationship('Image', backref='user', cascade='all, delete')
+    image_uploads = db.relationship('Image', backref='user', cascade='all, delete')
     comments = db.relationship('Comment', backref='user', cascade='all, delete')
+
+    follows = db.relationship(
+        'User', 
+        backref='followed_user',
+        secondary= user_follows_join,
+        primaryjoin=id== user_follows_join.c.followed_user,
+        secondaryjoin=id== user_follows_join.c.user_id)
 
     @hybrid_property
     def password(self):
