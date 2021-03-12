@@ -8,4 +8,4 @@ class ImageSchema(ma.SQLAlchemyAutoSchema):
         model = Image
         load_instance = True
 
-    user = fields.Nested(UserSchema(only=("name", "id")))
+    user = fields.Nested(UserSchema(only=("username", "id")))

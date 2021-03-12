@@ -1,6 +1,15 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
+import { isCreator, getLoggedInUserId } from '../lib/auth.js'
+import Avatar from 'avataaars'
 
-export default function UserProfile() {
+export default function UserProfile({ match, history }) {
+
+  getLoggedInUserId()
+
+
+
 
 
   return <div className="main">
@@ -19,7 +28,20 @@ export default function UserProfile() {
     // * BODY SECTION
     */}
 
-<section className="section">
+    <section className="section">
+      <Avatar
+        avatarStyle='Circle'
+        topType='WinterHat1'
+        accessoriesType='Round'
+        hatColor='Red'
+        facialHairType='Blank'
+        clotheType='ShirtCrewNeck'
+        clotheColor='Gray01'
+        eyeType='Default'
+        eyebrowType='Default'
+        mouthType='Smile'
+        skinColor='Brown'
+      />
       <h1>Profile Page Contents:</h1>
       <ul>
         <li>Avatar</li>

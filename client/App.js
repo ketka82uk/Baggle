@@ -15,6 +15,10 @@ import UserList from './components/UserList.js'
 import UserLogin from './components/UserLogin.js'
 import UserProfile from './components/UserProfile.js'
 import UserSignup from './components/UserSignup.js'
+import UserSignupForm from './components/UserSignupForm.js'
+
+import 'bulma'
+import './styles/style.scss'
 
 
 // ! Some starter code for your frontend, change this
