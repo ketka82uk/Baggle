@@ -17,19 +17,11 @@ from marshmallow.exceptions import ValidationError
 router = Blueprint(__name__, "items")
 
 #GET items
-<<<<<<< HEAD
-=======
-
->>>>>>> 3c0d73d91a172563d21981503565b25b2945afcc
 @router.route("/items", methods=["GET"])
 @time_taken
 
 def get_all_items():
     items = Item.query.all()
-<<<<<<< HEAD
-
-=======
->>>>>>> 3c0d73d91a172563d21981503565b25b2945afcc
     return item_schema.jsonify(items, many=True), 200
 # @router.route("/items", methods=["GET"])
 # @time_taken
@@ -134,17 +126,17 @@ def delete_comment(item_id, comment_id):
 
 # UPDATE comment
 
-@router.route("/items/<int:item_id>/comments/<int:comment_id>", methods=["PUT"])
-@secure_route
-def update_comment(item_id, comment_id):
-    comment_dictionary = request.json
-    existing_comment = Comment.query.get(comment_id)
-    try:
-        comment = comment_schema.load(
-            comment_dictionary, instance=existing_comment, partial=True
-        )
-    except ValidationError as e:
-        return {"errors": e.messages, "messages": "Something went wrong"}
-    comment.save()
-    item = Item.query.get(item_id)
-    return item_schema.jsonify(item), 201
+# @router.route("/items/<int:item_id>/comments/<int:comment_id>", methods=["PUT"])
+# @secure_route
+# def update_comment(item_id, comment_id):
+#     comment_dictionary = request.json
+#     existing_comment = Comment.query.get(comment_id)
+#     try:
+#         comment = comment_schema.load(
+#             comment_dictionary, instance=existing_comment, partial=True
+#         )
+#     except ValidationError as e:
+#         return {"errors": e.messages, "messages": "Something went wrong"}
+#     comment.save()
+#     item = Item.query.get(item_id)
+#     return item_schema.jsonify(item), 201
