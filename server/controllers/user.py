@@ -11,18 +11,17 @@ router = Blueprint(__name__, "users")
 
 
 @router.route("/signup", methods=["POST"])
-@logger
 def signup():
     try:
         user = user_schema.load(request.json)
     except ValidationError as e:
-        user.save()
+        return { 'errors': e.messages, 'messages': 'Something went wrong.' }
+    user.save()
     return user_schema.jsonify(user)
 
 
 @router.route("/login", methods=["POST"])
 @logger
-
 def login():
     user = User.query.filter_by(email=request.json['email']).first()
     if not user:
