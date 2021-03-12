@@ -3,11 +3,11 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import ClipLoader from 'react-spinners/ClipLoader'
 
-export default function ItemList() {
-
+export default function ItemList({ match }) {
+  const itemid = match.params.itemid
   const [items, updateItems] = useState([])
   const [loading, updateLoading] = useState(true)
-
+  console.log(itemid)
   useEffect(() => {
     async function getList() {
       try {
@@ -30,7 +30,7 @@ export default function ItemList() {
       <div className="columns is-multiline is-mobile">
         {items.map((item, index) => {
           return <div key={index} className="column is-one-third-desktop is-half-tablet is-half-mobile">
-            <Link to={`/single_item/${item.name}`}>
+            <Link to={`/items/${item.id}`}>
               <div className="card">
                 <div className="card-content">
                   <div className="media">
