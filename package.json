@@ -15,9 +15,12 @@
     "@babel/plugin-transform-runtime": "^7.10.1",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.5",
     "css-loader": "^3.5.3",
     "dotenv-webpack": "^4.0.0",
+    "eslint": "^7.21.0",
+    "eslint-plugin-react": "^7.22.0",
     "html-webpack-plugin": "^4.3.0",
     "sass": "^1.32.8",
     "sass-loader": "^8.0.2",
@@ -35,6 +38,7 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-slick": "^0.28.1",
+    "react-spinners": "^0.10.6",
     "slick-carousel": "^1.8.1"
   }
 }

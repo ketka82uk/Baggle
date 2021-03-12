@@ -22,7 +22,8 @@ export default function UserSignup({ history }) {
   async function handleSubmit(event) {
     event.preventDefault()
     const newFormData = {
-      ...formData
+      ...formData,
+      image: 'https://i.imgur.com/rgwWFRR.png'
     }
     try {
       const { data } = await axios.post('api/signup', newFormData)
