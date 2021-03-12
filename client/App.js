@@ -17,7 +17,6 @@ import UserSignup from './components/UserSignup.js'
 import UserSignupForm from './components/UserSignupForm.js'
 
 import 'bulma'
-import './styles/style.scss'
 
 
 // ! Some starter code for your frontend, change this
@@ -34,7 +33,7 @@ const App = () => (
       <Route exact path="/single_item" component={ItemSingle} />
       <Route exact path="/users" component={UserList} />
       <Route exact path="/login" component={UserLogin} />
-      <Route exact path="/profile" component={UserProfile} />
+      <Route exact path="/users/:user_id" component={UserProfile} />
       <Route exact path="/signup" component={UserSignup} />
     </Switch>
     <Footer />
