@@ -17,19 +17,11 @@ from marshmallow.exceptions import ValidationError
 router = Blueprint(__name__, "items")
 
 #GET items
-<<<<<<< HEAD
-=======
-
->>>>>>> 3c0d73d91a172563d21981503565b25b2945afcc
 @router.route("/items", methods=["GET"])
 @time_taken
 
 def get_all_items():
     items = Item.query.all()
-<<<<<<< HEAD
-
-=======
->>>>>>> 3c0d73d91a172563d21981503565b25b2945afcc
     return item_schema.jsonify(items, many=True), 200
 # @router.route("/items", methods=["GET"])
 # @time_taken
@@ -52,12 +44,13 @@ def get_single_item(item_id):
 #POST item
 
 @router.route("/items", methods=["POST"])
+@logging
 @secure_route
 def post_item():
     item_dict = request.json
     try:
         item = item_schema.load(item_dict)
-        item.user = g.current_user
+        item.user = g.current_user.id
     except ValidationError as e:
         return {"errors": e.messages, "messages": "Too bad, something went wrong"}
     item.save()
@@ -148,3 +141,4 @@ def update_comment(item_id, comment_id):
     comment.save()
     item = Item.query.get(item_id)
     return item_schema.jsonify(item), 201
+

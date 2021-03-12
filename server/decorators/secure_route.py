@@ -15,7 +15,6 @@ def secure_route(func):
             return { 'Message': 'Unauthorized' }, 401
 
         token = token_with_bearer.replace('Bearer ', '')
-        print(token)
 
         try:
             payload = jwt.decode(token, secret, 'HS256')

@@ -45,6 +45,31 @@ def get_all_users():
     return user_schema.jsonify(users, many=True), 200
 
 
+@router.route("/users/<int:user_id>", methods=["GET"])
+@logger
+def get_single_user(user_id):
+    try:
+        user = User.query.get(user_id)
+    except ValidationError as e:
+        return { "errors": e.messages, "messages": "Something went wrong" }
+    return user_schema.jsonify(user), 200
+
+
+@router.route("/users/<int:item_id>", methods=["PUT"])
+@secure_route
+def update_user(user_id):
+    existing_item = User.query.get(user_id)
+    user_dict = request.json
+    try:
+        user = user_schema.load(user_dict, instance=existing_item, partial=True)
+
+    except ValidationError as e:
+        return { "errors": e.messages, "messages": "Too bad, something went wrong" }
+
+    user.save()
+    return user_schema.jsonify(user), 201
+
+
 @router.route("/users/<int:user_id>", methods=["DELETE"])
 @secure_route
 @logger

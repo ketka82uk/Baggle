@@ -1,6 +1,6 @@
 from app import app, db
-# from data.person_data import list_persons, person_parents, person_children
-# from data.comment_data import list_comments
+from data.item_data import list_items
+from data.image_data import list_images
 from data.user_data import list_users
 import json
 
@@ -20,9 +20,17 @@ def setup_db():
             db.create_all()
 
             db.session.add_all(list_users)
+            print(f'🙋‍♀️ {len(list_users)} users created')
+
+            db.session.add_all(list_items)
+            print(f'🦖 {len(list_items)} items created')
+
+            db.session.add_all(list_images)
+            print(f'🖼 {len(list_images)} images created')
+
             db.session.commit()
 
-            print('Everything seeded')
+            print("👍 All seeded successfully")
 
         except Exception as e:
             print('There was an error with seeding')
