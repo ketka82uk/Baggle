@@ -1,3 +1,4 @@
+
 from flask import Blueprint, request, g
 from models.item import Item
 from serializers.item import ItemSchema
@@ -12,11 +13,10 @@ from decorators.logging import logging
 item_schema = ItemSchema()
 user_schema = UserSchema()
 
+router = Blueprint(__name__, "failed")
 
-router = Blueprint(__name__, "swap")
 
-
-@router.route("/swap/<int:item1_id>/<int:item2_id>", methods=["PUT"])
+@router.route("/failed/<int:item1_id>/<int:item2_id>", methods=["PUT"])
 @secure_route
 def swap_item(item1_id, item2_id):
     
@@ -26,11 +26,10 @@ def swap_item(item1_id, item2_id):
     user1 = item1.owner
     user2 = item2.owner
 
-    item2.owner = user1
-    item1.owner = user2
+    
 
-    user1.successfull_trans = user1.successfull_trans + 1
-    user2.successfull_trans = user2.successfull_trans + 1
+    
+    user2.failed_trans = user2.failed_trans + 1
 
     user1.save()
     user2.save()
@@ -38,14 +37,3 @@ def swap_item(item1_id, item2_id):
     items = Item.query.all()
 
     return item_schema.jsonify(items, many=True), 201
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
