@@ -52,19 +52,19 @@ export default function Navbar() {
           <li><Link to={'/items'}><p>Items</p></Link></li>
           <li><Link to={'/about'}><p>About</p></Link></li>
 
-          {!logIn ? 
-          <div>
-            <li><Link to={'/signup'}><p>Sign up</p></Link></li>
-            <li><Link to={'/login'}><p>Log in</p></Link></li>
-          </div> :
-           <div>
-             <div>{userName && <strong>Hi {userName}</strong>}</div>
-            <li><Link to={'/profile'}><p>My profile</p></Link></li>
-            <li><Link to={'/add_item'}><p>Create</p></Link></li>
-            <button className="button is-primary" onClick={logOut}>
-              <strong>Log Out</strong>
-            </button>
-           </div>
+          {!logIn ?
+            <div>
+              <li><Link to={'/signup'}><p>Sign up</p></Link></li>
+              <li><Link to={'/login'}><p>Log in</p></Link></li>
+            </div> :
+            <div>
+              <div>{userName && <strong>Hi {userName}</strong>}</div>
+              <li><Link to={'/profile'}><p>My profile</p></Link></li>
+              <li><Link to={'/add_item'}><p>Create</p></Link></li>
+              <button className="button is-primary" onClick={logOut}>
+                <strong>Log Out</strong>
+              </button>
+            </div>
           }
         </ul>
       </div>

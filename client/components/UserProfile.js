@@ -11,7 +11,7 @@ export default function UserProfile({ match, history }) {
   const [text, updateText] = useState('')
   const token = localStorage.getItem('token')
 
-  const userId = match.params.user_id
+  const userId = match.params.userId
 
   console.log(userId)
 
