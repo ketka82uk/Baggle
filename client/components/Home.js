@@ -22,23 +22,26 @@ export default function Home() {
   return <div className="main">
 
     <section className="hero is-primary is-medium">
-      <div class="hero-body has-text-centered">
-        <p class="title">
+      <div className="hero-body has-text-centered">
+        <p className="title">
           Not for sale
         </p>
-        <p class="subtitle">
+        <p className="subtitle">
           Start bartering...
         </p>
       </div>
     </section>
 
-    {items ? 
-      categories.map((category, i) => {
-        return <div className='section' key={i}>
-           <Carousel items={items} category={category}/>
-        </div>
-      })
-      : <div></div>}
+    <section>
+      <div className="container is-max-widescreen">
+        {categories.map((category, i) => {
+          return <div className='section' key={i}>
+              <Carousel items={items} category={category}/>
+          </div>
+        })}
+      </div>
+    </section>
+
   </div>
 
 }

@@ -13,37 +13,43 @@ export default function Carousel( { items, category } ) {
   }
 
   function filterItems(category) {
-    console.log('filtering items...')
     return items.filter((item) => {
       return item.category === category
     })
+  }
+
+  function cleanCat() {
+    const clean = category.replace(/_/g, ' ')
+    const catSplit = clean.split('')
+    const capCat = (catSplit[0].toUpperCase()).concat(catSplit.splice(1,catSplit.length))
+    return capCat.replace(/,/g, '')
   }
 
   function mapItems(itemArray) {
     return itemArray.map((item, i) => {
       return <div key={i}>
         <div className="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
+          <div className="card-image">
+            <figure className="image is-4by3">
               <img src={item.image} alt="Placeholder image"/>
             </figure>
           </div>
         </div>
         <div className="card-content">
-          <div class="content">
-            <p class="title is-4">{item.name}</p>
+          <div className="content">
+            <p className="title is-4">{item.name}</p>
             <Link to={`/items/${item.id}`}>
               <div className="button">Go to</div>
             </Link>
-            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+            <time dateTime="2016-1-1">11:09 PM - 1 Jan 2016</time>
           </div>
         </div>
       </div>
     })
   }
 
-  return <div>
-    <p className="title is-3">{category}</p>
+  return <div className="has-text-centered">
+    <p className="title is-3">{cleanCat()}</p>
     <Slider {...settings}>
       {mapItems(filterItems(category))}
     </Slider>
