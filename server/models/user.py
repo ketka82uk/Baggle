@@ -30,7 +30,7 @@ class User(db.Model, BaseModel):
     rating = db.Column(db.Integer, nullable=True, unique=False)
     barter_number = db.Column(db.Integer, nullable=True, unique=False)
     successfull_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
-    failed_trans = db.Column(db.Integer, nullable=True, unique=False)
+    failed_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
     image = db.Column(db.Text, nullable=True)
     password_hash = db.Column(db.String(128), nullable=True)
     inventory = db.relationship('Item', backref='owner', cascade='all, delete')
