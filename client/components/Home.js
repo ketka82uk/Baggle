@@ -1,46 +1,45 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState, useEffect, Component } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Home() {
+import Carousel from './Carousel'
 
+
+export default function Home() {
+  const [items, updateItems] = useState([])
+  // const [categories, updateCategories] = useState([])
+
+  const categories = ['entertainment', 'clothing', 'home_and_garden', 'food_and_drink', 'motor', 'children']
+  // const type = ['services', 'goods']
+
+  useEffect(() => {
+    axios.get('/api/items')
+      .then(resp => {
+        updateItems(resp.data)
+      })
+  }, [])
 
   return <div className="main">
 
-    {/*
-    // * TITLE SECTION
-    */}
-
-    <section className="section">
-      <div className="container">
-        <h1>Home</h1>
+    <section className="hero is-primary is-medium">
+      <div class="hero-body has-text-centered">
+        <p class="title">
+          Not for sale
+        </p>
+        <p class="subtitle">
+          Start bartering...
+        </p>
       </div>
     </section>
 
-    {/*
-    // * BODY SECTION
-    */}
-
-    <section className="section">
-      <div className="container">
-        <Link to={'/test/backend'}>
-          <p>Go to /hello/world page.</p>
-        </Link>
-      </div>
-    </section>
-
-    <section className="section">
-      <h1>Home Page Contents:</h1>
-      <ul>
-        <li>Logo</li>
-        <li>Mission statement</li>
-        <li>Search for items</li>
-        <li>Filter by goods or services and category</li>
-        <li>Filter by location</li>
-        <li>Logged in user sees suggested items according to their location and barter history</li>
-      </ul>
-      <button><Link to={'/items'}>Search</Link></button>
-    </section>
-
+    {items ? 
+      categories.map((category, i) => {
+        return <div className='section' key={i}>
+           <Carousel items={items} category={category}/>
+        </div>
+      })
+      : <div></div>}
   </div>
 
 }
+
