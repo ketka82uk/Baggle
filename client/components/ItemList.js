@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import ClipLoader from 'react-spinners/ClipLoader'
 
-export default function ItemList({ match }) {
+export default function ItemList({ match, location }) {
   const itemid = match.params.itemid
   const [items, updateItems] = useState([])
   const [loading, updateLoading] = useState(true)
@@ -21,6 +21,7 @@ export default function ItemList({ match }) {
     }
     getList()
   }, [])
+
 
   if (loading) {
     return <ClipLoader loading={loading} size={100} />
