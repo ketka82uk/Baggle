@@ -8,11 +8,10 @@ export default function UserProfile({ match, history }) {
 
   const [profile, updateProfile] = useState([])
   const [loading, updateLoading] = useState(true)
-  const [text, updateText] = useState('')
+  const [currentUser, updateCurrentUser] = useState([])
   const token = localStorage.getItem('token')
 
   const userId = match.params.userId
-
   console.log(userId)
 
   async function fetchData() {
@@ -21,9 +20,26 @@ export default function UserProfile({ match, history }) {
     updateLoading(false)
   }
 
+  async function fetchCurrentUser() {
+    const token = localStorage.getItem('token')
+    try {
+      const { data } = await axios.get('/api/current_user', {
+        headers: { Authorization: `Bearer ${token}`} 
+      })
+      updateCurrentUser(data)
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
+  console.log(currentUser['id'])
+
   useEffect(() => {
     fetchData()
+    fetchCurrentUser()
   }, [])
+
+
 
 
   if (loading) {

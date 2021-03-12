@@ -75,7 +75,7 @@ export default function Navbar() {
               <span>
                 <div className="navbar-item">{userName && <strong>Hi {userName}</strong>}</div>
                 <div className="navbar-item">
-                  <Link to={'/profile'}><p>My profile</p></Link>
+                  <Link to={`/users/${userId}`}><p>My profile</p></Link>
                 </div>
                 <span className="navbar-item">
                   <Link to={'/add_item'}><p>Post A baggle</p></Link>
