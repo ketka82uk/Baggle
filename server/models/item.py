@@ -18,8 +18,9 @@ class Item(db.Model, BaseModel):
     typeof = db.Column(db.String(40), nullable=False)
     category = db.Column(db.String(40), nullable=False)
     description = db.Column(db.Text, nullable=True)
+    listed = db.Column(db.Boolean, nullable=False)
     image = db.Column(db.Text, nullable=True)
-    listed = db.Column(db.Boolean, nullable= False)
+    
 
     offers = db.relationship(
         'Item', 

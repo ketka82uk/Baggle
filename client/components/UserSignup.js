@@ -1,6 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
+import axios from 'axios'
 
-export default function UserSignup() {
+import UserSignupForm from './UserSignupForm.js'
+
+
+export default function UserSignup({ history }) {
+
+  const [formData, updateFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    image: '',
+    bio: '',
+    location: ''
+  })
+
+  function handleChange(event) {
+    updateFormData({ ...formData, [event.target.name]: event.target.value })
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault()
+    const newFormData = {
+      ...formData
+    }
+    try {
+      const { data } = await axios.post('api/signup', newFormData)
+      console.log(data.id)
+      history.push('/login')
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
 
 
   return <div className="main">
@@ -21,7 +52,13 @@ export default function UserSignup() {
 
     <section className="section">
       <div className="container">
-        <p>Body section</p>
+
+        <UserSignupForm
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          formData={formData}
+        />
+
       </div>
     </section>
 

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import './styles/style.scss'
 import axios from 'axios'
+import 'bulma'
 
 import About from './components/About.js'
 import Footer from './components/Footer.js'
@@ -14,7 +15,9 @@ import UserList from './components/UserList.js'
 import UserLogin from './components/UserLogin.js'
 import UserProfile from './components/UserProfile.js'
 import UserSignup from './components/UserSignup.js'
-import UpdateItem from './components/UpdateItem.js'
+// import UserSignupForm from './components/UserSignupForm.js'
+import UpdateItem  from './components/UpdateItem.js'
+
 import 'bulma'
 import './styles/style.scss'
 
