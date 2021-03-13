@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, g
 from models.user import User
 from serializers.user import UserSchema
 from marshmallow.exceptions import ValidationError
@@ -54,17 +54,15 @@ def get_single_user(user_id):
     return user_schema.jsonify(user), 200
 
 
-@router.route("/users/<int:item_id>", methods=["PUT"])
+@router.route("/users/<int:user_id>", methods=["PUT"])
 @secure_route
 def update_user(user_id):
-    existing_item = User.query.get(user_id)
+    existing_user = User.query.get(user_id)
     user_dict = request.json
     try:
-        user = user_schema.load(user_dict, instance=existing_item, partial=True)
-
+        user = user_schema.load(user_dict, instance=existing_user, partial=True)
     except ValidationError as e:
         return { "errors": e.messages, "messages": "Too bad, something went wrong" }
-
     user.save()
     return user_schema.jsonify(user), 201
 
@@ -81,7 +79,7 @@ def delete_user(user_id):
     return { 'message': 'User deleted successfully' }, 200
 
 
-@router.route('/profile', methods=['GET'])
+@router.route('/current_user', methods=['GET'])
 @secure_route
 def get_user_profile():
     return user_schema.jsonify(g.current_user)
