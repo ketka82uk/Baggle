@@ -20,8 +20,8 @@ class Item(db.Model, BaseModel):
     description = db.Column(db.Text, nullable=True)
     listed = db.Column(db.Boolean, nullable=False)
     image = db.Column(db.Text, nullable=True)
+    wishlisted = db.Column(db.Integer, nullable=True)
     
-
     offers = db.relationship(
         'Item', 
         backref='sale_item',
@@ -29,11 +29,7 @@ class Item(db.Model, BaseModel):
         primaryjoin=id== item_offers_join.c.offer_item,
         secondaryjoin=id== item_offers_join.c.item_id)
     
-    # ! One to many
-    
-    
     comments = db.relationship('Comment', backref='item', cascade="all, delete")
-
     user = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
 
 

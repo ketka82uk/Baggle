@@ -35,11 +35,11 @@ class User(db.Model, BaseModel):
     failed_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
     image = db.Column(db.Text, nullable=True)
     password_hash = db.Column(db.String(128), nullable=True)
+
     inventory = db.relationship('Item', backref='owner', cascade='all, delete')
     image_uploads = db.relationship('Image', backref='user', cascade='all, delete')
     comments = db.relationship('Comment', backref='user', cascade='all, delete')
-
-    wishlist = db.relationship('Item', backref='users', secondary=user_items_join)
+    wishlist = db.relationship('Item', backref='users', secondary=user_items_join, cascade='all, delete')
 
     follows = db.relationship(
         'User', 

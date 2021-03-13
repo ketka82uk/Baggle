@@ -12,4 +12,7 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         load_only = ('email', 'password')
 
     password = fields.String(required=True)
-    inventory = fields.Nested('ItemSchema', only=('name', 'id'), many=True)
+    inventory = fields.Nested('ItemSchema', only=('name', 'id', 'image', 'category', 'typeof', 'listed', 'wishlisted', 'comments', 'created_at'), many=True)
+    wishlist = fields.Nested('ItemSchema', only=('name', 'id', 'image', 'owner.username', 'owner.location', 'comments', 'created_at', 'wishlisted'), many=True)
+    comments = fields.Nested('CommentSchema', many=True)
+ 

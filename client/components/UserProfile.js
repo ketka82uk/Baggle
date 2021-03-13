@@ -9,6 +9,11 @@ export default function UserProfile({ match, history }) {
   const [profile, updateProfile] = useState([])
   const [loading, updateLoading] = useState(true)
   const [currentUser, updateCurrentUser] = useState([])
+  const [commentData, updateCommentData] = useState({
+    content: '',
+    positive_rating: false,
+    negative_rating: false
+  })
   const token = localStorage.getItem('token')
 
   const userId = match.params.userId
@@ -24,7 +29,7 @@ export default function UserProfile({ match, history }) {
     const token = localStorage.getItem('token')
     try {
       const { data } = await axios.get('/api/current_user', {
-        headers: { Authorization: `Bearer ${token}`} 
+        headers: { Authorization: `Bearer ${token}` }
       })
       updateCurrentUser(data)
     } catch (err) {
@@ -39,8 +44,27 @@ export default function UserProfile({ match, history }) {
     fetchCurrentUser()
   }, [])
 
+  function handleCommentChange(event) {
+    updateCommentData({ ...commentData, [event.target.name]: event.target.value })
+  }
 
+  async function handleCommentSubmit(event) {
+    event.preventDefault()
+    const newCommentData = {
+      ...commentData
+    }
+    try {
+      const { data } = await axios.post(`/api/users/${userId}/comments`, newCommentData,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      history.push(`/users/${userId}`)
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
 
+  console.log(profile.wishlist)
 
   if (loading) {
     return <div>Page is Loading</div>
@@ -100,33 +124,120 @@ export default function UserProfile({ match, history }) {
 
     <section className="section">
       <div className="container">
+        <h1>Up for baggle</h1>
         <div className="columns is-multiline">
           {profile.inventory.map((item) => {
             return <div className="column is-one-quarter" key={item.id}>
-              <div className="card">
-                <div className="card-image">
-                  <figure className="image is-4by3">
-                    <img src={item.image} />
-                  </figure>
+              <Link to={`/items/${item.id}`}>
+                <div className="card">
+                  <div className="card-image">
+                    <figure className="image is-4by3">
+                      <img src={item.image} />
+                    </figure>
+                  </div>
+                  <div className="card-content">
+                    <div className="content"></div>
+                    <p>{item.name}</p>
+                    <p>{item.typeof}</p>
+                    <p>{item.category}</p>
+                    <p>Posted {item.created_at}</p>
+                    <p>Wishlists: {item.wishlisted}</p>
+                    <p>Comments: {item.comments.length}</p>
+                  </div>
                 </div>
-                <div className="card-content">
-                  <div className="content"></div>
-                  <p>{item.name}</p>
-                </div>
-              </div>
+              </Link>
             </div>
           })}
         </div>
       </div>
-
-
     </section>
 
+    {/*
+    // * WISHLIST SECTION
+    */}
 
+    <section className="section">
+      <div className="container">
+        <h1>Your wishlist</h1>
+        <div className="columns is-multiline">
+          {profile.wishlist.map((item) => {
+            return <div className="column is-one-quarter" key={item.id}>
+              <Link to={`/items/${item.id}`}>
+                <div className="card">
+                  <div className="card-image">
+                    <figure className="image is-4by3">
+                      <img src={item.image} />
+                    </figure>
+                  </div>
+                  <div className="card-content">
+                    <div className="content"></div>
+                    <p>{item.name}</p>
+                    <p>Belongs to {item.owner.username}</p>
+                    <p>Located {item.owner.location}</p>
+                    <p>Posted {item.created_at}</p>
+                    <p>{item.category}</p>
+                    <p>Wishlists: {item.wishlisted}</p>
+                    <p>Comments: {item.comments.length}</p>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          })}
+        </div>
+      </div>
+    </section>
 
     {/*
     // * COMMENTS SECTION
     */}
+
+    <section className="section">
+      <h1>Reviews for {profile.username}</h1>
+      {profile.comments.map(comment => {
+        return <article key={comment.id} className="media">
+          <div className="media-content">
+            <div className="content">
+              <p className="title">{comment.user.username}</p>
+              <p className="text">{comment.created_at}</p>
+              <p className="text">{comment.content}</p>
+            </div>
+          </div>
+
+          <div className="container">
+            <button className="button">Delete Comment</button>
+            <button className="button">Edit Comment</button>
+          </div>
+        </article>
+      })}
+
+      <article className="media">
+        <div className="media-content">
+          <div className="field">
+            <p className="control">
+              <textarea
+                className="textarea"
+                placeholder="Make a comment..."
+                onChange={handleCommentChange}
+                value={commentData.content}
+                name={'content'}
+              />
+            </p>
+          </div>
+          <div className="field">
+            <p className="control">
+              <button
+                onClick={handleCommentSubmit}
+                className="button is-info"
+              >
+                Submit
+              </button>
+            </p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+
 
     <section className="section">
       <h1>Profile Page Contents:</h1>

@@ -3,16 +3,12 @@ from models.item import Item
 from serializers.item import ItemSchema
 from models.comment import Comment
 from serializers.comment import CommentSchema
-from models.image import Image
-from serializers.image import ImageSchema
-from decorators.logging import logging
 from decorators.secure_route import secure_route
 from decorators.time_taken import time_taken
 from decorators.logging import logging
 
 item_schema = ItemSchema()
 comment_schema = CommentSchema()
-image_schema = ImageSchema()
 
 from marshmallow.exceptions import ValidationError
 
