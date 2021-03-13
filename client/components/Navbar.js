@@ -21,6 +21,7 @@ export default function Navbar() {
     handleLogin()
   }, [])
 
+
   // get current logged in user, to personalise NavBar
   useEffect(() => {
     async function fetchUser() {
@@ -41,53 +42,53 @@ export default function Navbar() {
   }
 
   return <div className="navbar">
-      <div className="container">
-        <div className="navbar-brand">
-          <div className="navbar-item">
-            NOT FOR SALE
-          </div>
-          <span className="navbar-item is-active">
-            <Link to={'/'}><p>Home</p></Link>
-          </span>
-          <span className="navbar-item">
-            <Link to={'/users'}><p>Users</p></Link>
-          </span>
-          <span className="navbar-item">
-            <Link to={'/items'}><p>Items</p></Link>
-          </span>
-          <span className="navbar-item">
-            <Link to={'/about'}><p>About</p></Link>
-          </span>
-          <span className="navbar-burger" data-target="navbarMenuHeroA">
-            <span></span>
-          </span>
+    <div className="container">
+      <div className="navbar-brand">
+        <div className="navbar-item">
+          NOT FOR SALE
         </div>
-        <div className="navbar-menu">
-          <div className="navbar-end">
-            {!logIn ? <span>
-                <div className="navbar-item">
-                  <Link to={'/signup'}><p>Sign up</p></Link>
-                </div>
-                <div className="navbar-item">
-                  <Link to={'/login'}><p>Log in</p></Link>
-                </div> 
-              </span> :
-              <span>
-                <div className="navbar-item">{userName && <strong>Hi {userName}</strong>}</div>
-                <div className="navbar-item">
-                  <Link to={`/users/${userId}`}><p>My profile</p></Link>
-                </div>
-                <span className="navbar-item">
-                  <Link to={'/add_item'}><p>Post A baggle</p></Link>
-                </span>
-                <div className="button navbar-item is-primary" onClick={logOut}>
-                  <strong>Log Out</strong>
-                </div>
+        <span className="navbar-item is-active">
+          <Link to={'/'}><p>Home</p></Link>
+        </span>
+        <span className="navbar-item">
+          <Link to={'/users'}><p>Users</p></Link>
+        </span>
+        <span className="navbar-item">
+          <Link to={'/items'}><p>Items</p></Link>
+        </span>
+        <span className="navbar-item">
+          <Link to={'/about'}><p>About</p></Link>
+        </span>
+        <span className="navbar-burger" data-target="navbarMenuHeroA">
+          <span></span>
+        </span>
+      </div>
+      <div className="navbar-menu">
+        <div className="navbar-end">
+          {!logIn ? <span>
+            <div className="navbar-item">
+              <Link to={'/signup'}><p>Sign up</p></Link>
+            </div>
+            <div className="navbar-item">
+              <Link to={'/login'}><p>Log in</p></Link>
+            </div> 
+          </span> :
+            <span>
+              <div className="navbar-item">{userName && <strong>Hi {userName}</strong>}</div>
+              <div className="navbar-item">
+                <Link to={'/profile'}><p>My profile</p></Link>
+              </div>
+              <span className="navbar-item">
+                <Link to={'/add_item'}><p>Post A baggle</p></Link>
               </span>
-            }
-          </div>
+              <div className="button navbar-item is-primary" onClick={logOut}>
+                <strong>Log Out</strong>
+              </div>
+            </span>
+          }
         </div>
       </div>
+    </div>
 
   </div>
 
