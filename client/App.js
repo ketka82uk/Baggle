@@ -19,6 +19,7 @@ import UserSignup from './components/UserSignup.js'
 import UserSignupForm from './components/UserSignupForm.js'
 import UpdateItem  from './components/UpdateItem.js'
 import TestLogo from './components/TestLogo.js'
+import AvatarPicker from './components/AvatarPicker.js'
 
 
 const App = () => (

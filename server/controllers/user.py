@@ -122,10 +122,10 @@ def get_single_comment(user_id, comment_id):
 @router.route("/users/<int:user_id>/comments", methods=["POST"])
 @secure_route
 def create_comment(user_id):
-    comment_dict = request.json 
     user = User.query.get(user_id)
+    comment_dict = request.json
     comment = comment_schema.load(comment_dict)
-    comment.user = user
+    comment.user = g.current_user
     comment.save()
     return comment_schema.jsonify(comment)
 

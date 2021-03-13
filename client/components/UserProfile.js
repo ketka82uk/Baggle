@@ -91,21 +91,21 @@ export default function UserProfile({ match, history }) {
       <div className="container">
         <div className="avatar-container">
           <Avatar
-            style={{ height: '100px' }}
-            avatarStyle='Circle'
-            topType='WinterHat1'
-            accessoriesType='Round'
-            hatColor='Red'
-            facialHairType='Blank'
-            clotheType='ShirtCrewNeck'
-            clotheColor='Gray01'
+            style={{ height: '200px' }}
+            avatarStyle='Transparent'
+            topType={profile.avatar_hair}
+            accessoriesType={profile.avatar_accessories}
+            hatColor={profile.avatar_clothes_color}
+            facialHairType={profile.avatar_facial_hair}
+            clotheType={profile.avatar_clothes}
+            clotheColor={profile.avatar_clothes_color}
             eyeType='Default'
             eyebrowType='Default'
             mouthType='Smile'
-            skinColor='Brown'
+            skinColor={profile.avatar_skin}
           />
         </div>
-        <div>
+        <div className="container">
           <p>Baggler: {profile.username}</p>
           <p>Bio: {profile.bio}</p>
           <p>Location: {profile.location}</p>

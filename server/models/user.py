@@ -47,6 +47,16 @@ class User(db.Model, BaseModel):
         secondary= user_follows_join,
         primaryjoin=id== user_follows_join.c.followed_user,
         secondaryjoin=id== user_follows_join.c.user_id)
+    
+    # ! AVATARS
+
+    avatar_hair = db.Column(db.String(40), nullable=False)
+    avatar_accessories = db.Column(db.String(40), nullable=False)
+    avatar_hair_color = db.Column(db.String(40), nullable=False)
+    avatar_facial_hair = db.Column(db.String(40), nullable=False)
+    avatar_clothes = db.Column(db.String(40), nullable=False)
+    avatar_clothes_color = db.Column(db.String(40), nullable=False)
+    avatar_skin = db.Column(db.String(40), nullable=False)
 
     @hybrid_property
     def password(self):
