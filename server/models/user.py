@@ -4,6 +4,7 @@ from models.item import Item
 from models.comment import Comment
 from models.image import Image
 from models.user_follows import user_follows_join
+from models.user_items import user_items_join
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 
@@ -27,7 +28,8 @@ class User(db.Model, BaseModel):
     
     bio = db.Column(db.Text, nullable=True, unique=False)
     location = db.Column(db.Text, nullable=True, unique=False)
-    rating = db.Column(db.Integer, nullable=True, unique=False)
+    positive_rating = db.Column(db.Integer, nullable=True, unique=False)
+    negative_rating = db.Column(db.Integer, nullable=True, unique=False)
     barter_number = db.Column(db.Integer, nullable=True, unique=False)
     successfull_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
     failed_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
@@ -36,6 +38,8 @@ class User(db.Model, BaseModel):
     inventory = db.relationship('Item', backref='owner', cascade='all, delete')
     image_uploads = db.relationship('Image', backref='user', cascade='all, delete')
     comments = db.relationship('Comment', backref='user', cascade='all, delete')
+
+    wishlist = db.relationship('Item', backref='users', secondary=user_items_join)
 
     follows = db.relationship(
         'User', 
