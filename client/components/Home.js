@@ -30,6 +30,7 @@ export default function Home( { history } ) {
   const [query, updateQuery] = useState('')
   const [searchResults, updateSearchResults] = useState([])
   const [selectedLocation, updateselectedLocation] = useState({})
+  const [postings, updatePostings] = useState(false)
 
   // const [categories, updateCategories] = useState([])
 
@@ -74,6 +75,11 @@ export default function Home( { history } ) {
         // get this out on the other side by: props.location.state.searchFilter
       }
     })
+  }
+
+  function swapPostings() {
+    console.log('postings swap')
+    updatePostings(!postings)
   }
 
   return <div className="main">
@@ -127,14 +133,15 @@ export default function Home( { history } ) {
     </form>
               
 
-    <section>
-      <div className='has-text-is-centered'>
-        <div className='is-size-3'>Latest postings</div>
+    <section className='column'>
+      <div className='has-text is-centered'>
+        {postings ? <div className='button is-size-5' onClick={() => swapPostings()}>Latest postings</div>
+          : <div className='button is-size-5' onClick={() => swapPostings()}>Closest postings</div>}
       </div>
       <div className="container is-max-widescreen">
         {categories.map((category, i) => {
           return <div className='section' key={i}>
-            <Carousel items={items} category={category}/>
+            <Carousel items={items} category={category} postings={postings}/>
           </div>
         })}
       </div>

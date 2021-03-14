@@ -19,8 +19,6 @@ const debouncedSave = debounce((searchQuery, updateSearchResults) => {
     })
 }, 500)
 
-
-
 const inputFields = ['name', 'typeof', 'category', 'description', 'image', 'listed']
 
 

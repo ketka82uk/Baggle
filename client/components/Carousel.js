@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Slider from 'react-slick'
 
-export default function Carousel( { items, category } ) {
+export default function Carousel( { items, category, postings } ) {
 
   const settings = {
     dots: true,
@@ -13,9 +13,34 @@ export default function Carousel( { items, category } ) {
   }
 
   function sortedItems() {
-    return items.sort(function(a, b) {
-      return a.created_at - b.created_at
-    }).reverse()
+    if (!postings) {
+      // sort by time of creation
+      return items.sort(function(a, b) {
+        return a.created_at - b.created_at
+      }).reverse()
+    } else if (postings) {
+      // sort by distance
+      const testLocation = {
+        lat: 51.38025629025321, 
+        lng: -0.09548670685241464
+      }
+      return items.sort(function(a, b) {
+        const prevDistance = locationDistance(testLocation , a)
+        const currDistance = locationDistance(testLocation , b)
+        return prevDistance - currDistance
+      })
+    }
+
+  }
+
+  function vectorDistance(dx, dy) {
+    return Math.sqrt(dx * dx + dy * dy)
+  }
+
+  function locationDistance(item1, item2) {
+    const dx = item1.lat - item2.lat
+    const dy = item1.lng - item2.lng
+    return vectorDistance(dx, dy)
   }
 
   function filterItems(category) {
