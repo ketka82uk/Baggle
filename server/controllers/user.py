@@ -82,4 +82,6 @@ def delete_user(user_id):
 @router.route('/current_user', methods=['GET'])
 @secure_route
 def get_user_profile():
+
+    print(g.current_user.inventory)
     return user_schema.jsonify(g.current_user)

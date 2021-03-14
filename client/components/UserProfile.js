@@ -24,7 +24,7 @@ export default function UserProfile({ match, history }) {
     const token = localStorage.getItem('token')
     try {
       const { data } = await axios.get('/api/current_user', {
-        headers: { Authorization: `Bearer ${token}`} 
+        headers: { Authorization: `Bearer ${token}` } 
       })
       updateCurrentUser(data)
     } catch (err) {
