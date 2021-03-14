@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import Avatar from 'avataaars'
 
 export default function UserList() {
 
@@ -44,9 +45,24 @@ export default function UserList() {
               <Link to={`/users/${user.id}`}>
                 <div className="card">
                   <div className="card-image">
-                    <figure className="image is-4by3">
-                      <img src={user.image} />
-                    </figure>
+
+                    <div className="avatar-container">
+                      <Avatar
+                        style={{ height: '200px' }}
+                        avatarStyle='Transparent'
+                        topType={user.avatar_hair}
+                        accessoriesType={user.avatar_accessories}
+                        hatColor={user.avatar_clothes_color}
+                        facialHairType={user.avatar_facial_hair}
+                        clotheType={user.avatar_clothes}
+                        clotheColor={user.avatar_clothes_color}
+                        eyeType='Default'
+                        eyebrowType='Default'
+                        mouthType='Smile'
+                        skinColor={user.avatar_skin}
+                      />
+                    </div>
+
                   </div>
                   <div className="card-content">
                     <div className="content"></div>

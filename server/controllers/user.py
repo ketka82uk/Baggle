@@ -1,14 +1,19 @@
 from flask import Blueprint, request, g
 from models.user import User
 from serializers.user import UserSchema
+from models.item import Item
+from models.comment import Comment
+from serializers.comment import CommentSchema
 from marshmallow.exceptions import ValidationError
 from decorators.logger import logger
 from decorators.secure_route import secure_route
 
 user_schema = UserSchema()
+comment_schema = CommentSchema()
 
 router = Blueprint(__name__, "users")
 
+#POST new user (Signup)
 
 @router.route("/signup", methods=["POST"])
 def signup():
@@ -19,6 +24,7 @@ def signup():
     user.save()
     return user_schema.jsonify(user)
 
+ #POST existing user (Login)
 
 @router.route("/login", methods=["POST"])
 @logger
@@ -33,6 +39,7 @@ def login():
     token = user.generate_token()
     return { "token": token, "message": "login successfull" }
 
+#GET all users
 
 @router.route("/users", methods=["GET"])
 @logger
@@ -43,6 +50,7 @@ def get_all_users():
         return { "errors": e.messages, "messages": "Something went wrong" }
     return user_schema.jsonify(users, many=True), 200
 
+#GET single user
 
 @router.route("/users/<int:user_id>", methods=["GET"])
 @logger
@@ -53,6 +61,7 @@ def get_single_user(user_id):
         return { "errors": e.messages, "messages": "Something went wrong" }
     return user_schema.jsonify(user), 200
 
+#PUT single user
 
 @router.route("/users/<int:user_id>", methods=["PUT"])
 @secure_route
@@ -66,6 +75,7 @@ def update_user(user_id):
     user.save()
     return user_schema.jsonify(user), 201
 
+#DELETE single user
 
 @router.route("/users/<int:user_id>", methods=["DELETE"])
 @secure_route
@@ -78,6 +88,7 @@ def delete_user(user_id):
         return { "errors": e.messages, "messages": "Something went wrong" }
     return { 'message': 'User deleted successfully' }, 200
 
+#GET current user
 
 @router.route('/current_user', methods=['GET'])
 @secure_route
@@ -85,3 +96,64 @@ def get_user_profile():
 
     print(g.current_user.inventory)
     return user_schema.jsonify(g.current_user)
+
+#ADD a wishlist item to a user
+
+@router.route('/users/<int:user_id>/items/<int:item_id>', methods=["POST"])
+@logger
+def add_item_to_wishlist(user_id, item_id):
+    user = User.query.get(user_id)
+    item = Item.query.get(item_id)
+    user.wishlist.append(item)
+    user.save()
+    return user_schema.jsonify(user), 200
+
+# ! COMMENTS
+
+#GET comment
+
+@router.route("/users/<int:user_id>/comments/<int:comment_id>", methods=["GET"])
+def get_single_comment(user_id, comment_id):
+    comment = Comment.query.get(comment_id)
+    user = User.query.get(user_id)
+    return comment_schema.jsonify(comment), 200
+
+
+#POST comment
+
+@router.route("/users/<int:user_id>/comments", methods=["POST"])
+@secure_route
+def create_comment(user_id):
+    user = User.query.get(user_id)
+    comment_dict = request.json
+    comment = comment_schema.load(comment_dict)
+    comment.user = g.current_user
+    comment.save()
+    return comment_schema.jsonify(comment)
+
+# DELETE comment
+
+@router.route("/users/<int:user_id>/comments/<int:comment_id>", methods=["DELETE"])
+@secure_route
+def delete_comment(user_id, comment_id):
+    comment = Comment.query.get(comment_id)
+    comment.remove()
+    user = User.query.get(user_id)
+    return user_schema.jsonify(user), 202
+
+# UPDATE comment
+
+@router.route("/items/<int:user_id>/comments/<int:comment_id>", methods=["PUT"])
+@secure_route
+def update_comment(user_id, comment_id):
+    comment_dictionary = request.json
+    existing_comment = Comment.query.get(comment_id)
+    try:
+        comment = comment_schema.load(
+            comment_dictionary, instance=existing_comment, partial=True
+        )
+    except ValidationError as e:
+        return {"errors": e.messages, "messages": "Something went wrong"}
+    comment.save()
+    user = User.query.get(user_id)
+    return comment_schema.jsonify(comment), 201

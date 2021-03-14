@@ -19,8 +19,8 @@ import UserSignup from './components/UserSignup.js'
 import UserSignupForm from './components/UserSignupForm.js'
 import UpdateItem  from './components/UpdateItem.js'
 import TestLogo from './components/TestLogo.js'
-import toggleModal from './components/toggleModal.js'
-
+import AvatarPicker from './components/AvatarPicker.js'
+import toggleModal from './components/toggleModal'
 
 const App = () => (
   <BrowserRouter>

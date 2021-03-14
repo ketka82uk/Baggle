@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 
 import UserSignupForm from './UserSignupForm.js'
+import AvatarPicker from './AvatarPicker.js'
 
 
 export default function UserSignup({ history }) {
@@ -52,6 +53,9 @@ export default function UserSignup({ history }) {
     */}
 
     <section className="section">
+      <div className="container">
+        <AvatarPicker />
+      </div>
       <div className="container">
 
         <UserSignupForm

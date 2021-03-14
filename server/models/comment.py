@@ -8,8 +8,13 @@ class Comment(db.Model, BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     
     content = db.Column(db.Text, nullable=False)
+    positive_rating = db.Column(db.Boolean, nullable=True)
+    negative_rating = db.Column(db.Boolean, nullable=True)
 
     
     # ? backref should always be the table name of this current table.
     item_id = db.Column(db.Integer, db.ForeignKey('items.id', ondelete="CASCADE"))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
+
+    
+

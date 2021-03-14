@@ -4,6 +4,7 @@ from models.item import Item
 from models.comment import Comment
 from models.image import Image
 from models.user_follows import user_follows_join
+from models.user_items import user_items_join
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 
@@ -27,15 +28,19 @@ class User(db.Model, BaseModel):
     
     bio = db.Column(db.Text, nullable=True, unique=False)
     location = db.Column(db.Text, nullable=True, unique=False)
-    rating = db.Column(db.Integer, nullable=True, unique=False)
+    positive_rating = db.Column(db.Integer, nullable=True, unique=False)
+    negative_rating = db.Column(db.Integer, nullable=True, unique=False)
     barter_number = db.Column(db.Integer, nullable=True, unique=False)
     successfull_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
     failed_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
     image = db.Column(db.Text, nullable=True)
     password_hash = db.Column(db.String(128), nullable=True)
+
     inventory = db.relationship('Item', backref='owner', cascade='all, delete')
     image_uploads = db.relationship('Image', backref='user', cascade='all, delete')
     comments = db.relationship('Comment', backref='user', cascade='all, delete')
+    wishlist = db.relationship('Item', backref='users', secondary=user_items_join, cascade='all, delete')
+    offered = db.relationship('Item', backref='offered', secondary=user_items_join, cascade='all, delete')
 
     follows = db.relationship(
         'User', 
@@ -43,6 +48,16 @@ class User(db.Model, BaseModel):
         secondary= user_follows_join,
         primaryjoin=id== user_follows_join.c.followed_user,
         secondaryjoin=id== user_follows_join.c.user_id)
+    
+    # ! AVATARS
+
+    avatar_hair = db.Column(db.String(40), nullable=False)
+    avatar_accessories = db.Column(db.String(40), nullable=False)
+    avatar_hair_color = db.Column(db.String(40), nullable=False)
+    avatar_facial_hair = db.Column(db.String(40), nullable=False)
+    avatar_clothes = db.Column(db.String(40), nullable=False)
+    avatar_clothes_color = db.Column(db.String(40), nullable=False)
+    avatar_skin = db.Column(db.String(40), nullable=False)
 
     @hybrid_property
     def password(self):

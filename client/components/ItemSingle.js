@@ -8,11 +8,11 @@ import '../styles/style.scss'
 export default function ItemSingle({ match, history }) {
   const itemid = match.params.itemid
   const [item, updateItem] = useState({})
-  const [userData, updateUserData] = useState([])
-  const [loading, updateLoading] = useState(true)
-  // const [modalState, setModalState] = useState(false)
-
+  const [currentUser, updateCurrentUser] = useState([])
   const [text, setText] = useState('')
+  const [loading, updateLoading] = useState(true)
+  const [wishlisted, updateWishlisted] = useState(0)
+
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -27,9 +27,9 @@ export default function ItemSingle({ match, history }) {
     fetchItem()
   }, [])
   console.log(item)
-  
-  
-  
+
+
+
   async function handleDelete() {
     await axios.delete(`/api/item/${itemid}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -63,7 +63,7 @@ export default function ItemSingle({ match, history }) {
   }
 
 
-  
+
 
 
 
@@ -75,6 +75,56 @@ export default function ItemSingle({ match, history }) {
     history.push('/items')
 
   }
+
+  // ! CATHY
+
+  async function fetchCurrentUser() {
+    const token = localStorage.getItem('token')
+    try {
+      const { data } = await axios.get('/api/current_user', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      updateCurrentUser(data)
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
+  console.log(currentUser['id'])
+  console.log(item.wishlisted)
+
+  useEffect(() => {
+    fetchCurrentUser()
+    updateLoading(false)
+  }, [])
+
+  async function handleAddToWishlist() {
+    const newWishlistedTotal = item.wishlisted + 1
+    updateWishlisted(newWishlistedTotal)
+    console.log(newWishlistedTotal)
+    try {
+      await axios.put(`/api/items/${itemid}`, { wishlisted: `${newWishlistedTotal}` }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+    } catch (err) {
+      console.log(err.response.data)
+    }
+    try {
+      await axios.post(`/api/users/${currentUser['id']}/items/${itemid}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      console.log("added to wishlist")
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
+  if (loading) {
+    return <div>Page is Loading</div>
+  }
+
+  // ! END
 
   if (!item.owner) {
     return null
@@ -101,7 +151,9 @@ export default function ItemSingle({ match, history }) {
       <h2 className="subtitle">{`Description: ${item.description}`}</h2>
       {/* <h2 className="subtitle">{`Image: ${item.owner.image}`}</h2> */}
       <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
-      
+
+
+      <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
 
       {
 
@@ -134,7 +186,7 @@ export default function ItemSingle({ match, history }) {
         </figure>
 
       }
-      
+
       <article className="media">
         <div className="media-content">
           <div className="field">

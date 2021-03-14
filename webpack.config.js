@@ -22,7 +22,8 @@ module.exports = () => {
         { test: /\.js$/, use: 'babel-loader', exclude: /node_modules/ },
         { test: /\.css$/, use: ['style-loader', 'css-loader'] },
         { test: /\.s(a|c)ss$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
-        { test: /\.(png|jpe?g|gif|svg)$/i, use: 'file-loader' }
+        { test: /\.(png|jpe?g|gif)$/i, use: 'file-loader' },
+        { test: /\.svg$/, use: ['@svgr/webpack'] }
       ]
     },
     devServer: {

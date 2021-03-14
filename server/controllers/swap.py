@@ -47,5 +47,12 @@ def swap_item(item1_id, item2_id):
     
     
     
-    
+@router.route('/swap/<int:user_id>/items/<int:item_id>', methods=["POST"])
+def add_item_to_wishlist(user_id, item_id):
+    user = User.query.get(user_id)
+    item = Item.query.get(item_id)
+    user.offered.append(item)
+    user.save()
+    return user_schema.jsonify(user), 200
+
     
