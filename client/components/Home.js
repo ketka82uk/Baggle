@@ -1,13 +1,10 @@
 import axios from 'axios'
-import React, { useState, useEffect, Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+// import { Link } from 'react-router-dom'
 import { debounce } from 'lodash'
 import { getLoggedInUserId } from '../lib/auth'
 
 import Carousel from './Carousel'
-
-console.log('userId:')
-console.log(getLoggedInUserId())
 
 const debouncedSave = debounce((query, updateSearchResults) => {
   axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?country=gb&access_token=pk.eyJ1IjoidXJ1MzgiLCJhIjoiY2ttNnBveXQ2MHFnaDJ4anhtdmhnbHBmeSJ9.OWgGgvZU2cJlbxp-jAJh_g`)
@@ -128,9 +125,12 @@ export default function Home( { history } ) {
             </div>}
       </div>
     </form>
-
+              
 
     <section>
+      <div className='has-text-is-centered'>
+        <div className='is-size-3'>Latest postings</div>
+      </div>
       <div className="container is-max-widescreen">
         {categories.map((category, i) => {
           return <div className='section' key={i}>

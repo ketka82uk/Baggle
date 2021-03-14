@@ -13,7 +13,7 @@ class Item(db.Model, BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     # ? nullable=False means it's required.
     # ? unique=True means its unique.
-   
+
     name = db.Column(db.String(40), nullable=False, unique=True)
     typeof = db.Column(db.String(40), nullable=False)
     category = db.Column(db.String(40), nullable=False)
@@ -21,6 +21,9 @@ class Item(db.Model, BaseModel):
     listed = db.Column(db.Boolean, nullable=False)
     image = db.Column(db.Text, nullable=True)
     wishlisted = db.Column(db.Integer, nullable=True)
+    address = db.Column(db.Text, nullable=True)
+    lat = db.Column(db.Integer, nullable=True)
+    lng = db.Column(db.Integer, nullable=True)
     
     offers = db.relationship(
         'Item', 
