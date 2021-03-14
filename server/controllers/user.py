@@ -95,6 +95,8 @@ def delete_user(user_id):
 def get_user_profile():
     return user_schema.jsonify(g.current_user)
 
+# ! WISHLIST
+
 #ADD a wishlist item to a user
 
 @router.route('/users/<int:user_id>/items/<int:item_id>', methods=["POST"])
@@ -116,16 +118,31 @@ def get_single_comment(user_id, comment_id):
     user = User.query.get(user_id)
     return comment_schema.jsonify(comment), 200
 
+#GET all comments
 
-#POST comment
+@router.route("/comments", methods=["GET"])
+@logger
+def get_all_user_comments():
+    try:
+        comments = Comment.query.all()
+    except ValidationError as e:
+        return { "errors": e.messages, "messages": "Something went wrong" }
+    return comment_schema.jsonify(comments, many=True), 200
 
-@router.route("/users/<int:user_id>/comments", methods=["POST"])
-@secure_route
-def create_comment(user_id):
-    user = User.query.get(user_id)
+#POST comment on another user
+
+@router.route("/users/<int:author_id>/comment_on_user/<int:reviewee_id>", methods=["POST"])
+def review_user(author_id, reviewee_id):
     comment_dict = request.json
+    reviewee = User.query.get(reviewee_id)
+    print(reviewee)
+    author = User.query.get(author_id)
+    print(author)
     comment = comment_schema.load(comment_dict)
-    comment.user = g.current_user
+    comment.user = author
+    print(comment.user)
+    comment.reviewee = reviewee
+    print(comment.reviewee)
     comment.save()
     return comment_schema.jsonify(comment)
 
@@ -155,3 +172,15 @@ def update_comment(user_id, comment_id):
     comment.save()
     user = User.query.get(user_id)
     return comment_schema.jsonify(comment), 201
+
+# ! FOLLOW USER
+
+@router.route('/users/<int:user_id>/users/<int:followed_user_id>', methods=["POST"])
+@logger
+def follow_user(user_id, followed_user_id):
+    user = User.query.get(user_id)
+    followed_user = User.query.get(followed_user_id)
+    user.follows.append(followed_user)
+    followed_user.followers.append(user)
+    user.save()
+    return user_schema.jsonify(user), 200

@@ -17,7 +17,6 @@ export default function UserProfile({ match, history }) {
   const token = localStorage.getItem('token')
 
   const userId = match.params.userId
-  console.log(userId)
 
   async function fetchData() {
     const { data } = await axios.get(`/api/users/${userId}`)
@@ -38,11 +37,21 @@ export default function UserProfile({ match, history }) {
   }
 
   console.log(currentUser['id'])
+  console.log(userId)
+  console.log(profile.image)
 
   useEffect(() => {
     fetchData()
     fetchCurrentUser()
   }, [])
+
+  async function handleFollow() {
+    try {
+      await axios.post(`/api/users/${currentUser['id']}/users/${userId}`)
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
 
   function handleCommentChange(event) {
     updateCommentData({ ...commentData, [event.target.name]: event.target.value })
@@ -64,11 +73,12 @@ export default function UserProfile({ match, history }) {
     }
   }
 
-  console.log(profile.wishlist)
 
   if (loading) {
     return <div>Page is Loading</div>
   }
+
+  console.log(profile.follows)
 
   return <div className="main">
 
@@ -90,6 +100,7 @@ export default function UserProfile({ match, history }) {
 
       <div className="container">
         <div className="avatar-container">
+          <img src={profile.image} />
           <Avatar
             style={{ height: '200px' }}
             avatarStyle='Transparent'
@@ -115,6 +126,7 @@ export default function UserProfile({ match, history }) {
           <p>Bungled Baggles:{profile.failed_trans}</p>
         </div>
       </div>
+      {currentUser['id'] !== userId && <button className="button" onClick={handleFollow}>Follow {profile.username}</button>}
 
     </section>
 
@@ -188,11 +200,75 @@ export default function UserProfile({ match, history }) {
     </section>
 
     {/*
+    // * FOLLOWED USER SECTION
+    */}
+
+    <section className="section">
+      <div className="container">
+        <h1>Bagglers you follow</h1>
+        <div className="columns is-multiline">
+          {profile.follows.map((follow) => {
+            return <div className="column is-one-quarter" key={follow.id}>
+              <Link to={`/users/${follow.id}`}>
+                <div className="card">
+                  <div className="card-image">
+                  <figure className="image is-4by3">
+                    <img src={follow.image} />
+                  </figure>
+                  </div>
+                  <div className="card-content">
+                    <div className="content"></div>
+                    <p>{follow.username}</p>
+                    <p>Located {follow.location}</p>
+                    <p>Rating {follow.rating}</p>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          })}
+        </div>
+      </div>
+    </section>
+
+    {/*
+    // * FOLLOWER SECTION
+    */}
+
+    <section className="section">
+      <div className="container">
+        <h1>Bagglers who follow you</h1>
+        <div className="columns is-multiline">
+          {profile.followers.map((follower) => {
+            return <div className="column is-one-quarter" key={follower.id}>
+              <Link to={`/users/${follower.id}`}>
+                <div className="card">
+                  <div className="card-image">
+                  <figure className="image is-4by3">
+                    <img src={follower.image} />
+                  </figure>
+                  </div>
+                  <div className="card-content">
+                    <div className="content"></div>
+                    <p>{follower.username}</p>
+                    <p>Located {follower.location}</p>
+                    <p>Rating {follower.rating}</p>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          })}
+        </div>
+      </div>
+    </section>
+
+
+    {/*
     // * COMMENTS SECTION
     */}
 
     <section className="section">
-      <h1>Reviews for {profile.username}</h1>
+      <h1>{profile.username}'s Baggle board</h1>
+      <h2>Submit a comment or review</h2>
       {profile.comments.map(comment => {
         return <article key={comment.id} className="media">
           <div className="media-content">

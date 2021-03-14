@@ -43,10 +43,18 @@ class User(db.Model, BaseModel):
 
     follows = db.relationship(
         'User', 
-        backref='followed_user',
+        backref='user',
         secondary= user_follows_join,
         primaryjoin=id== user_follows_join.c.followed_user,
         secondaryjoin=id== user_follows_join.c.user_id)
+
+    followers = db.relationship(
+        'User', 
+        backref='users',
+        secondary= user_follows_join,
+        primaryjoin=id== user_follows_join.c.user_id,
+        secondaryjoin=id== user_follows_join.c.followed_user)
+
     
     # ! AVATARS
 

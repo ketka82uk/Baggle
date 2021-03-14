@@ -6,16 +6,51 @@ import Avatar from 'avataaars'
 export default function UserList() {
 
   const [userData, updateUserData] = useState([])
+  const [currentUser, updateCurrentUser] = useState([])
   const [loading, updateLoading] = useState(true)
+  const [follows, updateFollows] = useState('All')
+  const [followed, updateFollowed] = useState('All')
+  const [followers, updateFollowers] = useState([])
+  const [numberOfUsers, updateNumberOfUsers] = useState(0)
 
   useEffect(() => {
     async function fetchData() {
       const { data } = await axios.get('/api/users')
       updateUserData(data)
       updateLoading(false)
+      updateNumberOfUsers(data.length)
     }
     fetchData()
   }, [])
+
+  useEffect(() => {
+    async function fetchCurrentUser() {
+      const token = localStorage.getItem('token')
+      try {
+        const { data } = await axios.get('/api/current_user', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        updateCurrentUser(data)
+      } catch (err) {
+        console.log(err.response.data)
+      }
+    }
+    fetchCurrentUser()
+  }, [])
+
+
+  function filterFollows() {
+    const filteredData = currentUser.follows
+    updateUserData(filteredData)
+    updateNumberOfUsers(filteredData.length)
+  }
+
+  function filterFollowers() {
+    const filteredData = currentUser.followers
+    updateUserData(filteredData)
+    updateNumberOfUsers(filteredData.length)
+  }
+  
 
   if (loading) {
     return <div>Page is loading</div>
@@ -31,13 +66,27 @@ export default function UserList() {
       <div className="container">
         <h1>Bagglers</h1>
       </div>
+      <div className="todo">
+        <ul>
+          <li>Filter by followed users and users who follow you</li>
+          <li>Sort by users according to distance and rating</li>
+          <li>To find users you follow - map through users and see if they appear in your follow list</li>
+          <li>To find users who follow you - map through users and see if they appear in your follower list</li>
+        </ul>
+      </div>
     </section>
 
     {/*
     // * BODY SECTION
     */}
 
+    <button className="button" onClick={filterFollows}>Bagglers I follow</button>
+    <button className="button" onClick={filterFollowers}>Bagglers who follow me</button>
+
     <section className="section">
+      <div className="container">
+        <p>Your search found {numberOfUsers} Bagglers Baggling!</p>
+      </div>
       <div className="container">
         <div className="columns is-multiline">
           {userData.map((user) => {
@@ -45,28 +94,15 @@ export default function UserList() {
               <Link to={`/users/${user.id}`}>
                 <div className="card">
                   <div className="card-image">
-
-                    <div className="avatar-container">
-                      <Avatar
-                        style={{ height: '200px' }}
-                        avatarStyle='Transparent'
-                        topType={user.avatar_hair}
-                        accessoriesType={user.avatar_accessories}
-                        hatColor={user.avatar_clothes_color}
-                        facialHairType={user.avatar_facial_hair}
-                        clotheType={user.avatar_clothes}
-                        clotheColor={user.avatar_clothes_color}
-                        eyeType='Default'
-                        eyebrowType='Default'
-                        mouthType='Smile'
-                        skinColor={user.avatar_skin}
-                      />
-                    </div>
+                    <img src={user.image} />
 
                   </div>
                   <div className="card-content">
                     <div className="content"></div>
                     <p>{user.username}</p>
+                    <p>{user.rating}</p>
+                    <p>{user.location}</p>
+                    <p>{user.created_at}</p>
                   </div>
                 </div>
               </Link>

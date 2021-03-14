@@ -3,10 +3,8 @@ import axios from 'axios'
 import Avatar from 'avataaars'
 
 
-export default function AvatarPicker() {
-  const [formData, updateFormData] = useState({
-    url: ''
-  })
+export default function AvatarPicker({ formData, updateFormData }) {
+  
   const [hair, updateHair] = useState('NoHair')
   const [accessories, updateAccessories] = useState('Blank')
   const [hairColor, updateHairColor] = useState('Black')
@@ -14,6 +12,7 @@ export default function AvatarPicker() {
   const [clothes, updateClothes] = useState('ShirtCrewNeck')
   const [clothesColor, updateClothesColor] = useState('Gray01')
   const [skin, updateSkin] = useState('Yellow')
+  const [confirmed, updateConfirmed] = useState(false)
 
   const hairOptions = ['NoHair', 'Hat', 'WinterHat2', 'LongHairBigHair']
   const accessoriesOptions = ['Wayfarers', 'Round', 'Kurt', 'Blank']
@@ -24,32 +23,20 @@ export default function AvatarPicker() {
   const skinColorOptions = ['Yellow', 'Light', 'DarkBrown', 'Brown', 'Black']
 
   
-
-  // function UploadedImage() {
-  //   return <div className="image-upload"><img src={imageFormData.url}></img></div>
-  // }
-
-  // function updateImageUrl() {
-  //   updateFormData({
-  //     ...formData,
-  //     image: imageFormData.url
-  //   })
-  // }
-
-  // async function handleImageSubmit(event) {
-  //   event.preventDefault()
-  //   const token = localStorage.getItem('token')
-  //   try {
-  //     const { data } = await axios.post('/api/images', imageFormData, {
-  //       headers: { Authorization: `Bearer ${token}` }
-  //     })
-  //     console.log(data.url)
-  //     updateImageUrl()
-  //     updateConfirmImage(true)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
+  function updateAvatarData() {
+    updateFormData({
+      ...formData,
+      avatar_hair: hair,
+      avatar_accessories: accessories,
+      avatar_hair_color: hairColor,
+      avatar_facial_hair: facialHair,
+      avatar_clothes: clothes,
+      avatar_clothes_color: clothesColor,
+      avatar_skin: skin,
+      image: `https://avataaars.io/?avatarStyle=Transparent&topType=${hair}&accessoriesType=${accessories}&hairColor=${hairColor}&facialHairType=${facialHair}&facialHairColor=${hairColor}&clotheType=${clothes}&hatColor=${clothesColor}&clotheColor=${clothesColor}&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=${skin}`
+    })
+    updateConfirmed(true)
+  }
 
   return <>
     <div>
@@ -109,5 +96,6 @@ export default function AvatarPicker() {
           />
         </div>
     </div>
+    {!confirmed && <button className="button" onClick={updateAvatarData}>Confirm avatar</button>}
   </>
 }
