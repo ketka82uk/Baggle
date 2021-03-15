@@ -39,6 +39,8 @@ export default function UserLogin({ history }) {
       </div>
     </section>
 
+    <div>Update so that you're pushed to profile after login</div>
+
     {/*
     // * BODY SECTION
     */}

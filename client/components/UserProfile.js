@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { isCreator, getLoggedInUserId } from '../lib/auth.js'
-import Avatar from 'avataaars'
+import { buildStyles, CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 
 export default function UserProfile({ match, history }) {
 
   const [profile, updateProfile] = useState([])
   const [loading, updateLoading] = useState(true)
+  const [rating, updateRating] = useState(0)
+  const [rated, updateRated] = useState(false)
   const [currentUser, updateCurrentUser] = useState([])
   const [commentData, updateCommentData] = useState({
     content: '',
@@ -36,14 +39,17 @@ export default function UserProfile({ match, history }) {
     }
   }
 
-  console.log(currentUser['id'])
-  console.log(userId)
-  console.log(profile.image)
-
   useEffect(() => {
     fetchData()
     fetchCurrentUser()
   }, [])
+
+  async function handleDelete() {
+    await axios.delete(`/api/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    history.push('/')
+  }
 
   async function handleFollow() {
     try {
@@ -51,6 +57,16 @@ export default function UserProfile({ match, history }) {
     } catch (err) {
       console.log(err.response.data)
     }
+  }
+
+  async function handlePositive() {
+    console.log(rating)
+    updateRated(true)
+  }
+
+  async function handleNegative() {
+    console.log(rating)
+    updateRated(true)
   }
 
   function handleCommentChange(event) {
@@ -97,26 +113,15 @@ export default function UserProfile({ match, history }) {
     */}
 
     <section className="section">
+      <button className="button" onClick={handleDelete}>Delete profile</button>
+      <button className="button">Update profile</button>
 
       <div className="container">
         <div className="avatar-container">
           <img src={profile.image} />
-          <Avatar
-            style={{ height: '200px' }}
-            avatarStyle='Transparent'
-            topType={profile.avatar_hair}
-            accessoriesType={profile.avatar_accessories}
-            hatColor={profile.avatar_clothes_color}
-            facialHairType={profile.avatar_facial_hair}
-            clotheType={profile.avatar_clothes}
-            clotheColor={profile.avatar_clothes_color}
-            eyeType='Default'
-            eyebrowType='Default'
-            mouthType='Smile'
-            skinColor={profile.avatar_skin}
-          />
         </div>
         <div className="container">
+          <p>This Baggler is rated Good</p>
           <p>Baggler: {profile.username}</p>
           <p>Bio: {profile.bio}</p>
           <p>Location: {profile.location}</p>
@@ -267,6 +272,13 @@ export default function UserProfile({ match, history }) {
     */}
 
     <section className="section">
+      <button className="button" onClick={handlePositive}>Give positive feedback</button>
+      <button className="button" onClick={handleNegative}>Give negative feedback</button>
+      <div>
+    
+  
+    
+  </div>
       <h1>{profile.username}'s Baggle board</h1>
       <h2>Submit a comment or review</h2>
       {profile.comments.map(comment => {
@@ -313,7 +325,39 @@ export default function UserProfile({ match, history }) {
       </article>
     </section>
 
+<div className="container">
+  <div className="contents" style={{ height: '200px' }}>
+   
 
+
+<div style={{ width: "200px" }}>
+<CircularProgressbarWithChildren
+        value={75}
+        strokeWidth={8}
+        styles={buildStyles({
+          pathColor: "#2B9D14",
+          trailColor: "transparent"
+        })}
+      >
+        {/*
+          Width here needs to be (100 - 2 * strokeWidth)% 
+          in order to fit exactly inside the outer progressbar.
+        */}
+        <div style={{ width: "84%" }}>
+          <CircularProgressbar
+            value={70}
+            styles={buildStyles({
+              trailColor: "transparent",
+              pathColor: "#EC2B0C"
+            })}
+          />
+
+        
+        </div>
+      </CircularProgressbarWithChildren>
+      </div>
+</div>
+</div>
 
     <section className="section">
       <h1>Profile Page Contents:</h1>
@@ -328,6 +372,7 @@ export default function UserProfile({ match, history }) {
         <li>Previous items received - logged in user only</li>
       </ul>
     </section>
+
 
   </div>
 

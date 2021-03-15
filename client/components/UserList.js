@@ -6,6 +6,7 @@ import Avatar from 'avataaars'
 export default function UserList() {
 
   const [userData, updateUserData] = useState([])
+  const [search, updateSearch] = useState('')
   const [currentUser, updateCurrentUser] = useState([])
   const [loading, updateLoading] = useState(true)
   const [follows, updateFollows] = useState('All')
@@ -50,6 +51,15 @@ export default function UserList() {
     updateUserData(filteredData)
     updateNumberOfUsers(filteredData.length)
   }
+
+  function handleSearch() {
+    const filteredData = userData.filter(user => {
+      user.username.toLowerCase().includes(search.toLowerCase())
+    })
+    console.log(filteredData)
+    updateUserData(filteredData)
+    updateNumberOfUsers(filteredData.length)
+  }
   
 
   if (loading) {
@@ -82,6 +92,8 @@ export default function UserList() {
 
     <button className="button" onClick={filterFollows}>Bagglers I follow</button>
     <button className="button" onClick={filterFollowers}>Bagglers who follow me</button>
+    <input onChange={(event) => updateSearch(event.target.value)} placeholder="Search..." />
+    <button className="button" onClick={handleSearch}>Search</button>
 
     <section className="section">
       <div className="container">
