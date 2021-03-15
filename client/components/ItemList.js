@@ -49,24 +49,7 @@ export default function ItemList({ match, location }) {
             </Link>
           </div>
         })}
-        {/* <div className="column is-one-third-desktop is-half-tablet is-half-mobile"> */}
-        {/* <Link to={'/project-3/cityscapes/discover/postcity'}> */}
-        {/* <div className="card"> */}
-        {/* <div className="card-content"> */}
-        {/* <div className="media"> */}
-        {/* <div className="media-content"> */}
-        {/* <p className="title is-4">Create a new city</p>
-        </div>
-      </div>
-    </div>
-    <div className="card-image">
-      <figure className="image is-4by3">
-        <img src='https://img.icons8.com/cotton/2x/plus--v3.png' alt='Add city' />
-      </figure>
-    </div> */}
-        {/* </div> */}
-        {/* </Link> */}
-        {/* </div> */}
+        
       </div>
     </div>
   </section>

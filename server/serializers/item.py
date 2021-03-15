@@ -12,4 +12,5 @@ class ItemSchema(ma.SQLAlchemyAutoSchema):
     
     owner = fields.Nested('UserSchema')
     comments = fields.Nested('CommentSchema', many=True)
-
+    
+    

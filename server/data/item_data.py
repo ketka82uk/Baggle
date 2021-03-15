@@ -9,7 +9,9 @@ list_items = [
     image="https://www.nhmshop.co.uk/media/catalog/product/cache/207e23213cf636ccdef205098cf3c8a3/d/i/dino-roar-61232.jpg",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
    ),
 
     Item(
@@ -20,7 +22,9 @@ list_items = [
     image="https://scx2.b-cdn.net/gfx/news/hires/2018/1-driver.jpg",
     listed=True,
     wishlisted=0,
-    user=2
+    user=2,
+    lat=51.55449853938875, 
+    lng=-0.08643826593818041
     ),
 
     Item(
@@ -31,7 +35,9 @@ list_items = [
     image="https://hraf.yale.edu/wp-content/uploads/2014/10/pumpkin-4454745_1280.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
 
     Item(
@@ -42,7 +48,9 @@ list_items = [
     image="https://st4.depositphotos.com/1735158/20981/i/1600/depositphotos_209811788-stock-photo-young-determinated-woman-using-drill.jpg",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
     ),
 
     Item(
@@ -53,7 +61,9 @@ list_items = [
     image="https://images.vinted.net/thumbs/f800/01_01977_5GKZMRReRtzpVXk3MR9qENHH.jpeg?1598693884-9ea8c4ee751f3c602442a7d6088d3ff1ac74345a",
     listed=True,
     wishlisted=0,
-    user=2
+    user=2,
+    lat=51.55449853938875, 
+    lng=-0.08643826593818041
     ),
 
     Item(
@@ -64,7 +74,9 @@ list_items = [
     image="https://images.pexels.com/photos/1540405/pexels-photo-1540405.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
 
     Item(
@@ -75,7 +87,9 @@ list_items = [
     image="https://www.wensumtrust.org.uk/_site/data/files/images/content/wensum%20trust/news/5D16DF4BEF480340E3B5D24E82FA106F.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Belly Dancer",
@@ -85,7 +99,9 @@ list_items = [
     image="https://www.city-academy.com/news/wp-content/uploads/2019/05/DSC02715-768x512.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Fireman",
@@ -95,7 +111,9 @@ list_items = [
     image="https://qph.fs.quoracdn.net/main-qimg-b82577ce1c7c9f854083ef1ec741c2d0",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Magician",
@@ -105,7 +123,9 @@ list_items = [
     image="https://johnholtmagic.co.uk/wp-content/uploads/frequently-asked-questions-magician-e1522821271385.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Operatic Soprano",
@@ -115,7 +135,9 @@ list_items = [
     image="https://static01.nyt.com/images/2012/02/21/arts/connell-obit/connell-obit-articleLarge.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="New-School",
@@ -125,7 +147,9 @@ list_items = [
     image="https://www.innercityelectronic.com/gfx/profiles_5.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Trainers",
@@ -135,7 +159,9 @@ list_items = [
     image="https://www.ashfootwear.co.uk/images/ash-tiger-trainers-grey-suede-blue-nylon-p3201-102398_image.jpg",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
     ),
     Item(
     name="Wooly Jumper",
@@ -145,7 +171,9 @@ list_items = [
     image="https://i.pinimg.com/originals/f2/02/f7/f202f7246cb454707406e2e3932ad865.jpg",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
     ),
     Item(
     name="Old Pair of Jeans",
@@ -155,7 +183,9 @@ list_items = [
     image="https://images.saymedia-content.com/.image/t_share/MTc0MjQzMjM5ODUzODI3NTgw/top-five-things-to-do-with-old-jeans.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Fingerless gloves",
@@ -165,7 +195,9 @@ list_items = [
     image="https://images-na.ssl-images-amazon.com/images/I/71Z2IOONCtL._AC_UX385_.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Nose warmer",
@@ -175,7 +207,9 @@ list_items = [
     image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV-jfD4usBGqhvkZ0eaP6oRQJPUf2JaXg6WA&usqp=CAU",
     listed=True,
     wishlisted=0,
-    user=2
+    user=2,
+    lat=51.55449853938875, 
+    lng=-0.08643826593818041
     ),
 
     Item(
@@ -186,7 +220,9 @@ list_items = [
     image="https://robbreport.com/wp-content/uploads/2020/06/shutterstock_1137889676-1.jpg?w=1000",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
     ),
     Item(
     name="House Cleaning",
@@ -196,7 +232,9 @@ list_items = [
     image="https://media.wired.com/photos/5e71706da87ec30009860e6c/16:9/w_2399,h_1349,c_limit/Gear-Cleaning-107906907.jpg",
     listed=True,
     wishlisted=0,
-    user=2
+    user=2,
+    lat=51.55449853938875, 
+    lng=-0.08643826593818041
     ),
     Item(
     name="Peonies",
@@ -206,7 +244,9 @@ list_items = [
     image="https://www.gardendesign.com/pictures/images/900x705Max/site_3/pink-peony-paeonia-lactiflora-123rf_12230.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Chair",
@@ -216,7 +256,9 @@ list_items = [
     image="https://images.homebase.co.uk/Product-1600x1600/f5efbc19-002c-43e1-a0f5-0cd172efd9fc.jpg",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
     ),
     Item(
     name="Red Paperclip",
@@ -226,7 +268,9 @@ list_items = [
     image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu9jZnSOIzfgV8W0T9GES3jdyg9roIsoG57A&usqp=CAU",
     listed=True,
     wishlisted=0,
-    user=2
+    user=2,
+    lat=51.55449853938875, 
+    lng=-0.08643826593818041
     ),
     Item(
     name="Tissue",
@@ -236,7 +280,9 @@ list_items = [
     image="https://images-na.ssl-images-amazon.com/images/I/71%2Bz7ZqGZPL._AC_SL1500_.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Carpet/floor Layer",
@@ -246,7 +292,9 @@ list_items = [
     image="https://images-na.ssl-images-amazon.com/images/I/71%2Bz7ZqGZPL._AC_SL1500_.jpg",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
     ),
 
 
@@ -258,7 +306,9 @@ list_items = [
     image="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/1-4-1560427395.jpg?crop=0.66650390625xw:1xh;center,top&resize=480:*",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
     ),
     Item(
     name="Cookies",
@@ -268,7 +318,9 @@ list_items = [
     image="https://healthylivingjames.co.uk/wp-content/uploads/2020/02/Chunky-Chocolate-Chip-Cookies-Closeup.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Chef",
@@ -278,7 +330,9 @@ list_items = [
     image="https://lh3.googleusercontent.com/proxy/hV0-X0bV7LurJG_-T_nwSXhvD9VVrq_8co3TnSVg1RHMtjqgSs2aTEWGZCoKlamlLitai4ztHpVBOxan8j0d2UtLvJ8eymcH4VeO7ZEASwIuSxqhyA",
     listed=True,
     wishlisted=0,
-    user=2
+    user=2,
+    lat=51.55449853938875, 
+    lng=-0.08643826593818041
     ),
     Item(
     name="Potato Seeds",
@@ -288,7 +342,9 @@ list_items = [
     image="https://www.cultivariable.com/wp-content/uploads/2016/02/potato-seeds-1024x1024.jpg",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
     ),
     Item(
     name="Orange",
@@ -298,7 +354,9 @@ list_items = [
     image="https://cdn.harvesttotable.com/htt/2007/02/23191015/Orange-Navel1.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
 
     Item(
@@ -309,7 +367,9 @@ list_items = [
     image="https://i0.wp.com/susannahstraughan.com/wp-content/uploads/2013/09/img_0654.jpg",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
     ),
     Item(
     name="Hungary Catapillar",
@@ -319,7 +379,9 @@ list_items = [
     image="https://images-na.ssl-images-amazon.com/images/I/51pi8EFSEFL._SY347_BO1,204,203,200_.jpg",
     listed=True,
     wishlisted=0,
-    user=3
+    user=3,
+    lat=51.276949721886666,
+    lng=0.1869854820616305
     ),
     Item(
     name="Bib",
@@ -329,7 +391,9 @@ list_items = [
     image="https://www.magpiepoundbury.co.uk/wp-content/uploads/2016/02/Cath-Kidston-Bib-Mini-Cowboy_530156.jpg",
     listed=True,
     wishlisted=0,
-    user=2
+    user=2,
+    lat=51.55449853938875, 
+    lng=-0.08643826593818041
     ),
     Item(
     name="Medium size baby cot",
@@ -339,7 +403,9 @@ list_items = [
     image="https://johnlewis.scene7.com/is/image/JohnLewis/234436465",
     listed=True,
     wishlisted=0,
-    user=1
+    user=1,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
     )
 
 ]

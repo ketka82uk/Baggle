@@ -1,13 +1,10 @@
 import axios from 'axios'
-import React, { useState, useEffect, Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+// import { Link } from 'react-router-dom'
 import { debounce } from 'lodash'
 import { getLoggedInUserId } from '../lib/auth'
 
 import Carousel from './Carousel'
-
-console.log('userId:')
-console.log(getLoggedInUserId())
 
 const debouncedSave = debounce((query, updateSearchResults) => {
   axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?country=gb&access_token=pk.eyJ1IjoidXJ1MzgiLCJhIjoiY2ttNnBveXQ2MHFnaDJ4anhtdmhnbHBmeSJ9.OWgGgvZU2cJlbxp-jAJh_g`)
@@ -33,6 +30,7 @@ export default function Home( { history } ) {
   const [query, updateQuery] = useState('')
   const [searchResults, updateSearchResults] = useState([])
   const [selectedLocation, updateselectedLocation] = useState({})
+  const [postings, updatePostings] = useState(false)
 
   // const [categories, updateCategories] = useState([])
 
@@ -77,6 +75,11 @@ export default function Home( { history } ) {
         // get this out on the other side by: props.location.state.searchFilter
       }
     })
+  }
+
+  function swapPostings() {
+    console.log('postings swap')
+    updatePostings(!postings)
   }
 
   return <div className="main">
@@ -128,13 +131,17 @@ export default function Home( { history } ) {
             </div>}
       </div>
     </form>
+              
 
-
-    <section>
+    <section className='column'>
+      <div className='has-text is-centered'>
+        {postings ? <div className='button is-size-5' onClick={() => swapPostings()}>Latest postings</div>
+          : <div className='button is-size-5' onClick={() => swapPostings()}>Closest postings</div>}
+      </div>
       <div className="container is-max-widescreen">
         {categories.map((category, i) => {
           return <div className='section' key={i}>
-            <Carousel items={items} category={category}/>
+            <Carousel items={items} category={category} postings={postings}/>
           </div>
         })}
       </div>

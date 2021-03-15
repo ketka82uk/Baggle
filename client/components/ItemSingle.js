@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { isCreator } from '../lib/auth'
 import { Link } from 'react-router-dom'
+import '../styles/style.scss'
+
 
 export default function ItemSingle({ match, history }) {
   const itemid = match.params.itemid
@@ -10,6 +12,7 @@ export default function ItemSingle({ match, history }) {
   const [text, setText] = useState('')
   const [loading, updateLoading] = useState(true)
   const [wishlisted, updateWishlisted] = useState(0)
+  const [userData, updateUserData] = useState([])
 
   const token = localStorage.getItem('token')
 
@@ -25,35 +28,53 @@ export default function ItemSingle({ match, history }) {
     fetchItem()
   }, [])
   console.log(item)
+
+
+
   async function handleDelete() {
     await axios.delete(`/api/item/${itemid}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     history.push('/items')
   }
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await axios.get('/api/users')
+      updateUserData(data)
+      updateLoading(false)
+    }
+    fetchData()
+  }, [])
+  console.log(userData)
 
-  
-  function handleComment() {
-    
-    axios.post(`/api/items/${itemid}/comment`, { text }, {
+
+
+
+  async function handleComment() {
+
+    const { data } = await axios.post(`/api/items/${itemid}/comments`, { text }, {
       headers: { Authorization: `Bearer ${token}` }
     })
-      .then(resp => {
-       
-        setText('')
-       
-        updateItem(resp.data)
-      })
+
+
+    setText('')
+
+    updateItem(data)
+
   }
 
-  
+
+
+
+
+
   async function handleDeleteComment(commentId) {
-    
+
     await axios.delete(`/api/items/${itemid}/comment/${commentId}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     history.push('/items')
-      
+
   }
 
   // ! CATHY
@@ -83,17 +104,17 @@ export default function ItemSingle({ match, history }) {
     updateWishlisted(newWishlistedTotal)
     console.log(newWishlistedTotal)
     try {
-      await axios.put(`/api/items/${itemid}`, { wishlisted: `${newWishlistedTotal}`}, {
+      await axios.put(`/api/items/${itemid}`, { wishlisted: `${newWishlistedTotal}` }, {
         headers: { Authorization: `Bearer ${token}` }
       })
     } catch (err) {
       console.log(err.response.data)
     }
     try {
-    await axios.post(`/api/users/${currentUser['id']}/items/${itemid}`,
-    {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+      await axios.post(`/api/users/${currentUser['id']}/items/${itemid}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        })
       console.log("added to wishlist")
     } catch (err) {
       console.log(err.response.data)
@@ -129,13 +150,14 @@ export default function ItemSingle({ match, history }) {
       <h2 className="subtitle">{`Type of : ${item.typeof}`}</h2>
       <h2 className="subtitle">{`Category: ${item.category}`}</h2>
       <h2 className="subtitle">{`Description: ${item.description}`}</h2>
-      {/* <h2 className="subtitle">{`Image: ${item.image}`}</h2> */}
+      {/* <h2 className="subtitle">{`Image: ${item.owner.image}`}</h2> */}
       <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
 
-      <button className ="button" onClick={handleAddToWishlist}>Add to wishlist</button>
+
+      <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
 
       {
-        
+
       }
       {item.comments && item.comments.map(comment => {
         return <article key={comment._id} className="media">
@@ -148,7 +170,7 @@ export default function ItemSingle({ match, history }) {
             </div>
           </div>
           {
-            
+
           }
           {isCreator(comment.user.id) && <div className="media-right">
             <button
@@ -160,8 +182,12 @@ export default function ItemSingle({ match, history }) {
       })}
 
       {
-        
+        <figure className="image is-128x128">
+          <img className="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" />
+        </figure>
+
       }
+
       <article className="media">
         <div className="media-content">
           <div className="field">
@@ -185,9 +211,27 @@ export default function ItemSingle({ match, history }) {
                 Submit
               </button>
             </p>
+
           </div>
+
         </div>
+
+
+
       </article>
     </div>
   </div>
 }
+{/* // <div className="modal is-active">
+              //   <div className="modal-background"></div>
+              //   <div className="modal-card">
+              //     <header className="modal-card-head">
+              //       <p className="modal-card-title">Modal title</p>
+              //       <button className="delete" aria-label="close"></button>
+              //     </header>
+              //     <section className="modal-card-body">
+              //         test
+              //     </section>
+              //     <footer className="modal-card-foot">
+              //       <button className="button is-success">Save changes</button>
+              //       <button className="button">Cancel</button> */}

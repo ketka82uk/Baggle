@@ -14,7 +14,6 @@ export default function ItemAdd({ history, match }) {
     description: '',
     image: '',
     listed: ''
-
   })
   const [userId, setUserId] = useState('')
 
@@ -76,6 +75,7 @@ export default function ItemAdd({ history, match }) {
                 handleChange={handleChange}
                 handleSubmit={handleSubmit}
                 formData={formData}
+                updateFormData={updateFormData}
               />
             </div>
           </div>

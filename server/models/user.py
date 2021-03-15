@@ -40,6 +40,7 @@ class User(db.Model, BaseModel):
     image_uploads = db.relationship('Image', backref='user', cascade='all, delete')
     comments = db.relationship('Comment', backref='user', cascade='all, delete')
     wishlist = db.relationship('Item', backref='users', secondary=user_items_join, cascade='all, delete')
+    offered = db.relationship('Item', backref='offered', secondary=user_items_join, cascade='all, delete')
 
     follows = db.relationship(
         'User', 
