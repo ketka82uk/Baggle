@@ -9,7 +9,8 @@ export default function UserProfile({ match, history }) {
 
   const [profile, updateProfile] = useState([])
   const [loading, updateLoading] = useState(true)
-  const [rating, updateRating] = useState(0)
+  const [positiveRating, updatePositiveRating] = useState(0)
+  const [negativeRating, updateNegativeRating] = useState(0)
   const [rated, updateRated] = useState(false)
   const [currentUser, updateCurrentUser] = useState([])
   const [commentData, updateCommentData] = useState({
@@ -24,8 +25,14 @@ export default function UserProfile({ match, history }) {
   async function fetchData() {
     const { data } = await axios.get(`/api/users/${userId}`)
     updateProfile(data)
+    const totalRatings = data.positive_rating + data.negative_rating
+    const positivePercent = data.positive_rating / totalRatings * 100
+    const negativePercent = data.negative_rating / totalRatings * 100
+    updatePositiveRating(positivePercent)
+    updateNegativeRating(negativePercent)
     updateLoading(false)
   }
+
 
   async function fetchCurrentUser() {
     const token = localStorage.getItem('token')
@@ -68,6 +75,12 @@ export default function UserProfile({ match, history }) {
     console.log(rating)
     updateRated(true)
   }
+
+  
+    
+   
+  
+  
 
   function handleCommentChange(event) {
     updateCommentData({ ...commentData, [event.target.name]: event.target.value })
@@ -332,7 +345,7 @@ export default function UserProfile({ match, history }) {
 
 <div style={{ width: "200px" }}>
 <CircularProgressbarWithChildren
-        value={75}
+        value={positiveRating}
         strokeWidth={8}
         styles={buildStyles({
           pathColor: "#2B9D14",
@@ -345,17 +358,19 @@ export default function UserProfile({ match, history }) {
         */}
         <div style={{ width: "84%" }}>
           <CircularProgressbar
-            value={70}
+            value={negativeRating}
             styles={buildStyles({
               trailColor: "transparent",
               pathColor: "#EC2B0C"
             })}
           />
-
-        
         </div>
       </CircularProgressbarWithChildren>
       </div>
+      {positiveRating < 50 && <div>This is a bad Baggler!</div>}
+      {positiveRating >= 50 && positiveRating < 70 && <div>This Baggler is rated Neutral</div>}
+      {positiveRating >= 70 && positiveRating < 95 && <div>This Baggler is rated Good</div>}
+      {positiveRating >= 95 && <div>This is a Top Baggler</div>}
 </div>
 </div>
 
