@@ -407,6 +407,22 @@ list_items = [
     lat=51.51311570013419,
     lng=-0.14777426089884244
     )
+]
 
+list_items2 = [
+    Item(
+    id=304,
+    name="Toilet Seat",
+    typeof="goods",
+    category="home_and_garden",  
+    description="sturdy, doesn't wobble!",
+    image="https://johnlewis.scene7.com/is/image/JohnLewis/234436465",
+    listed=True,
+    wishlisted=0,
+    user=1,
+    offers=list_items,
+    lat=51.51311570013419,
+    lng=-0.14777426089884244
+    )
 ]
 
