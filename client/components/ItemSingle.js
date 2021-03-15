@@ -59,18 +59,18 @@ export default function ItemSingle({ match, history }) {
   // }
 
   // console.log(itemid)
-  useEffect(() => {
-    async function fetch() {
-      try {
-        const { data } = await axios.put('/api/offers/5/20')
-        updateItem(data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
+  // useEffect(() => {
+  //   async function fetch() {
+  //     try {
+  //       const { data } = await axios.put('/api/offers/5/20')
+  //       updateItem(data)
+  //     } catch (err) {
+  //       console.log(err)
+  //     }
+  //   }
 
-    fetch()
-  }, [])
+  //   fetch()
+  // }, [])
 
 
 
