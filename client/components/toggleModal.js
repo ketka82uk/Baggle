@@ -5,34 +5,50 @@ import { Link } from 'react-router-dom'
 import Modal from 'react-modal'
 
 
-export default function funcModal({ match }) {
-
+export default function ToggleModal({ match }) {
+//  const item1 = match.params.currentUser.inventory.item
+//  console.log(item1)
+ const item2 = match.params.item2
   const itemid = match.params.itemid
   const [item, updateItem] = useState([])
-
+ 
   const [loading, updateLoading] = useState(true)
   const [modalState, setModalState] = useState(false)
   const [profile, updateProfile] = useState([])
+  const [offeredItemid, updateOfferedItemid] = useState (0)
 
   const [currentUser, updateCurrentUser] = useState([])
   const token = localStorage.getItem('token')
   const userId = match.params.userId
-  const [modalOpen, setModalOpen] = useState(false)
+  // const [modalOpen, setModalOpen] = useState(false)
 
 
-  useEffect(() => {
-    async function getList() {
-      try {
-        const { data } = await axios.get('/api/items')
-        updateItem(data)
-        updateLoading(false)
-        // console.log(data)
-      } catch (err) {
-        console.log(err)
-      }
+  
+
+
+  function handleChange(event) {
+    const { name, value } = event.target
+    updateOfferedItemid({ ...offeredItemid, [name]: value })
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault()
+    const token = localStorage.getItem('token')
+
+    const newFormData = {
+      ...offeredItemid
     }
-    getList()
-  }, [])
+    try {
+      const { data } = await axios.put(`/api/offers/${offeredItemid}/${itemid}`, newFormData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      console.log(data._id)
+      history.push(`/items/${data.item}`)
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
 
   const toggleModal = () => {
     setModalState(!modalState)
