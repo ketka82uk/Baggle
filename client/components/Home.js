@@ -31,6 +31,9 @@ export default function Home( { history } ) {
   const [searchResults, updateSearchResults] = useState([])
   const [selectedLocation, updateselectedLocation] = useState({})
   const [postings, updatePostings] = useState(false)
+  const [logIn, updateLogin] = useState(false)
+  const [userId, setUserId] = useState('')
+  const [userLocation, setUserLocation] = useState({})
 
   // const [categories, updateCategories] = useState([])
 
@@ -43,6 +46,31 @@ export default function Home( { history } ) {
         updateItems(resp.data)
       })
   }, [])
+
+  useEffect(() => {
+    const handleLogin = () => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        updateLogin(true)
+        setUserId(getLoggedInUserId())
+      } else {
+        updateLogin(false)
+      }
+    }
+    handleLogin()
+  }, [])
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const { data } = await axios.get(`/api/users/${userId}`)
+        setUserLocation( { lat: data.lat, lng: data.lng })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchUser()
+  }, [userId])
 
   useEffect(() => {
     debouncedSave(query, updateSearchResults)
@@ -141,7 +169,7 @@ export default function Home( { history } ) {
       <div className="container is-max-widescreen">
         {categories.map((category, i) => {
           return <div className='section' key={i}>
-            <Carousel items={items} category={category} postings={postings}/>
+            <Carousel items={items} category={category} postings={postings} userLocation={userLocation}/>
           </div>
         })}
       </div>
