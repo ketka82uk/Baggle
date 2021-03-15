@@ -16,7 +16,8 @@ list_users = [
         avatar_clothes="ShirtCrewNeck",
         avatar_clothes_color="Red",
         avatar_skin="Light",
-        image="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairBigHair&accessoriesType=Blank&hairColor=Brown&facialHairType=Blank&facialHairColor=Brown&clotheType=ShirtCrewNeck&hatColor=Red&clotheColor=Red&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Light"
+        image="https://images.pexels.com/photos/268941/pexels-photo-268941.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+        profile_image="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairBigHair&accessoriesType=Blank&hairColor=Brown&facialHairType=Blank&facialHairColor=Brown&clotheType=ShirtCrewNeck&hatColor=Red&clotheColor=Red&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Light"
         ),
     User(
         username="aozzy", 
@@ -33,7 +34,8 @@ list_users = [
         avatar_clothes="ShirtCrewNeck",
         avatar_clothes_color="Blue01",
         avatar_skin="Black",
-        image="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&facialHairColor=Black&clotheType=ShirtCrewNeck&hatColor=Blue01&clotheColor=Blue01&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Black"
+        image="https://images.pexels.com/photos/268941/pexels-photo-268941.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+        profile_image="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&facialHairColor=Black&clotheType=ShirtCrewNeck&hatColor=Blue01&clotheColor=Blue01&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Black"
         ),
     User(
         username="jaryan", 
@@ -50,7 +52,8 @@ list_users = [
         avatar_clothes="ShirtCrewNeck",
         avatar_clothes_color="Black",
         avatar_skin="Light",
-        image="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Brown&facialHairType=BeardLight&facialHairColor=Brown&clotheType=ShirtCrewNeck&hatColor=Black&clotheColor=Black&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Light"
+        image="https://images.pexels.com/photos/268941/pexels-photo-268941.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+        profile_image="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Brown&facialHairType=BeardLight&facialHairColor=Brown&clotheType=ShirtCrewNeck&hatColor=Black&clotheColor=Black&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Light"
         )
 ]
 
