@@ -11,9 +11,16 @@ export default function UserSignup({ history }) {
     username: '',
     email: '',
     password: '',
-    image: '',
     bio: '',
-    location: ''
+    location: '',
+    avatar_hair: '',
+    avatar_accessories: '',
+    avatar_hair_color: '',
+    avatar_facial_hair: '',
+    avatar_clothes: '',
+    avatar_clothes_color: '',
+    avatar_skin: '',
+    image: ''
   })
 
   function handleChange(event) {
@@ -24,7 +31,6 @@ export default function UserSignup({ history }) {
     event.preventDefault()
     const newFormData = {
       ...formData,
-      image: 'https://i.imgur.com/rgwWFRR.png'
     }
     try {
       const { data } = await axios.post('api/signup', newFormData)
@@ -54,7 +60,9 @@ export default function UserSignup({ history }) {
 
     <section className="section">
       <div className="container">
-        <AvatarPicker />
+        <AvatarPicker
+          formData={formData}
+          updateFormData={updateFormData} />
       </div>
       <div className="container">
 

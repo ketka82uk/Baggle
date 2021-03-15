@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { isCreator, getLoggedInUserId } from '../lib/auth.js'
-import Avatar from 'avataaars'
+import { buildStyles, CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 
 export default function UserProfile({ match, history }) {
 
   const [profile, updateProfile] = useState([])
   const [loading, updateLoading] = useState(true)
+  const [positiveRating, updatePositiveRating] = useState(0)
+  const [negativeRating, updateNegativeRating] = useState(0)
+  const [rated, updateRated] = useState(false)
   const [currentUser, updateCurrentUser] = useState([])
   const [commentData, updateCommentData] = useState({
     content: '',
@@ -17,13 +21,18 @@ export default function UserProfile({ match, history }) {
   const token = localStorage.getItem('token')
 
   const userId = match.params.userId
-  console.log(userId)
 
   async function fetchData() {
     const { data } = await axios.get(`/api/users/${userId}`)
     updateProfile(data)
+    const totalRatings = data.positive_rating + data.negative_rating
+    const positivePercent = data.positive_rating / totalRatings * 100
+    const negativePercent = data.negative_rating / totalRatings * 100
+    updatePositiveRating(positivePercent)
+    updateNegativeRating(negativePercent)
     updateLoading(false)
   }
+
 
   async function fetchCurrentUser() {
     const token = localStorage.getItem('token')
@@ -37,12 +46,41 @@ export default function UserProfile({ match, history }) {
     }
   }
 
-  console.log(currentUser['id'])
-
   useEffect(() => {
     fetchData()
     fetchCurrentUser()
   }, [])
+
+  async function handleDelete() {
+    await axios.delete(`/api/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    history.push('/')
+  }
+
+  async function handleFollow() {
+    try {
+      await axios.post(`/api/users/${currentUser['id']}/users/${userId}`)
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
+  async function handlePositive() {
+    console.log(rating)
+    updateRated(true)
+  }
+
+  async function handleNegative() {
+    console.log(rating)
+    updateRated(true)
+  }
+
+  
+    
+   
+  
+  
 
   function handleCommentChange(event) {
     updateCommentData({ ...commentData, [event.target.name]: event.target.value })
@@ -64,11 +102,12 @@ export default function UserProfile({ match, history }) {
     }
   }
 
-  console.log(profile.wishlist)
 
   if (loading) {
     return <div>Page is Loading</div>
   }
+
+  console.log(profile.follows)
 
   return <div className="main">
 
@@ -87,25 +126,15 @@ export default function UserProfile({ match, history }) {
     */}
 
     <section className="section">
+      <button className="button" onClick={handleDelete}>Delete profile</button>
+      <button className="button">Update profile</button>
 
       <div className="container">
         <div className="avatar-container">
-          <Avatar
-            style={{ height: '200px' }}
-            avatarStyle='Transparent'
-            topType={profile.avatar_hair}
-            accessoriesType={profile.avatar_accessories}
-            hatColor={profile.avatar_clothes_color}
-            facialHairType={profile.avatar_facial_hair}
-            clotheType={profile.avatar_clothes}
-            clotheColor={profile.avatar_clothes_color}
-            eyeType='Default'
-            eyebrowType='Default'
-            mouthType='Smile'
-            skinColor={profile.avatar_skin}
-          />
+          <img src={profile.image} />
         </div>
         <div className="container">
+          <p>This Baggler is rated Good</p>
           <p>Baggler: {profile.username}</p>
           <p>Bio: {profile.bio}</p>
           <p>Location: {profile.location}</p>
@@ -115,6 +144,7 @@ export default function UserProfile({ match, history }) {
           <p>Bungled Baggles:{profile.failed_trans}</p>
         </div>
       </div>
+      {currentUser['id'] !== userId && <button className="button" onClick={handleFollow}>Follow {profile.username}</button>}
 
     </section>
 
@@ -188,11 +218,82 @@ export default function UserProfile({ match, history }) {
     </section>
 
     {/*
+    // * FOLLOWED USER SECTION
+    */}
+
+    <section className="section">
+      <div className="container">
+        <h1>Bagglers you follow</h1>
+        <div className="columns is-multiline">
+          {profile.follows.map((follow) => {
+            return <div className="column is-one-quarter" key={follow.id}>
+              <Link to={`/users/${follow.id}`}>
+                <div className="card">
+                  <div className="card-image">
+                  <figure className="image is-4by3">
+                    <img src={follow.image} />
+                  </figure>
+                  </div>
+                  <div className="card-content">
+                    <div className="content"></div>
+                    <p>{follow.username}</p>
+                    <p>Located {follow.location}</p>
+                    <p>Rating {follow.rating}</p>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          })}
+        </div>
+      </div>
+    </section>
+
+    {/*
+    // * FOLLOWER SECTION
+    */}
+
+    <section className="section">
+      <div className="container">
+        <h1>Bagglers who follow you</h1>
+        <div className="columns is-multiline">
+          {profile.followers.map((follower) => {
+            return <div className="column is-one-quarter" key={follower.id}>
+              <Link to={`/users/${follower.id}`}>
+                <div className="card">
+                  <div className="card-image">
+                  <figure className="image is-4by3">
+                    <img src={follower.image} />
+                  </figure>
+                  </div>
+                  <div className="card-content">
+                    <div className="content"></div>
+                    <p>{follower.username}</p>
+                    <p>Located {follower.location}</p>
+                    <p>Rating {follower.rating}</p>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          })}
+        </div>
+      </div>
+    </section>
+
+
+    {/*
     // * COMMENTS SECTION
     */}
 
     <section className="section">
-      <h1>Reviews for {profile.username}</h1>
+      <button className="button" onClick={handlePositive}>Give positive feedback</button>
+      <button className="button" onClick={handleNegative}>Give negative feedback</button>
+      <div>
+    
+  
+    
+  </div>
+      <h1>{profile.username}'s Baggle board</h1>
+      <h2>Submit a comment or review</h2>
       {profile.comments.map(comment => {
         return <article key={comment.id} className="media">
           <div className="media-content">
@@ -237,7 +338,41 @@ export default function UserProfile({ match, history }) {
       </article>
     </section>
 
+<div className="container">
+  <div className="contents" style={{ height: '200px' }}>
+   
 
+
+<div style={{ width: "200px" }}>
+<CircularProgressbarWithChildren
+        value={positiveRating}
+        strokeWidth={8}
+        styles={buildStyles({
+          pathColor: "#2B9D14",
+          trailColor: "transparent"
+        })}
+      >
+        {/*
+          Width here needs to be (100 - 2 * strokeWidth)% 
+          in order to fit exactly inside the outer progressbar.
+        */}
+        <div style={{ width: "84%" }}>
+          <CircularProgressbar
+            value={negativeRating}
+            styles={buildStyles({
+              trailColor: "transparent",
+              pathColor: "#EC2B0C"
+            })}
+          />
+        </div>
+      </CircularProgressbarWithChildren>
+      </div>
+      {positiveRating < 50 && <div>This is a bad Baggler!</div>}
+      {positiveRating >= 50 && positiveRating < 70 && <div>This Baggler is rated Neutral</div>}
+      {positiveRating >= 70 && positiveRating < 95 && <div>This Baggler is rated Good</div>}
+      {positiveRating >= 95 && <div>This is a Top Baggler</div>}
+</div>
+</div>
 
     <section className="section">
       <h1>Profile Page Contents:</h1>
@@ -252,6 +387,7 @@ export default function UserProfile({ match, history }) {
         <li>Previous items received - logged in user only</li>
       </ul>
     </section>
+
 
   </div>
 
