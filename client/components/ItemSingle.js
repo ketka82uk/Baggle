@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import '../styles/style.scss'
 
 
+
 export default function ItemSingle({ match, history }) {
   const itemid = match.params.itemid
   const [item, updateItem] = useState({})
@@ -13,7 +14,9 @@ export default function ItemSingle({ match, history }) {
   const [loading, updateLoading] = useState(true)
   const [wishlisted, updateWishlisted] = useState(0)
   const [userData, updateUserData] = useState([])
-
+  const [modalState, setModalState] = useState(false)
+  const [currentUserInventory, updateCurrentUserInventory] = useState([])
+  const [offeredItemid, updateOfferedItemid] = useState(0)
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -27,7 +30,50 @@ export default function ItemSingle({ match, history }) {
     }
     fetchItem()
   }, [])
-  console.log(item)
+  // console.log(item)
+
+
+
+
+  // function handleChange(event) {
+  //   const { name, value } = event.target
+  //   updateOfferedItemid({ ...offeredItemid, [name]: value })
+  // }
+
+  // async function handleSubmit(event) {
+  //   event.preventDefault()
+  //   const token = localStorage.getItem('token')
+
+  //   const newFormData = {
+  //     ...offeredItemid
+  //   }
+  //   try {
+  //     const { data } = await axios.post('/api/offers/5/4', {
+  //       headers: { Authorization: `Bearer ${token}` }
+  //     })
+  //     console.log(data._id)
+  //     history.push(`/items/${data.item}`)
+  //   } catch (err) {
+  //     console.log(err.response.data)
+  //   }
+  // }
+
+  // console.log(itemid)
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const { data } = await axios.put('/api/offers/5/20')
+        updateItem(data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    fetch()
+  }, [])
+
+
+
 
 
 
@@ -47,6 +93,9 @@ export default function ItemSingle({ match, history }) {
   }, [])
   // console.log(userData)
 
+  const toggleModal = () => {
+    setModalState(!modalState)
+  }
 
 
 
@@ -63,9 +112,22 @@ export default function ItemSingle({ match, history }) {
 
   }
 
+  async function fetchCurrentUserInventory() {
+    const token = localStorage.getItem('token')
+    try {
+      const { data } = await axios.get('/api/current_user', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      updateCurrentUserInventory(data.inventory)
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
 
+  useEffect(() => {
 
-
+    fetchCurrentUserInventory()
+  }, [])
 
 
   async function handleDeleteComment(commentId) {
@@ -91,8 +153,8 @@ export default function ItemSingle({ match, history }) {
     }
   }
 
-  console.log(currentUser['id'])
-  console.log(item.wishlisted)
+
+  // console.log(item.wishlisted)
 
   useEffect(() => {
     fetchCurrentUser()
@@ -119,6 +181,7 @@ export default function ItemSingle({ match, history }) {
     } catch (err) {
       console.log(err.response.data)
     }
+
   }
 
   if (loading) {
@@ -130,8 +193,41 @@ export default function ItemSingle({ match, history }) {
   if (!item.owner) {
     return null
   }
+  console.log(currentUserInventory['index'])
+  console.log(currentUser)
+  // console.log(currentUser['inventory.id'])
 
   return <div className="columns">
+    <div className="Mod">
+      <div className={`modalBackground modalShowing-${modalState}`}>
+        <div className="innerModal">
+          <div className="modalImage">
+            <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
+            />
+          </div>
+          <div className="modalText">
+            <h2> Would you like to make an offer?</h2>
+
+            <form action="">
+              {currentUserInventory.map((item, index) => {
+                return <div key={index} >
+                  <div>
+                    <button className="request" onClick={() => handleSubmit()}>   {item.name}  </button>
+                  </div>
+                </div>
+
+              })}
+            </form>
+            <button className="exit" onClick={() => toggleModal()}>
+              Exit
+          </button>
+
+          </div>
+        </div>
+
+      </div>
+      <button onClick={() => toggleModal()}>Baggle</button>
+    </div>
     <div className="column">
       <figure className='image'>
         <img src={item.image} alt={item.name} />
@@ -144,7 +240,9 @@ export default function ItemSingle({ match, history }) {
         to={`/items/${item.id}`}
         className="button is-secondary"
       >Update Item</Link>}
+
     </div>
+
     <div className="column">
       <h1 className="title">{item.name}</h1>
       <h2 className="subtitle">{`Type of : ${item.typeof}`}</h2>
@@ -187,6 +285,36 @@ export default function ItemSingle({ match, history }) {
         </figure>
 
       }
+      {/* <div className="Mod">
+        <div className={`modalBackground modalShowing-${modalState}`}>
+          <div className="innerModal">
+            <div className="modalImage">
+              <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
+              />
+            </div>
+            <div className="modalText">
+              <h2> Would you like to make an offer?</h2>
+
+              <form action="">
+                {currentUserinventory.map((item, index) => {
+                  return <div key={index}>
+                    <div>
+                      <button>   {item.name}  </button>
+                    </div>
+                  </div>
+
+                })}
+              </form>
+              <button className="exit" onClick={() => toggleModal()}>
+                Exit
+          </button>
+
+            </div>
+          </div>
+
+        </div>
+        <button onClick={() => toggleModal()}>Baggle</button>
+      </div> */}
 
       <article className="media">
         <div className="media-content">
@@ -221,17 +349,45 @@ export default function ItemSingle({ match, history }) {
       </article>
     </div>
   </div>
+
 }
-{/* // <div className="modal is-active">
-              //   <div className="modal-background"></div>
-              //   <div className="modal-card">
-              //     <header className="modal-card-head">
-              //       <p className="modal-card-title">Modal title</p>
-              //       <button className="delete" aria-label="close"></button>
-              //     </header>
-              //     <section className="modal-card-body">
-              //         test
-              //     </section>
-              //     <footer className="modal-card-foot">
-              //       <button className="button is-success">Save changes</button>
-              //       <button className="button">Cancel</button> */}
+
+
+{/* <toggleModal
+         handleChange={handleChange}
+         handleSubmit={handleSubmit}
+         offeredItemid={offeredItemid}
+         /> */}
+
+
+
+      //    <div className="Mod">
+      //    <div className={`modalBackground modalShowing-${modalState}`}>
+      //      <div className="innerModal">
+      //        <div className="modalImage">
+      //          <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
+      //          />
+      //        </div>
+      //        <div className="modalText">
+      //          <h2> Would you like to make an offer?</h2>
+
+      //          <form action="">
+      //            {currentUserInventory.map((item, index) => {
+      //              return <div key={index} >
+      //                <div>
+      //                  <button>   {item.name}  </button>
+      //                </div>
+      //              </div>
+
+      //            })}
+      //          </form>
+      //          <button className="exit" onClick={() => toggleModal()}>
+      //            Exit
+      //        </button>
+
+      //        </div>
+      //      </div>
+
+      //    </div>
+      //    <button onClick={() => toggleModal()}>Baggle</button>
+      //  </div>

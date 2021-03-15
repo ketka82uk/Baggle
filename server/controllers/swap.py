@@ -47,12 +47,16 @@ def swap_item(item1_id, item2_id):
     
     
     
-@router.route('/swap/<int:user_id>/items/<int:item_id>', methods=["PUT"])
-def add_item_to_wishlist(user_id, item_id):
-    user = User.query.get(user_id)
-    item = Item.query.get(item_id)
-    user.offered.append(item)
-    user.save()
-    return user_schema.jsonify(user), 200
+@router.route("/offers/<int:item1_id>/<int:item2_id>", methods=["PUT"])
+def add_item_to_offer(item1_id, item2_id):
+    item1 = Item.query.get(item1_id)
+    item2 = Item.query.get(item2_id)
+    
+    
+    
+    item1.offers.append(item2)
+    item2.save()
+    item1.save()
+    return item_schema.jsonify(item1), 200
 
     

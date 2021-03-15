@@ -3,7 +3,7 @@ export function getLoggedInUserId() {
   const token = localStorage.getItem('token')
   if (!token) return false
 
-  console.log(token)
+  // console.log(token)
   const payloadAsString = atob(token.split('.')[1])
   const payloadAsObject = JSON.parse(payloadAsString)
   return payloadAsObject.sub
