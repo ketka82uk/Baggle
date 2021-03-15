@@ -74,8 +74,6 @@ export default function ItemList({ match, location }) {
     })
   }
 
-  // console.log(filterItems())
-
   function createSearchQuery(event) {
     updateQuery(event.target.value)
     updateSearchLocation(event.target.value)
