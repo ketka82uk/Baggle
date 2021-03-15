@@ -1,3 +1,26 @@
+// ! PROFILE PAGE
+
+.banner-profile-image-container {
+  background-color: white;
+  width: 200px;
+  border-radius: 50px;
+  padding: 10px;
+}
+
+.banner-with-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.banner-text {
+  font-size: 40px;
+  text-shadow: 2px 2px 2px black;
+
+}
+
 
 .avatar-container {
   height: 200px;

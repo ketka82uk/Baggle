@@ -4,12 +4,15 @@ from serializers.user import UserSchema
 from models.item import Item
 from models.comment import Comment
 from serializers.comment import CommentSchema
+from models.review import Review
+from serializers.review import ReviewSchema
 from marshmallow.exceptions import ValidationError
 from decorators.logger import logger
 from decorators.secure_route import secure_route
 
 user_schema = UserSchema()
 comment_schema = CommentSchema()
+review_schema = ReviewSchema()
 
 router = Blueprint(__name__, "users")
 
@@ -110,6 +113,24 @@ def add_item_to_wishlist(user_id, item_id):
     user.save()
     return user_schema.jsonify(user), 200
 
+# ! REVIEWS
+
+@router.route("users/<int:user_id>/review", methods=["POST"])
+@secure_route
+def review_user(user_id):
+    review_dictionary = request.json
+    user = User.query.get(user_id)
+    author = g.current_user
+    try:
+        review = review_schema.load(review_dictionary)
+        review.user = user
+        review.author = author
+    except ValidationError as e:
+        return {"errors": e.messages, "message": "Something went wrong"}
+    review.save()
+    return review_schema.jsonify(review)
+        
+
 # ! COMMENTS
 
 #GET comment
@@ -133,13 +154,11 @@ def get_all_user_comments():
 
 #POST comment on another user
 
-@router.route("/users/<int:author_id>/comment_on_user/<int:reviewee_id>", methods=["POST"])
-def review_user(author_id, reviewee_id):
+@router.route("/users/<int:user1_id>/comments/<int:user2_id>", methods=["POST"])
+def review_user(user1_id, user2_id):
     comment_dict = request.json
-    reviewee = User.query.get(reviewee_id)
-    print(reviewee)
-    author = User.query.get(author_id)
-    print(author)
+    user1 = User.query.get(user1_id)
+    user2 = User.query.get(user2_id)
     comment = comment_schema.load(comment_dict)
     comment.user = author
     print(comment.user)

@@ -22,11 +22,10 @@ class Item(db.Model, BaseModel):
     image = db.Column(db.Text, nullable=True)
     wishlisted = db.Column(db.Integer, nullable=True)
     address = db.Column(db.Text, nullable=True)
-    lat = db.Column(db.Integer, nullable=True)
-    lng = db.Column(db.Integer, nullable=True)
+
     
     offers = db.relationship(
-        'Item', 
+        'Item',
         backref='sale_item',
         secondary= item_offers_join,
         primaryjoin=id== item_offers_join.c.offer_item,

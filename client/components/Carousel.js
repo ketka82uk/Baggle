@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Slider from 'react-slick'
+import { getLoggedInUserId } from '../lib/auth'
 
-export default function Carousel( { items, category, postings } ) {
+export default function Carousel( { items, category, postings, userLocation } ) {
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 5,
-    slidesToScroll: 2
+    slidesToScroll: 1
   }
 
   function sortedItems() {
@@ -19,18 +20,26 @@ export default function Carousel( { items, category, postings } ) {
         return a.created_at - b.created_at
       }).reverse()
     } else if (postings) {
+      let location = {}
       // sort by distance
-      const testLocation = {
-        lat: 51.38025629025321, 
-        lng: -0.09548670685241464
+      if (!userLocation) {
+        location = {
+          lat: 51.38025629025321,
+          lng: -0.09548670685241464
+        }
+      } else {
+        location = {
+          lat: userLocation.lat,
+          lng: userLocation.lng
+        }
       }
+
       return items.sort(function(a, b) {
-        const prevDistance = locationDistance(testLocation , a)
-        const currDistance = locationDistance(testLocation , b)
+        const prevDistance = locationDistance(location , a)
+        const currDistance = locationDistance(location , b)
         return prevDistance - currDistance
       })
     }
-
   }
 
   function vectorDistance(dx, dy) {
@@ -38,8 +47,9 @@ export default function Carousel( { items, category, postings } ) {
   }
 
   function locationDistance(item1, item2) {
-    const dx = item1.lat - item2.lat
-    const dy = item1.lng - item2.lng
+    const owner2 = item2.owner
+    const dx = item1.lat - owner2.lat
+    const dy = item1.lng - owner2.lng
     return vectorDistance(dx, dy)
   }
 
@@ -57,7 +67,7 @@ export default function Carousel( { items, category, postings } ) {
   }
 
   function mapItems(itemArray) {
-    const limitedItems = itemArray.slice(0,7)
+    const limitedItems = itemArray.slice(0,8)
     return limitedItems.map((item, i) => {
       return <div key={i}>
         <div className="card">

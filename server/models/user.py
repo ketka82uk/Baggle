@@ -2,6 +2,7 @@ from app import db, bcrypt
 from models.base import BaseModel
 from models.item import Item
 from models.comment import Comment
+from models.review import Review
 from models.image import Image
 from models.user_follows import user_follows_join
 from models.user_items import user_items_join
@@ -28,35 +29,37 @@ class User(db.Model, BaseModel):
     
     bio = db.Column(db.Text, nullable=True, unique=False)
     location = db.Column(db.Text, nullable=True, unique=False)
-    lat = db.Column(db.Integer, nullable=True)
-    lng = db.Column(db.Integer, nullable=True)
+    lat = db.Column(db.Float, nullable=True)
+    lng = db.Column(db.Float, nullable=True)
     positive_rating = db.Column(db.Integer, nullable=True, unique=False)
     negative_rating = db.Column(db.Integer, nullable=True, unique=False)
     barter_number = db.Column(db.Integer, nullable=True, unique=False)
     successfull_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
     failed_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
     image = db.Column(db.Text, nullable=True)
+    profile_image = db.Column(db.Text, nullable=True)
     password_hash = db.Column(db.String(128), nullable=True)
 
     inventory = db.relationship('Item', backref='owner', cascade='all, delete')
     image_uploads = db.relationship('Image', backref='user', cascade='all, delete')
     comments = db.relationship('Comment', backref='user', cascade='all, delete')
+    reviews = db.relationship('Review', backref='user', cascade='all,delete')
     wishlist = db.relationship('Item', backref='users', secondary=user_items_join, cascade='all, delete')
     offered = db.relationship('Item', backref='offered', secondary=user_items_join, cascade='all, delete')
 
     follows = db.relationship(
         'User', 
-        backref='user',
+        backref='followers',
         secondary= user_follows_join,
         primaryjoin=id== user_follows_join.c.followed_user,
         secondaryjoin=id== user_follows_join.c.user_id)
 
-    followers = db.relationship(
-        'User', 
-        backref='users',
-        secondary= user_follows_join,
-        primaryjoin=id== user_follows_join.c.user_id,
-        secondaryjoin=id== user_follows_join.c.followed_user)
+    # followers = db.relationship(
+    #     'User', 
+    #     backref='users',
+    #     secondary= user_follows_join,
+    #     primaryjoin=id== user_follows_join.c.user_id,
+    #     secondaryjoin=id== user_follows_join.c.followed_user)
 
     
     # ! AVATARS
