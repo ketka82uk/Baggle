@@ -115,20 +115,6 @@ def add_item_to_wishlist(user_id, item_id):
 
 # ! REVIEWS
 
-@router.route("users/<int:user_id>/review", methods=["POST"])
-@secure_route
-def review_user(user_id):
-    review_dictionary = request.json
-    user = User.query.get(user_id)
-    author = g.current_user
-    try:
-        review = review_schema.load(review_dictionary)
-        review.user = user
-        review.author = author
-    except ValidationError as e:
-        return {"errors": e.messages, "message": "Something went wrong"}
-    review.save()
-    return review_schema.jsonify(review)
         
 
 # ! COMMENTS

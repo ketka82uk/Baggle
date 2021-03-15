@@ -13,6 +13,7 @@ export default function UserProfile({ match, history }) {
   const [negativeRating, updateNegativeRating] = useState(0)
   const [rated, updateRated] = useState(false)
   const [currentUser, updateCurrentUser] = useState([])
+  const [currentUserId, setCurrentUserId] = useState(0)
   const [commentData, updateCommentData] = useState({
     content: '',
     positive_rating: false,
@@ -33,22 +34,18 @@ export default function UserProfile({ match, history }) {
     updateLoading(false)
   }
 
-
-  async function fetchCurrentUser() {
-    const token = localStorage.getItem('token')
-    try {
-      const { data } = await axios.get('/api/current_user', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      updateCurrentUser(data)
-    } catch (err) {
-      console.log(err.response.data)
+  useEffect(() => {
+    const handleLogin = () => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        setCurrentUserId(getLoggedInUserId())
+      }
     }
-  }
+    handleLogin()
+  }, [])
 
   useEffect(() => {
     fetchData()
-    fetchCurrentUser()
   }, [])
 
   async function handleDelete() {
@@ -60,7 +57,7 @@ export default function UserProfile({ match, history }) {
 
   async function handleFollow() {
     try {
-      await axios.post(`/api/users/${currentUser['id']}/users/${userId}`)
+      await axios.post(`/api/users/${currentUserId}/users/${userId}`)
     } catch (err) {
       console.log(err.response.data)
     }

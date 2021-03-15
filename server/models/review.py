@@ -12,5 +12,5 @@ class Review(db.Model, BaseModel):
     negative_rating = db.Column(db.Boolean, nullable=True)
 
     author_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
     
