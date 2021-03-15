@@ -17,7 +17,7 @@ export default function funcModal({ match }) {
   const [currentUser, updateCurrentUser] = useState([])
   const token = localStorage.getItem('token')
   const userId = match.params.userId
-  const [modalOpen, setModalOpen] = useState(false)
+  // const [modalOpen, setModalOpen] = useState(false)
 
 
   useEffect(() => {
