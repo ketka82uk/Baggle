@@ -2,7 +2,6 @@ from app import db, bcrypt
 from models.base import BaseModel
 from models.item import Item
 from models.comment import Comment
-from models.review import Review
 from models.image import Image
 from models.user_follows import user_follows_join
 from models.user_items import user_items_join

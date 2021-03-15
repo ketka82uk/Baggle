@@ -6,7 +6,7 @@ import ClipLoader from 'react-spinners/ClipLoader'
 import ItemForm from './ItemForm'
 
 export default function UpdateItem({ history, match }) {
-  const item = match.params.itemId
+  const itemId = match.params.itemId
 
   const [loading, updateLoading] = useState(true)
 
@@ -23,7 +23,7 @@ export default function UpdateItem({ history, match }) {
 
   useEffect(() => {
     async function getFormData() {
-      const { data } = await axios.get(`/api/items/${item}`)
+      const { data } = await axios.get(`/api/items/${itemId}`)
       
       console.log(data)
       updateFormData(data)
@@ -47,7 +47,7 @@ export default function UpdateItem({ history, match }) {
       ...formData
     }
     try {
-      const { data } = await axios.put(`/api/items/${item}`, newFormData, {
+      const { data } = await axios.put(`/api/items/${itemId}`, newFormData, {
         headers: { Authorization: `Bearer ${token}` }
       })
       console.log(data._id)

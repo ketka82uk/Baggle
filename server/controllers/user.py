@@ -4,15 +4,12 @@ from serializers.user import UserSchema
 from models.item import Item
 from models.comment import Comment
 from serializers.comment import CommentSchema
-from models.review import Review
-from serializers.review import ReviewSchema
 from marshmallow.exceptions import ValidationError
 from decorators.logger import logger
 from decorators.secure_route import secure_route
 
 user_schema = UserSchema()
 comment_schema = CommentSchema()
-review_schema = ReviewSchema()
 
 router = Blueprint(__name__, "users")
 
@@ -113,9 +110,6 @@ def add_item_to_wishlist(user_id, item_id):
     user.save()
     return user_schema.jsonify(user), 200
 
-# ! REVIEWS
-
-        
 
 # ! COMMENTS
 
