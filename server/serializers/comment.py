@@ -8,5 +8,5 @@ class CommentSchema(ma.SQLAlchemyAutoSchema):
         model = Comment
         load_instance = True
     
-    user = fields.Nested(UserSchema(only=("username", "id", "image")))
+    user = fields.Nested(UserSchema(only=("username", "id")))
     reviewee = fields.Nested(UserSchema(only=("username", "id")))

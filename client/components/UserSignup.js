@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import UserSignupForm from './UserSignupForm.js'
 import AvatarPicker from './AvatarPicker.js'
+import ImageUpload from './ImageUpload.js'
 
 
 export default function UserSignup({ history }) {

@@ -111,6 +111,53 @@ export default function UserProfile({ match, history }) {
 
   return <div className="main">
 
+    <div className="container">
+
+<section class="hero is-dark is-small">
+ 
+
+  <div class="hero-body banner-with-image" style={{ 
+    backgroundImage: `url(${profile.image})`,
+    backgroundSize: 'cover'}}>
+    <div class="container has-text-centered">
+      <div class="banner-profile-image-container">
+        <img src={profile.profile_image} />
+      </div>
+      <div class="banner-text">
+        <p>{profile.username}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-foot">
+    <nav class="tabs is-boxed is-fullwidth">
+      <div class="container">
+        <ul>
+          <li class="is-active">
+            <a>Profile</a>
+          </li>
+          <li>
+            <a>Up for Baggle</a>
+          </li>
+          <li>
+            <a>Wishlist</a>
+          </li>
+          <li>
+            <a>Followers</a>
+          </li>
+          <li>
+            <a>Following</a>
+          </li>
+          <li><a>Edit Profile</a></li>
+          <li><a>Delete Profile</a></li>
+          <li><a>Follow</a></li>
+          <li><a>Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</section>
+
     {/*
     // * TITLE SECTION
     */}
@@ -131,7 +178,7 @@ export default function UserProfile({ match, history }) {
 
       <div className="container">
         <div className="avatar-container">
-          <img src={profile.image} />
+          <img src={profile.profile_image} />
         </div>
         <div className="container">
           <p>This Baggler is rated Good</p>
@@ -231,7 +278,7 @@ export default function UserProfile({ match, history }) {
                 <div className="card">
                   <div className="card-image">
                   <figure className="image is-4by3">
-                    <img src={follow.image} />
+                    <img src={follow.profile_image} />
                   </figure>
                   </div>
                   <div className="card-content">
@@ -262,7 +309,7 @@ export default function UserProfile({ match, history }) {
                 <div className="card">
                   <div className="card-image">
                   <figure className="image is-4by3">
-                    <img src={follower.image} />
+                    <img src={follower.profile_image} />
                   </figure>
                   </div>
                   <div className="card-content">
@@ -385,10 +432,11 @@ export default function UserProfile({ match, history }) {
         <li>Item watchlist - logged in user only</li>
         <li>Previous items provided - if items were public show all, otherwise logged in user</li>
         <li>Previous items received - logged in user only</li>
+        
       </ul>
     </section>
 
-
+    </div>
   </div>
 
 }

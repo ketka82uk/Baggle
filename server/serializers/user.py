@@ -15,8 +15,8 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     inventory = fields.Nested('ItemSchema', only=('name', 'id', 'image', 'category', 'typeof', 'listed', 'wishlisted', 'comments', 'created_at'), many=True)
     wishlist = fields.Nested('ItemSchema', only=('name', 'id', 'image', 'owner.username', 'owner.location', 'comments', 'created_at', 'wishlisted'), many=True)
     comments = fields.Nested('CommentSchema', many=True)
-    follows = fields.Nested('UserSchema', only=('username', 'id', 'location', 'image'), many=True)
-    followers = fields.Nested('UserSchema', only=('username', 'id', 'location', 'image'), many=True)
+    follows = fields.Nested('UserSchema', only=('username', 'id', 'location', 'image', 'profile_image'), many=True)
+    followers = fields.Nested('UserSchema', only=('username', 'id', 'location', 'image', 'profile_image'), many=True)
     
  
     # offered = fields.Nested('ItemSchema', many=True)
