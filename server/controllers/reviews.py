@@ -25,8 +25,8 @@ def create_review(user_id):
     author = g.current_user
     try:
         review = review_schema.load(review_dictionary)
-        review.user = user
-        review.author = author
+        review.user_id = user.id
+        review.author_id = author.id
     except ValidationError as e:
         return {"errors": e.messages, "message": "Something went wrong"}
     review.save()

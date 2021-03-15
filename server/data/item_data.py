@@ -118,7 +118,7 @@ list_items = [
     user=3
     ),
     Item(
-    name="New-School",
+    name="New-School DJ",
     typeof="services",
     category="entertainment",  
     description="For the cool kids",

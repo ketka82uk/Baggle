@@ -8,5 +8,5 @@ class ReviewSchema(ma.SQLAlchemyAutoSchema):
         model = Review
         load_instance = True
     
-    # user = fields.Nested(UserSchema(only=("username", "id")))
-    # reviewee = fields.Nested(UserSchema(only=("username", "id")))
+    author = fields.Nested(UserSchema(only=("username", "id")))
+    user = fields.Nested(UserSchema(only=("username", "id")))

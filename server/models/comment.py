@@ -9,8 +9,6 @@ class Comment(db.Model, BaseModel):
     
     content = db.Column(db.Text, nullable=False)
 
-    
-    # ? backref should always be the table name of this current table.
     item_id = db.Column(db.Integer, db.ForeignKey('items.id', ondelete="CASCADE"))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
     

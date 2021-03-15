@@ -95,14 +95,14 @@ export default function UserList() {
     </section>
 
     <div className="columns is-full is-centered">
-      <div className="columns is-three-quarters">
+      <div className="column is-one-third">
         {logIn ? <button className="button" onClick={filterFollows}>Bagglers I follow</button> : <div></div>}
         {logIn ? <button className="button" onClick={filterFollowers}>Bagglers who follow me</button> : <div></div>}
         {logIn ? <button className="button" onClick={clearSearch}>Everyone</button> : <div></div>}
         <input
           type="text"
-          placeholder="Start baggling!"
-          className="input is-info is-one-quarter"
+          placeholder="Search for fellow bagglers..."
+          className="input is-info is-half"
           onChange={(event) => handleChange(event)}
           value={searchTerm}
         />
