@@ -29,6 +29,8 @@ class User(db.Model, BaseModel):
     
     bio = db.Column(db.Text, nullable=True, unique=False)
     location = db.Column(db.Text, nullable=True, unique=False)
+    lat = db.Column(db.Integer, nullable=True)
+    lng = db.Column(db.Integer, nullable=True)
     positive_rating = db.Column(db.Integer, nullable=True, unique=False)
     negative_rating = db.Column(db.Integer, nullable=True, unique=False)
     barter_number = db.Column(db.Integer, nullable=True, unique=False)
