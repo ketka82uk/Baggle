@@ -26,7 +26,7 @@ export default function Navbar() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const { data } = await axios.get(`/api/user/${userId}`)
+        const { data } = await axios.get(`/api/users/${userId}`)
         setUserName(data.username)
       } catch (err) {
         console.log(err)
@@ -65,31 +65,29 @@ export default function Navbar() {
       </div>
       <div className="navbar-menu">
         <div className="navbar-end">
-          {!logIn ? <span>
+          {!logIn ? <div className='columns'>
             <div className="navbar-item">
               <Link to={'/signup'}><p>Sign up</p></Link>
             </div>
             <div className="navbar-item">
               <Link to={'/login'}><p>Log in</p></Link>
             </div> 
-          </span> :
-            <span>
+          </div> :
+            <div className='columns'>
               <div className="navbar-item">{userName && <strong>Hi {userName}</strong>}</div>
               <div className="navbar-item">
-                <Link to={'/profile'}><p>My profile</p></Link>
+                <Link to={`/users/${userId}`}><p>My profile</p></Link>
               </div>
-              <span className="navbar-item">
+              <div className="navbar-item">
                 <Link to={'/add_item'}><p>Post A baggle</p></Link>
-              </span>
+              </div>
               <div className="button navbar-item is-primary" onClick={logOut}>
                 <strong>Log Out</strong>
               </div>
-            </span>
+            </div>
           }
         </div>
       </div>
     </div>
-
   </div>
-
 }

@@ -12,7 +12,8 @@ export default function ItemSingle({ match, history }) {
   const [text, setText] = useState('')
   const [loading, updateLoading] = useState(true)
   const [wishlisted, updateWishlisted] = useState(0)
-  const [userData,updateUserData] = useState([])
+  const [userData, updateUserData] = useState([])
+
   const token = localStorage.getItem('token')
 
   useEffect(() => {

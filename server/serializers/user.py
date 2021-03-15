@@ -16,4 +16,4 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     wishlist = fields.Nested('ItemSchema', only=('name', 'id', 'image', 'owner.username', 'owner.location', 'comments', 'created_at', 'wishlisted'), many=True)
     comments = fields.Nested('CommentSchema', many=True)
     # offered = fields.Nested('ItemSchema', many=True)
-    offered = fields.Nested('ItemSchema', only=('name', 'id', 'image', 'owner.username', 'owner.location', 'comments', 'created_at'), many=True)
+    

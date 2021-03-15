@@ -21,6 +21,7 @@ export default function UserLogin({ history }) {
         localStorage.setItem('token', data.token)
       }
       history.push('/')
+      location.reload()
     } catch (err) {
       console.log(err.response.data)
     }

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from 'react'
 import { Link } from 'react-router-dom'
-import Slider from "react-slick";
+import Slider from 'react-slick'
 
-export default function Carousel( { items, category } ) {
+export default function Carousel( { items, category, postings } ) {
 
   const settings = {
     dots: true,
@@ -12,8 +12,39 @@ export default function Carousel( { items, category } ) {
     slidesToScroll: 2
   }
 
+  function sortedItems() {
+    if (!postings) {
+      // sort by time of creation
+      return items.sort(function(a, b) {
+        return a.created_at - b.created_at
+      }).reverse()
+    } else if (postings) {
+      // sort by distance
+      const testLocation = {
+        lat: 51.38025629025321, 
+        lng: -0.09548670685241464
+      }
+      return items.sort(function(a, b) {
+        const prevDistance = locationDistance(testLocation , a)
+        const currDistance = locationDistance(testLocation , b)
+        return prevDistance - currDistance
+      })
+    }
+
+  }
+
+  function vectorDistance(dx, dy) {
+    return Math.sqrt(dx * dx + dy * dy)
+  }
+
+  function locationDistance(item1, item2) {
+    const dx = item1.lat - item2.lat
+    const dy = item1.lng - item2.lng
+    return vectorDistance(dx, dy)
+  }
+
   function filterItems(category) {
-    return items.filter((item) => {
+    return sortedItems().filter((item) => {
       return item.category === category
     })
   }
@@ -26,7 +57,8 @@ export default function Carousel( { items, category } ) {
   }
 
   function mapItems(itemArray) {
-    return itemArray.map((item, i) => {
+    const limitedItems = itemArray.slice(0,7)
+    return limitedItems.map((item, i) => {
       return <div key={i}>
         <div className="card">
           <div className="card-image">
@@ -41,14 +73,14 @@ export default function Carousel( { items, category } ) {
             <Link to={`/items/${item.id}`}>
               <div className="button">Go to</div>
             </Link>
-            <time dateTime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+            <time dateTime="2016-1-1">{item.created_at}</time>
           </div>
         </div>
       </div>
     })
   }
 
-  return <div className="has-text-centered">
+  return <div className="has-text-left">
     <p className="title is-3">{cleanCat()}</p>
     <Slider {...settings}>
       {mapItems(filterItems(category))}

@@ -12,5 +12,5 @@ class ItemSchema(ma.SQLAlchemyAutoSchema):
     
     owner = fields.Nested('UserSchema')
     comments = fields.Nested('CommentSchema', many=True)
-    
-    
+    offers = fields.Nested(lambda: ItemSchema (exclude=('offers', 'sale_item'), only=('id','name','owner'),many=true))
+    sale_item = fields.Nested(lambda: ItemSchema (exclude=('offers', 'sale_item'), only=('id','name','owner'),many=true))
