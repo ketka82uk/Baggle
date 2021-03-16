@@ -78,8 +78,9 @@ def update_item(item_id):
 def remove_item(item_id):
     item = Item.query.get(item_id)
 
-    if item.user != g.current_user:
+    if item.user != g.current_user.id:
         return {"errors": "This is not your Item!"}, 402
+        
     item.remove()
     return {"message": "Item deleted successfully"}, 200
 
