@@ -114,7 +114,20 @@ export default function Home( { history } ) {
   return <div className="main">
 
     <section className="hero is-primary is-medium">
-      <div className="hero-body has-text-centered">
+      <div className="hero-body">
+
+          <div className="columns">
+            <div className="column is-1">Hello</div>
+            <div className="column is-8">
+              <div className="logo-title">Baggle</div>
+            </div>
+            <div className="column is-3">Hello</div>
+
+          </div>
+
+
+
+
         <p className="title">
           Not for sale
         </p>

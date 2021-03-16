@@ -47,8 +47,8 @@ export default function Navbar() {
 
   return <div className="navbar" role="navigation" aria-label="main navigation">
     <div className="navbar-brand">
-      <div className="navbar-item navbar-logo">
-        <Link to={'/'}>Baggle</Link>
+      <div className="navbar-item">
+        <Link to={'/'}><span className="navbar-logo">Baggle</span></Link>
       </div>
       </div>
 
@@ -69,14 +69,12 @@ export default function Navbar() {
 
 
         {logIn ? <div className="navbar-end">
-          <div className="navbar-item"><Avatar alt={userName} src={userImage}/>{userName && <strong>Hi {userName}</strong>}</div>
+        <div className="navbar-item"><Avatar alt={userName} src={userImage} style={{ height: '50px', width: '30px' }}/></div>
+          <div className="navbar-item"><Link to={`/users/${userId}`}>{userName && <strong>{userName}</strong>}</Link></div>
           <div className="navbar-item">
             <div className="buttons">
-              <div className="button">
-                <Link to={`/users/${userId}`}><p>My Profile</p></Link>
-              </div>
-              <div className="button">
-                <Link to={'/add_item'}><p>Post a Baggle</p></Link>
+              <div className="button is-danger">
+                <Link to={'/add_item'}><p className="color-link-button">Post a <span className="baggle">Baggle</span></p></Link>
               </div>
             </div>
           </div>

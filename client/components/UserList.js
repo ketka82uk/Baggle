@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Avatar from 'avataaars'
 import { getLoggedInUserId } from '../lib/auth'
+import Moment from 'react-moment'
 
 export default function UserList() {
 
@@ -45,6 +46,19 @@ export default function UserList() {
     fetchUser()
   })
 
+  function getRating(user) {
+    const totalRatings = user.positive_rating + user.negative_rating
+    const positivePercentage = Math.floor(user.positive_rating / totalRatings * 100)
+    return positivePercentage
+  }
+
+  // function getBaggles(user) {
+  //   const availableBaggles = user.inventory.filter((item) => {
+  //   return item.listed
+  //   })
+  //   return availableBaggles
+  // }
+
   function filterFollows() {
     const filteredData = currentUser.follows
     updateUserData(filteredData)
@@ -80,20 +94,6 @@ export default function UserList() {
 
   return <div className="main">
 
-    <section className="section">
-      <div className="container">
-        <h1>Bagglers</h1>
-      </div>
-      <div className="todo">
-        <ul>
-          <li>Filter by followed users and users who follow you</li>
-          <li>Sort by users according to distance and rating</li>
-          <li>To find users you follow - map through users and see if they appear in your follow list</li>
-          <li>To find users who follow you - map through users and see if they appear in your follower list</li>
-        </ul>
-      </div>
-    </section>
-
     <div className="columns is-full is-centered">
       <div className="column is-one-third">
         {logIn ? <button className="button" onClick={filterFollows}>Bagglers I follow</button> : <div></div>}
@@ -120,15 +120,24 @@ export default function UserList() {
             return <div className="column is-one-fifth" key={user.id}>
               <Link to={`/users/${user.id}`}>
                 <div className="card">
-                  <div className="card-image">
-                    <img src={user.image} />
+                  <div 
+                  className="card-image" 
+                  style={{ 
+                    backgroundImage: `url(${user.image})`,
+                    backgroundSize: 'cover'
+                  }}>
+                    <figure className="image is-4by3">
+                    <img src={user.profile_image} />
+                    </figure>
                   </div>
                   <div className="card-content">
-                    <div className="content"></div>
-                    <p>{user.username}</p>
-                    <p>{user.rating}</p>
+                  
+                    <p className="title">{user.username}</p>
+                    <p className="subtitle">Rating: {getRating(user)}%</p>
                     <p>{user.location}</p>
-                    <p>{user.created_at}</p>
+                    <p>{user.inventory.length}</p>
+                    <p className="subtitle is-6">Baggling since <Moment format ="Do MMM YYYY">{user.created_at}</Moment></p>
+                  
                   </div>
                 </div>
               </Link>

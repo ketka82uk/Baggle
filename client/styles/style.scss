@@ -14,6 +14,12 @@ body {
   font-family: 'Poppins', sans-serif !important;
 }
 
+.baggle {
+  font-family: 'Mouse Memoirs', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: none;
+}
+
 // ! BULMA OVERRIDE
 
 .title {
@@ -24,18 +30,26 @@ body {
   font-family: 'Poppins', sans-serif !important;
 }
 
+.color-link-button {
+  color: white;
+}
+
 // ! NAVBAR
 
 .navbar-logo {
   font-family: 'Mouse Memoirs', sans-serif !important;
-  font-size: 30px;
+  font-size: 40px;
+  color: green;
 }
 
-// ! PROFILE PAGE
+// ! HOME PAGE
+
+.logo-title {
+  
+}
+
 
 // ! PROFILE PAGE
-
-
 
 .row {
   display: flex;

@@ -258,8 +258,9 @@ export default function UserProfile({ match, history }) {
                   <button className="button">See All</button>
                 </div>
                 <AvatarGroup max={10}>
+                
                   {profile.follows.map((follow) => {
-                    return <Avatar
+                    return <Link to={`/users/${follow.id}`}><Avatar
                       alt={follow.username}
                       key={follow.id}
                       src={follow.profile_image}
@@ -268,8 +269,9 @@ export default function UserProfile({ match, history }) {
                         width: '100px',
                         backgroundImage: `url(${follow.image})`,
                         backgroundSize: 'cover'
-                      }} />
+                      }} /></Link>
                   })}
+                  
                 </AvatarGroup>
               </div>
             </article>
