@@ -10,11 +10,9 @@ export default function ItemSingle({ match, history }) {
 
   const itemid = match.params.itemid
   const [title, setTitle] = useState('')
-  const [comment, setComment] = useState('')
   const [item, updateItem] = useState({})
   const [offeredList, updateOfferedList] = useState([])
   const [currentUser, updateCurrentUser] = useState([])
-  const [text, setText] = useState('')
   const [loading, updateLoading] = useState(true)
   const [wishlisted, updateWishlisted] = useState(0)
   const [userData, updateUserData] = useState([])
@@ -22,9 +20,7 @@ export default function ItemSingle({ match, history }) {
   const [currentUserInventory, updateCurrentUserInventory] = useState([])
 
   const token = localStorage.getItem('token')
-  const [commentData, updateCommentData] = useState({
-    content: ''
-  })
+  const [commentData, updateCommentData] = useState('')
   useEffect(() => {
     async function fetchItem() {
       try {
@@ -102,19 +98,24 @@ export default function ItemSingle({ match, history }) {
   //   updateOfferedItemid(e.target.id)
   //   fetch()
   // }
+  function handleChange(event) {
+    updateCommentData(event.target.value)
+  }
+
   async function handleComment(e) {
     e.preventDefault()
-    const newCommentData = {
-      ...commentData
+    const newCommentData = { content: commentData }
+    try {
+      const { data } = await axios.post(`/api/items/${itemid}/comments`, newCommentData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      location.reload()
+    } catch (err) {
+      console.log(err.response.data)
     }
-    const { data } = await axios.post(`/api/items/${itemid}/comments`, { text, newCommentData }, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
 
     setTitle('')
-    setComment('')
-    updateItem(data)
-
+    // updateItem(data)
   }
 
 
@@ -133,19 +134,19 @@ export default function ItemSingle({ match, history }) {
   }
 
   useEffect(() => {
-
     fetchCurrentUserInventory()
   }, [])
 
 
   async function handleDeleteComment(commentId) {
-
-    await axios.delete(`/api/items/${itemid}/comment/${commentId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    // history.push(`/items/${itemid}`)
-    location.reload()
-
+    try {
+      await axios.delete(`/api/items/${itemid}/comments/${commentId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      location.reload()
+    } catch (err) {
+      console.log(err.response.data)
+    }
   }
 
   // ! CATHY
@@ -203,16 +204,15 @@ export default function ItemSingle({ match, history }) {
     return null
   }
   // console.log(currentUserInventory)
-  console.log(currentUser)
   // console.log(currentUser['inventory.id'])
 
 
-  if (item) {
-    console.log('ownerid:')
-    // console.log(item.owner['id'])
-    // const owner = item.owner
-    console.log(item.owner['id'])
-  }
+  // if (item) {
+  //   console.log('ownerid:')
+  //   // console.log(item.owner['id'])
+  //   // const owner = item.owner
+  //   console.log(item.owner['id'])
+  // }
 
   return <div className="columns">
     {<div className="Mod">
@@ -240,7 +240,7 @@ export default function ItemSingle({ match, history }) {
             </form>
             <button className="exit" onClick={() => toggleModal()}>
               Exit
-             </button>
+            </button>
 
           </div>
         </div>
@@ -285,22 +285,16 @@ export default function ItemSingle({ match, history }) {
       })}
       <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
 
-      {
-
-      }
       {item.comments && item.comments.map(comment => {
         return <article key={comment._id} className="media">
           <div className="media-content">
             <div className="content">
               <p className="subtitle">
-                {comment.user.username}
+                {comment.user.username}:
               </p>
-              <p>{comment.text}</p>
+              <p>{comment.content}</p>
             </div>
           </div>
-          {
-
-          }
           {isCreator(comment.user.id) && <div className="media-right">
             <button
               className="delete"
@@ -310,12 +304,11 @@ export default function ItemSingle({ match, history }) {
         </article>
       })}
 
-      {
+      {/* {
         <figure className="image is-128x128">
           <img className="is-rounded" src={currentUser.profile_image} />
         </figure>
-
-      }
+      } */}
 
       <article className="media">
         <div className="media-content">
@@ -324,10 +317,9 @@ export default function ItemSingle({ match, history }) {
               <textarea
                 className="textarea"
                 placeholder="Make a comment.."
-                onChange={event => setText(event.target.value)}
-                value={text}
+                onChange={handleChange}
+                value={commentData.content}
               >
-                {text}
               </textarea>
             </p>
           </div>

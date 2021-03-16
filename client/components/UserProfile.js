@@ -24,10 +24,9 @@ export default function UserProfile({ match, history }) {
   const [currentUserId, setCurrentUserId] = useState(0)
   const [currentUser, updateCurrentUser] = useState({})
   const [editState, updateEditState] = useState(false)
-  const [reviewData, updateCommentData] = useState({
+  const [reviewData, updateReviewData] = useState({
     content: '',
-    positive_rating: false,
-    negative_rating: false
+    rating: 0
   })
   const [formData, updateFormData] = useState({
     username: '',
@@ -45,6 +44,7 @@ export default function UserProfile({ match, history }) {
     const handleLogin = () => {
       if (token) {
         setCurrentUserId(getLoggedInUserId())
+        updateLogin(true)
       }
     }
     handleLogin()
@@ -144,7 +144,12 @@ export default function UserProfile({ match, history }) {
 
   // ! HANDLE SUBMIT AND CHANGE FUNCTIONS
 
-  async function handlePositive() {
+  async function handlePositive(event) {
+    event.preventDefault()
+    updateReviewData({
+      ...reviewData,
+      rating: 2
+    })
     const originalPositive = profile.positive_rating
     const newPositive = originalPositive + 1
     const newProfileData = { positive_rating: newPositive }
@@ -152,13 +157,19 @@ export default function UserProfile({ match, history }) {
       const { data } = await axios.put(`/api/users/${userId}`, newProfileData, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      location.reload()
+      // location.reload()
     } catch (err) {
       console.log(err.response.data)
     }
+    updateRated(true)
   }
 
-  async function handleNegative() {
+  async function handleNegative(event) {
+    event.preventDefault()
+    updateReviewData({
+      ...reviewData,
+      rating: 1
+    })
     const originalNegative = profile.negative_rating
     const newNegative = originalNegative + 1
     const newProfileData = { negative_rating: newNegative }
@@ -166,15 +177,16 @@ export default function UserProfile({ match, history }) {
       const { data } = await axios.put(`/api/users/${userId}`, newProfileData, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      location.reload()
+      // location.reload()
     } catch (err) {
       console.log(err.response.data)
     }
+    updateRated(true)
   }
 
 
   function handleReviewChange(event) {
-    updateCommentData({ ...reviewData, [event.target.name]: event.target.value })
+    updateReviewData({ ...reviewData, [event.target.name]: event.target.value })
   }
 
   async function handleReviewSubmit(event) {
@@ -517,35 +529,39 @@ export default function UserProfile({ match, history }) {
 
 
       <section className="section">
-        <button className="button" onClick={handlePositive}>Give positive feedback</button>
-        <button className="button" onClick={handleNegative}>Give negative feedback</button>
         <div>
 
 
 
         </div>
+
         <h1>{profile.username}'s Baggle board</h1>
         <h2>Submit a comment or review</h2>
         {profile.other_reviews.map(review => {
+          const rating = review.rating
+          // console.log(rating)
           return <article key={review.id} className="media">
             <div className="media-content">
               <div className="content">
                 <p className="title">{review.author.username}</p>
                 <p className="text">{review.created_at}</p>
-                <p className="text">{review.content}</p>
+                <div className="columns">
+                  <p className="text column">{review.content}</p>
+                  {rating === 2 ? <p className="text column is-one-fifth">👍</p> : <p className="text">👎</p>}
+                </div>
               </div>
             </div>
 
             <div className="container">
               {isCreator(review.author.id) && <button
-                className="button"
+                className="button is-danger"
                 onClick={() => handleReviewDelete(review.id)}
               >Delete Review</button>}
             </div>
           </article>
         })}
 
-        <article className="media">
+        {logIn && <article className="media">
           <div className="media-content">
             <div className="field">
               <p className="control">
@@ -558,6 +574,12 @@ export default function UserProfile({ match, history }) {
                 />
               </p>
             </div>
+            <div>
+              {!rated ? <div><button className="button is-success" onClick={(e) => handlePositive(e)}>Give positive feedback</button>
+                <button className="button is-danger" onClick={(e) => handleNegative(e)}>Give negative feedback</button></div> :
+                <div className="button is-warning">We love democracy!</div>
+              }
+            </div>
             <div className="field">
               <p className="control">
                 <button
@@ -565,11 +587,11 @@ export default function UserProfile({ match, history }) {
                   className="button is-info"
                 >
                   Submit
-              </button>
+                </button>
               </p>
             </div>
           </div>
-        </article>
+        </article>}
       </section>
 
 
