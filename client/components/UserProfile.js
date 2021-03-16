@@ -20,7 +20,7 @@ export default function UserProfile({ match, history }) {
   const [logIn, updateLogin] = useState(false)
   const [isProfileOwner, updateIsProfileOwner] = useState(false)
   const [currentUserId, setCurrentUserId] = useState(0)
-  const [commentData, updateCommentData] = useState({
+  const [reviewData, updateCommentData] = useState({
     content: '',
     positive_rating: false,
     negative_rating: false
@@ -30,6 +30,7 @@ export default function UserProfile({ match, history }) {
   // ! GETS USER DATA AND COMPARES LOGGED IN USER TO PROFILE OWNER
 
   const userId = Number(match.params.userId)
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     const handleLogin = () => {
@@ -78,16 +79,6 @@ export default function UserProfile({ match, history }) {
     }
   }
 
-  async function handlePositive() {
-    console.log(rating)
-    updateRated(true)
-  }
-
-  async function handleNegative() {
-    console.log(rating)
-    updateRated(true)
-  }
-
   // ! 9x9 MAPPING FUNCTIONS
 
   function mapGrid(itemArray) {
@@ -116,22 +107,60 @@ export default function UserProfile({ match, history }) {
 
   // ! HANDLE SUBMIT AND CHANGE FUNCTIONS
 
-
-  function handleCommentChange(event) {
-    updateCommentData({ ...commentData, [event.target.name]: event.target.value })
+  async function handlePositive() {
+    const originalPositive = profile.positive_rating
+    const newPositive = originalPositive + 1
+    const newProfileData = { positive_rating: newPositive }
+    try {
+      const { data } = await axios.put(`/api/users/${userId}`, newProfileData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      location.reload()
+    } catch (err) {
+      console.log(err.response.data)
+    }
   }
 
-  async function handleCommentSubmit(event) {
-    event.preventDefault()
-    const newCommentData = {
-      ...commentData
-    }
+  async function handleNegative() {
+    const originalNegative = profile.negative_rating
+    const newNegative = originalNegative + 1
+    const newProfileData = { negative_rating: newNegative }
     try {
-      const { data } = await axios.post(`/api/users/${userId}/comments`, newCommentData,
+      const { data } = await axios.put(`/api/users/${userId}`, newProfileData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      location.reload()
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
+
+  function handleReviewChange(event) {
+    updateCommentData({ ...reviewData, [event.target.name]: event.target.value })
+  }
+
+  async function handleReviewSubmit(event) {
+    event.preventDefault()
+    const newReviewData = { ...reviewData }
+    try {
+      const { data } = await axios.post(`/api/users/${userId}/review`, newReviewData,
         {
           headers: { Authorization: `Bearer ${token}` }
         })
-      history.push(`/users/${userId}`)
+      location.reload()
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
+  async function handleReviewDelete(reviewId) {
+    // event.preventDefault()
+    try {
+      axios.delete(`/api/reviews/${reviewId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      location.reload()
     } catch (err) {
       console.log(err.response.data)
     }
@@ -414,19 +443,21 @@ export default function UserProfile({ match, history }) {
         </div>
         <h1>{profile.username}'s Baggle board</h1>
         <h2>Submit a comment or review</h2>
-        {profile.comments.map(comment => {
-          return <article key={comment.id} className="media">
+        {profile.other_reviews.map(review => {
+          return <article key={review.id} className="media">
             <div className="media-content">
               <div className="content">
-                <p className="title">{comment.user.username}</p>
-                <p className="text">{comment.created_at}</p>
-                <p className="text">{comment.content}</p>
+                <p className="title">{review.author.username}</p>
+                <p className="text">{review.created_at}</p>
+                <p className="text">{review.content}</p>
               </div>
             </div>
 
             <div className="container">
-              <button className="button">Delete Comment</button>
-              <button className="button">Edit Comment</button>
+              {isCreator(review.author.id) && <button 
+                className="button"
+                onClick={() => handleReviewDelete(review.id)}
+              >Delete Review</button>}
             </div>
           </article>
         })}
@@ -438,8 +469,8 @@ export default function UserProfile({ match, history }) {
                 <textarea
                   className="textarea"
                   placeholder="Make a comment..."
-                  onChange={handleCommentChange}
-                  value={commentData.content}
+                  onChange={handleReviewChange}
+                  value={reviewData.content}
                   name={'content'}
                 />
               </p>
@@ -447,7 +478,7 @@ export default function UserProfile({ match, history }) {
             <div className="field">
               <p className="control">
                 <button
-                  onClick={handleCommentSubmit}
+                  onClick={handleReviewSubmit}
                   className="button is-info"
                 >
                   Submit

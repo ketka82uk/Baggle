@@ -19,7 +19,7 @@ const debouncedSave = debounce((searchQuery, updateSearchResults) => {
     })
 }, 500)
 
-export default function UserSignupForm({ formData, handleSubmit, handleChange, updateFormData }) {
+export default function UserSignupForm({ formData, handleSubmit, handleChange, updateFormData, errors, registrationSuccess }) {
 
   // const [creationSuccess, updateCreationSuccess] = useState(false)
   // const [uploadSuccess, updateUploadSuccess] = useState(false)
@@ -54,7 +54,9 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               type="text"
               value={formData.username}
               onChange={handleChange}
-              name={'username'} />
+              name={'username'} 
+            />
+            {errors.username && <small className="has-text-danger">{errors.username.message}</small>}
           </div>
         </div>
 
@@ -67,11 +69,12 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               value={formData.email}
               onChange={handleChange}
               name={'email'} />
+            {errors.email && <small className="has-text-danger">{errors.email.message}</small>}
           </div>
         </div>
 
         <div className='field'>
-          <label className='label'>Nearby address</label>
+          <label className='label'>Locaiton</label>
           <div className='control'>
             <input
               className='input'
@@ -81,6 +84,7 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               onChange={createSearchQuery}
               name={'search'}
             />
+            {errors.location && <small className="has-text-danger">{errors.location.message}</small>}
           </div>
           {searchResults.length > 0 &&
             <div className='dropdown is-active is-fullwidth'>
@@ -106,6 +110,7 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               value={formData.bio}
               onChange={handleChange}
               name={'bio'} />
+            {errors.bio && <small className="has-text-danger">{errors.bio.message}</small>}
           </div>
         </div>
 
@@ -118,9 +123,9 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               value={formData.password}
               onChange={handleChange}
               name={'password'} />
+            {errors.password && <small className="has-text-danger">{errors.password.message}</small>}
           </div>
         </div>
-
         <button className="button">Submit</button>
       </form>
     </div>

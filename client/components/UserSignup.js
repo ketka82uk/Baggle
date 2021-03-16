@@ -26,8 +26,22 @@ export default function UserSignup({ history }) {
     image: ''
   })
 
+  const [errors, updateErrors] = useState({
+    username: '',
+    email: '',
+    password: '',
+    // passwordConfirmation: '',
+    // image: '',
+    bio: '',
+    location: ''
+  })
+
+  const [registrationSuccess, updateRegistrationSuccess] = useState(false)
+
   function handleChange(event) {
-    updateFormData({ ...formData, [event.target.name]: event.target.value })
+    const { name, value } = event.target
+    updateFormData({ ...formData, [name]: value })
+    updateErrors({ ...errors, [name]: '' })
   }
 
   async function handleSubmit(event) {
@@ -36,14 +50,15 @@ export default function UserSignup({ history }) {
       ...formData
     }
     delete newFormData.search
-    console.log(newFormData)
     try {
       const { data } = await axios.post('api/signup', newFormData)
+      updateRegistrationSuccess(true)
       console.log('signing up user')
-      history.push('/login')
+      // history.push('/login')
     } catch (err) {
       console.log('ERROR!')
       console.log(err.response.data)
+      updateErrors(err.response.data.errors)
     }
   }
 
@@ -77,6 +92,8 @@ export default function UserSignup({ history }) {
           handleSubmit={handleSubmit}
           formData={formData}
           updateFormData={updateFormData}
+          errors={errors}
+          registrationSuccess={registrationSuccess}
         />
 
       </div>
