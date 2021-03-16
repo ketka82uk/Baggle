@@ -19,12 +19,14 @@ const debouncedSave = debounce((searchQuery, updateSearchResults) => {
     })
 }, 500)
 
-export default function UserSignupForm({ formData, handleSubmit, handleChange, updateFormData }) {
+export default function UserSignupForm({ formData, handleSubmit, handleChange, updateFormData, errors, registrationSuccess }) {
 
   // const [creationSuccess, updateCreationSuccess] = useState(false)
   // const [uploadSuccess, updateUploadSuccess] = useState(false)
   const [searchQuery, updateSearchQuery] = useState('')
   const [searchResults, updateSearchResults] = useState([])
+
+  // console.log(errors)
 
   useEffect(() => {
     debouncedSave(searchQuery, updateSearchResults)
@@ -54,7 +56,9 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               type="text"
               value={formData.username}
               onChange={handleChange}
-              name={'username'} />
+              name={'username'}
+            />
+            {errors.username && <small className="has-text-danger">Invalid username</small>}
           </div>
         </div>
 
@@ -67,20 +71,23 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               value={formData.email}
               onChange={handleChange}
               name={'email'} />
+            {errors.email && <small className="has-text-danger">Invalid email</small>}
           </div>
         </div>
 
         <div className='field'>
-          <label className='label'>Nearby address</label>
+          <label className='label'>Locaiton</label>
           <div className='control'>
             <input
               className='input'
-              placeholder='Search...'
+              placeholder='location...'
               type='text'
               value={formData.search || ''}
               onChange={createSearchQuery}
-              name={'search'}
+              name={'location'}
+              autoComplete="off"
             />
+            {errors.location && <small className="has-text-danger">Invalid location</small>}
           </div>
           {searchResults.length > 0 &&
             <div className='dropdown is-active is-fullwidth'>
@@ -106,6 +113,7 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               value={formData.bio}
               onChange={handleChange}
               name={'bio'} />
+            {errors.bio && <small className="has-text-danger">Invalid bio</small>}
           </div>
         </div>
 
@@ -118,9 +126,9 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               value={formData.password}
               onChange={handleChange}
               name={'password'} />
+            {errors.password && <small className="has-text-danger">invalid password</small>}
           </div>
         </div>
-
         <button className="button">Submit</button>
       </form>
     </div>

@@ -60,7 +60,7 @@ def update_review(user_id, review_id):
 def delete_review(review_id): 
     review = Review.query.get(review_id)
 
-    if review.user != g.current_user:
-        return { "errors": "THis is not your review!" }, 402
+    # if review.author_id != g.current_user:
+    #     return { "errors": "THis is not your review!" }, 402
     review.remove()
     return { "message": "Review deleted successfully" }, 200

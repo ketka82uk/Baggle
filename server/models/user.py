@@ -31,8 +31,8 @@ class User(db.Model, BaseModel):
     location = db.Column(db.Text, nullable=True, unique=False)
     lat = db.Column(db.Float, nullable=True)
     lng = db.Column(db.Float, nullable=True)
-    positive_rating = db.Column(db.Integer, nullable=True, unique=False)
-    negative_rating = db.Column(db.Integer, nullable=True, unique=False)
+    positive_rating = db.Column(db.Integer, nullable=True, unique=False, default=0)
+    negative_rating = db.Column(db.Integer, nullable=True, unique=False, default=0)
     barter_number = db.Column(db.Integer, nullable=True, unique=False)
     successfull_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
     failed_trans = db.Column(db.Integer, nullable=True, unique=False, default=0)
@@ -46,8 +46,8 @@ class User(db.Model, BaseModel):
     wishlist = db.relationship('Item', backref='users', secondary=user_items_join, cascade='all, delete')
     offered = db.relationship('Item', backref='offered', secondary=user_items_join, cascade='all, delete')
 
-    user_reviews = db.relationship('Review', backref='userReviews', cascade='all, delete', foreign_keys=[Review.author_id])
-    other_reviews = db.relationship('Review', backref='yourReviews', cascade='all, delete', foreign_keys=[Review.user_id])
+    user_reviews = db.relationship('Review', backref='author', cascade='all, delete', foreign_keys=[Review.author_id])
+    other_reviews = db.relationship('Review', backref='user', cascade='all, delete', foreign_keys=[Review.user_id])
     
     follows = db.relationship(
         'User', 
