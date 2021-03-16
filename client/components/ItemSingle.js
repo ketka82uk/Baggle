@@ -7,7 +7,7 @@ import '../styles/style.scss'
 
 
 export default function ItemSingle({ match, history }) {
-  
+
   const itemid = match.params.itemid
   const [title, setTitle] = useState('')
   const [comment, setComment] = useState('')
@@ -20,9 +20,9 @@ export default function ItemSingle({ match, history }) {
   const [userData, updateUserData] = useState([])
   const [modalState, setModalState] = useState(false)
   const [currentUserInventory, updateCurrentUserInventory] = useState([])
-  
+
   const token = localStorage.getItem('token')
-  const [commentData , updateCommentData] = useState({
+  const [commentData, updateCommentData] = useState({
     content: ''
   })
   useEffect(() => {
@@ -94,9 +94,9 @@ export default function ItemSingle({ match, history }) {
   }, [])
   // console.log(userData)
 
-  // const toggleModal = () => {
-  //   setModalState(!modalState)
-  // }
+  const toggleModal = () => {
+    setModalState(!modalState)
+  }
 
   // function updateOffer(e) {
   //   updateOfferedItemid(e.target.id)
@@ -107,7 +107,7 @@ export default function ItemSingle({ match, history }) {
     const newCommentData = {
       ...commentData
     }
-    const { data } = await axios.post(`/api/items/${itemid}/comments`, { text,newCommentData }, {
+    const { data } = await axios.post(`/api/items/${itemid}/comments`, { text, newCommentData }, {
       headers: { Authorization: `Bearer ${token}` }
     })
 
@@ -118,7 +118,7 @@ export default function ItemSingle({ match, history }) {
   }
 
 
-  
+
 
   async function fetchCurrentUserInventory() {
     const token = localStorage.getItem('token')
@@ -215,7 +215,40 @@ export default function ItemSingle({ match, history }) {
   }
 
   return <div className="columns">
+    {<div className="Mod">
+      <div className={`modalBackground modalShowing-${modalState}`}>
+        <div className="innerModal">
+          <div className="modalImage">
+            <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
+            />
+          </div>
+          <div className="modalText">
+            <h2> Would you like to make an offer?</h2>
 
+            <form action="">
+              {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
+                const available = item.listed
+                return <div key={index}>
+                  <div>
+                    {available ? <button className='button is-primary' id={item.id} onClick={(e) => fetch(e.target.id)}>  {item.id} {item.name}  </button> :
+                      <button className='button is-warning'> {item.name} </button>
+                    }
+                  </div>
+                </div>
+
+              })}
+            </form>
+            <button className="exit" onClick={() => toggleModal()}>
+              Exit
+             </button>
+
+          </div>
+        </div>
+
+      </div>
+      <button onClick={() => toggleModal()}>Baggle</button>
+    </div>
+    }
     <div className="column">
       <figure className='image'>
         <img src={item.image} alt={item.name} />
@@ -238,17 +271,7 @@ export default function ItemSingle({ match, history }) {
       <h2 className="subtitle">{`Description: ${item.description}`}</h2>
       {/* <h2 className="subtitle">{`Image: ${item.owner.image}`}</h2> */}
       <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
-      {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
-        const available = item.listed
-        return <div key={item.id} >
-          <div>
-            {available ? <button className='button is-primary' id={item.id} onClick={(e) => fetch(e.target.id)}>  {item.id} {item.name}  </button> :
-              <button className='button is-warning'> {item.name} </button>
-            }
-          </div>
-        </div>
 
-      })}
       {offeredList.map((offeredItem, index) => {
         return <div key={offeredItem.id} >
           <div>
@@ -293,36 +316,6 @@ export default function ItemSingle({ match, history }) {
         </figure>
 
       }
-      {/* <div className="Mod">
-        <div className={`modalBackground modalShowing-${modalState}`}>
-          <div className="innerModal">
-            <div className="modalImage">
-              <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
-              />
-            </div>
-            <div className="modalText">
-              <h2> Would you like to make an offer?</h2>
-
-              <form action="">
-                {currentUserinventory.map((item, index) => {
-                  return <div key={index}>
-                    <div>
-                      <button>   {item.name}  </button>
-                    </div>
-                  </div>
-
-                })}
-              </form>
-              <button className="exit" onClick={() => toggleModal()}>
-                Exit
-          </button>
-
-            </div>
-          </div>
-
-        </div>
-        <button onClick={() => toggleModal()}>Baggle</button>
-      </div> */}
 
       <article className="media">
         <div className="media-content">
@@ -356,7 +349,7 @@ export default function ItemSingle({ match, history }) {
 
       </article>
     </div>
-  </div>
+  </div >
 
 }
 
@@ -365,3 +358,47 @@ export default function ItemSingle({ match, history }) {
 
 
 
+{/* <div className="Mod">
+  <div className={`modalBackground modalShowing-${modalState}`}>
+    <div className="innerModal">
+      <div className="modalImage">
+        <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
+        />
+      </div>
+      <div className="modalText">
+        <h2> Would you like to make an offer?</h2>
+
+        <form action="">
+          {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
+            return <div key={index}>
+              <div>
+                <button>   {item.name}  </button>
+              </div>
+            </div>
+
+          })}
+        </form>
+        <button className="exit" onClick={() => toggleModal()}>
+          Exit
+    </button>
+
+      </div>
+    </div>
+
+  </div>
+  <button onClick={() => toggleModal()}>Baggle</button>
+</div> */}
+
+
+
+// {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
+//   const available = item.listed
+//   return <div key={item.id} >
+//     <div>
+//       {available ? <button className='button is-primary' id={item.id} onClick={(e) => fetch(e.target.id)}>  {item.id} {item.name}  </button> :
+//         <button className='button is-warning'> {item.name} </button>
+//       }
+//     </div>
+//   </div>
+
+// })}
