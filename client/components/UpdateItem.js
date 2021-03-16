@@ -16,7 +16,7 @@ export default function UpdateItem({ history, match }) {
     category: '',
     description: '',
     image: '',
-    listed: ''
+    listed: 'true'
     
   })
   
