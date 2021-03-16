@@ -8,6 +8,8 @@ import Moment from 'react-moment'
 import Icon from '@material-ui/core/Icon'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import Avatar from '@material-ui/core/Avatar'
+import UserUpdateForm from './UserUpdateForm.js'
+import ImageUpload from './ImageUpload.js'
 
 export default function UserProfile({ match, history }) {
 
@@ -20,20 +22,27 @@ export default function UserProfile({ match, history }) {
   const [logIn, updateLogin] = useState(false)
   const [isProfileOwner, updateIsProfileOwner] = useState(false)
   const [currentUserId, setCurrentUserId] = useState(0)
+  const [currentUser, updateCurrentUser] = useState({})
+  const [editState, updateEditState] = useState(false)
   const [commentData, updateCommentData] = useState({
     content: '',
     positive_rating: false,
     negative_rating: false
+  })
+  const [formData, updateFormData] = useState({
+    username: '',
+    bio: '',
+    image: '',
   })
 
 
   // ! GETS USER DATA AND COMPARES LOGGED IN USER TO PROFILE OWNER
 
   const userId = Number(match.params.userId)
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     const handleLogin = () => {
-      const token = localStorage.getItem('token')
       if (token) {
         setCurrentUserId(getLoggedInUserId())
       }
@@ -52,6 +61,7 @@ export default function UserProfile({ match, history }) {
         const negativePercent = data.negative_rating / totalRatings * 100
         updatePositiveRating(positivePercent)
         updateNegativeRating(negativePercent)
+        updateFormData({ username : data.username, bio : data.bio })
         updateLoading(false)
       } catch (err) {
         console.log(err)
@@ -59,6 +69,34 @@ export default function UserProfile({ match, history }) {
     }
     fetchData()
   }, [])
+
+  useEffect(() => {
+  async function fetchCurrentUser() {
+    const token = localStorage.getItem('token')
+    try {
+      const { data } = await axios.get('/api/current_user', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      updateCurrentUser(data)
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+  fetchCurrentUser()
+}, [])
+
+
+
+
+  //! FILTER FUNCTIONS
+
+  function profileFollowsYou() {
+    if(profile.follows.includes(currentUser)) {
+      console.log('They follow me')
+    } else {'They don\'t follow me'}
+  }
+
+  
 
 
   //! DELETE AND EDIT FUNCTIONS
@@ -137,6 +175,32 @@ export default function UserProfile({ match, history }) {
     }
   }
 
+  function handleEditChange(event) {
+    updateFormData({ ...formData, [event.target.name]: event.target.value })
+  }
+
+  async function handleEditSubmit(event) {
+    event.preventDefault()
+    const newFormData = {
+      ...formData
+    }
+    try {
+      await axios.put(`/api/users/${currentUserId}`, newFormData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      console.log('editing data user')
+      updateEditState(false)
+      location.reload()
+    } catch (err) {
+      console.log('ERROR!')
+      console.log(err)
+    }
+  }
+
+  function toggleEditState() {
+    updateEditState(true)
+  }
+
 
   if (loading) {
     return <div>Page is Loading</div>
@@ -153,7 +217,7 @@ export default function UserProfile({ match, history }) {
     // * TITLE SECTION
     */}
 
-      <section className="hero is-dark is-small">
+      <section className="hero is-small">
         <div className="hero-body banner-with-image" style={{
           backgroundImage: `url(${profile.image})`,
           backgroundSize: 'cover'
@@ -177,7 +241,7 @@ export default function UserProfile({ match, history }) {
             <div className="container my-2">
               <ul>
                 <li>
-                  <a>Profile</a>
+                  <a onClick={profileFollowsYou()}>Profile</a>
                 </li>
                 <li>
                   <a>Up for Baggle</a>
@@ -221,29 +285,49 @@ export default function UserProfile({ match, history }) {
                 <div className="grid-header">
                   <h2 className="title">About</h2>
                   {!isCreator(userId) && <button className="button">Contact</button>}
-                  {isCreator(userId) && <button className="button">Edit profile  <Icon>create</Icon></button>}
+                  {isCreator(userId) && <button className="button" onClick={toggleEditState}>Edit profile  <Icon>create</Icon></button>}
                 </div>
 
-                <div className="tags has-addons mb-0">
+                {/* {!isCreator(userId) && <div className="tags has-addons mb-0">
                   <span className="tag">{profile.username}</span>
                   <span className="tag is-primary">follows you</span>
-                </div>
+                </div>}
 
                 <div className="tags has-addons mb-0">
                   <span className="tag">{profile.username}</span>
                   <span className="tag is-danger">doesn't follow you</span>
-                </div>
+                </div> */}
 
-
+                {editState === false ?
                 <div className="contents">
+                  <div className="container mb-4">
                   <label>Username</label>
                   <p>{profile.username}</p>
+                  </div>
+                  <div className="container mb-4">
                   <label>Location</label>
                   <p>{profile.location}</p>
+                  </div>
+                  <div className="container mb-4">
                   <label>Bio</label>
                   <p>{profile.bio}</p>
-                  {profile.created_at && <p>Baggling since <Moment format="Do MMM YYYY">{profile.created_at}</Moment></p>}
-                </div>
+                  </div>
+                  
+                  {profile.created_at && <p>Baggling since <span className="red-text"><Moment format="Do MMM YYYY">{profile.created_at}</Moment></span></p>}
+                </div> :
+                <div>
+                <UserUpdateForm
+                  handleEditSubmit={handleEditSubmit}
+                  handleEditChange={handleEditChange}
+                  formData={formData}
+                />
+                <ImageUpload
+                  formData={formData}
+                  updateFormData={updateFormData}  
+                /> 
+                </div> 
+              }
+              
               </div>
             </article>
 
@@ -298,7 +382,7 @@ export default function UserProfile({ match, history }) {
                       value={positiveRating}
                       strokeWidth={8}
                       styles={buildStyles({
-                        pathColor: "#00d1b2",
+                        pathColor: "green",
                         trailColor: "transparent"
                       })}
                     >
@@ -307,15 +391,15 @@ export default function UserProfile({ match, history }) {
                           value={negativeRating}
                           styles={buildStyles({
                             trailColor: "transparent",
-                            pathColor: "#ff3860"
+                            pathColor: "#B24231"
                           })}
                         />
                       </div>
                     </CircularProgressbarWithChildren>
                   </div>
                   <div className="rating-container">
-                    <div className="pos-rating"><p>{positiveRating}% 👍<Icon>thumbUp</Icon></p></div>
-                    <div className="neg-rating"><p>{negativeRating}% 👎</p></div>
+                    <div className="pos-rating"><p>{Math.floor(positiveRating)}% 👍<Icon>thumbUp</Icon></p></div>
+                    <div className="neg-rating"><p>{Math.floor(negativeRating)}% 👎</p></div>
                   </div>
                 </div>
               </div>

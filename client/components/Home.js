@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 // import { Link } from 'react-router-dom'
 import { debounce } from 'lodash'
 import { getLoggedInUserId } from '../lib/auth'
-
+import { Link } from 'react-router-dom'
 import Carousel from './Carousel'
 
 const debouncedSave = debounce((query, updateSearchResults) => {
@@ -23,7 +23,7 @@ const debouncedSave = debounce((query, updateSearchResults) => {
     })
 }, 500)
 
-export default function Home( { history } ) {
+export default function Home({ history }) {
   const [items, updateItems] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [searchLocation, updateSearchLocation] = useState('')
@@ -64,7 +64,7 @@ export default function Home( { history } ) {
     async function fetchUser() {
       try {
         const { data } = await axios.get(`/api/users/${userId}`)
-        setUserLocation( { lat: data.lat, long: data.lng })
+        setUserLocation({ lat: data.lat, long: data.lng })
       } catch (err) {
         console.log(err)
       }
@@ -113,68 +113,95 @@ export default function Home( { history } ) {
 
   return <div className="main">
 
-    <section className="hero is-primary is-medium">
+    <section className="hero hero-background">
       <div className="hero-body">
 
-          <div className="columns">
-            <div className="column is-1">Hello</div>
-            <div className="column is-8">
-              <div className="logo-title">Baggle</div>
+
+
+        <div className="columns">
+          <div className="column is-1"></div>
+          <div className="column is-11">
+
+            <div className="title-container">
+
+              <div className="columns">
+
+                <div className="column is-5">
+                  <div className="container">
+                    <p className="logo-title">Baggle</p>
+                    <p
+                      className="subtitle is-4"
+                      style={{ color: 'whitesmoke' }}>Barter, Bargain, Haggle, <span className="title" style={{ color: 'whitesmoke' }}>BAGGLE!</span></p>
+                  </div>
+                  <div className="container mt-4">
+                  <Link to={'/signup'}><button className="hero-button">Sign up</button></Link>
+                  </div>
+
+                </div>
+
+                <div className="column is-7"><button className="button">IMAGE GOES HERE</button>
+                </div>
+
+              </div>
             </div>
-            <div className="column is-3">Hello</div>
 
+            <div className="search-container">
+              <form onSubmit={handleSubmit}>
+                <div className="tile is-8 search-container">
+
+
+
+                  <div className="tile box center-row">
+                    <div className="left-search">
+                      <input
+                        type="text"
+                        placeholder="What?"
+                        className="input is-info"
+                        onChange={(event) => handleChange(event)}
+                        value={searchTerm}
+                        className="input-large"
+                      />
+                    </div>
+                    <div className="right-search">
+                      <input
+                        className="input-large pl-4"
+                        id="input-width"
+                        type="text"
+                        placeholder="Where?"
+                        onChange={createSearchQuery}
+                        value={searchLocation}
+                        autoComplete="off"
+                      />
+                    </div>
+                  </div>
+
+                  <button className="submit-hero">Submit</button>
+
+
+                  {searchResults.length > 0 &&
+                    <div className='dropdown is-active is-fullwidth'>
+                      <div className='dropdown-menu'>
+                        <div className='dropdown-content'>
+                          {searchResults.map((place) => {
+                            return <div key={place.id}>
+                              <div className='dropdown-item' id='cardHover' onClick={() => handlePlaceSelect(place)}>{place.placeName}</div>
+                              <hr className="dropdown-divider"></hr></div>
+                          })}
+                        </div>
+                      </div>
+                    </div>}
+
+
+                </div>
+              </form>
+            </div>
           </div>
-
-
-
-
-        <p className="title">
-          Not for sale
-        </p>
-        <p className="subtitle">
-          Start bartering...
-        </p>
+        </div>
       </div>
     </section>
 
-    <form onSubmit={handleSubmit}>
-      <div className="columns is-half is-centered">
-        <div className="columns is-half">
-          <input
-            type="text"
-            placeholder="Start baggling!"
-            className="input is-info is-9"
-            onChange={(event) => handleChange(event)}
-            value={searchTerm}
-          />
-          <input
-            className="input is-info"
-            id="input-width"
-            type="text"
-            placeholder="Search for an item near you!"
-            onChange={createSearchQuery}
-            value={searchLocation}
-            autoComplete="off"
-          />
-          <div className="control">
-            <button className="button is-primary">Submit</button>
-          </div>
-        </div>
-        {searchResults.length > 0 &&
-            <div className='dropdown is-active is-fullwidth'>
-              <div className='dropdown-menu'>
-                <div className='dropdown-content'>
-                  {searchResults.map((place) => {
-                    return <div key={place.id}>
-                      <div className='dropdown-item' id='cardHover' onClick={() => handlePlaceSelect(place)}>{place.placeName}</div>
-                      <hr className="dropdown-divider"></hr></div>
-                  })}
-                </div>
-              </div>
-            </div>}
-      </div>
-    </form>
-              
+
+
 
     <section className='column'>
       <div className='has-text is-centered'>
@@ -184,7 +211,7 @@ export default function Home( { history } ) {
       <div className="container is-max-widescreen">
         {categories.map((category, i) => {
           return <div className='section' key={i}>
-            <Carousel items={items} category={category} postings={postings} userLocation={userLocation}/>
+            <Carousel items={items} category={category} postings={postings} userLocation={userLocation} />
           </div>
         })}
       </div>

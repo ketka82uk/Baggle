@@ -56,13 +56,13 @@ export default function Navbar() {
 
         <div className="navbar-start">
           <div className="navbar-item">
-            <Link to={'/users'}><p>Bagglers</p></Link>
+            <Link to={'/users'}><p className="navbar-bold">Bagglers</p></Link>
           </div>
           <div className="navbar-item">
-            <Link to={'/items'}><p>Baggles</p></Link>
+            <Link to={'/items'}><p className="navbar-bold">Baggles</p></Link>
           </div>
           <div className="navbar-item">
-            <Link to={'/about'}><p>About Baggle</p></Link>
+            <Link to={'/about'}><p className="navbar-bold">About Baggle</p></Link>
           </div>
         </div>
 
@@ -70,11 +70,12 @@ export default function Navbar() {
 
         {logIn ? <div className="navbar-end">
         <div className="navbar-item"><Avatar alt={userName} src={userImage} style={{ height: '50px', width: '30px' }}/></div>
-          <div className="navbar-item"><Link to={`/users/${userId}`}>{userName && <strong>{userName}</strong>}</Link></div>
+          <div className="navbar-item"><Link to={`/users/${userId}`} className="navbar-bold">{userName && <strong>{userName}</strong>}</Link></div>
           <div className="navbar-item">
             <div className="buttons">
-              <div className="button is-danger">
-                <Link to={'/add_item'}><p className="color-link-button">Post a <span className="baggle">Baggle</span></p></Link>
+              <div className="button" onClick={logOut}>Log out</div>
+              <div className="color-link-button button">
+                <Link to={'/add_item'}><p style={{ color: 'white'}}>Post a <span className="baggle">Baggle</span></p></Link>
               </div>
             </div>
           </div>
@@ -88,10 +89,10 @@ export default function Navbar() {
             <div className="navbar-item">
               <div className="buttons">
                 <div className="button">
-                  <Link to={'/signup'}><p>Sign up</p></Link>
+                  <Link to={'/signup'}><p className="navbar-bold">Sign up</p></Link>
                 </div>
                 <div className="button">
-                  <Link to={'/login'}><p>Log in</p></Link>
+                  <Link to={'/login'}><p className="navbar-bold">Log in</p></Link>
                 </div>
               </div>
             </div>
