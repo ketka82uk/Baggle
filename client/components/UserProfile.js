@@ -28,7 +28,7 @@ export default function UserProfile({ match, history }) {
     content: '',
     positive_rating: false,
     negative_rating: false
-  }),
+  })
   const [formData, updateFormData] = useState({
     username: '',
     bio: '',
