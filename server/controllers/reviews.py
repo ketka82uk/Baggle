@@ -17,7 +17,14 @@ review_schema = ReviewSchema()
 router = Blueprint(__name__, "reviews")
 
 
-@router.route("users/<int:user_id>/review", methods=["POST"])
+@router.route("/reviews", methods=["GET"])
+@secure_route
+def get_all_reviews():
+    reviews = Review.query.all()
+    return review_schema.jsonify(review, many=True), 200
+
+
+@router.route("/users/<int:user_id>/review", methods=["POST"])
 @secure_route
 def create_review(user_id):
     review_dictionary = request.json
@@ -31,3 +38,29 @@ def create_review(user_id):
         return {"errors": e.messages, "message": "Something went wrong"}
     review.save()
     return review_schema.jsonify(review)
+
+
+@router.route("/reviews/<int:review_id>". methods=["PUT"])
+@secure_route
+def update_review(user_id, review_id):
+    existing_review = Review.query.get(review_id)
+    review_dict = request.json
+
+    try:
+        review = review_schema.load(review_dict, instance=existing_review, partial=True)
+    except ValidationError as e:
+        return { "errors": e.messages, "messages": "Too bad, something went wrong" }
+
+    review.save()
+    return review_schema.jsonify(review), 201
+
+
+@router.route("/reviews/<int:review_id>",  methods=["DELETE"])
+@secure_route
+def delete_review(review_id): 
+    review = Review.query.get(review_id)
+
+    if review.user != g.current_user:
+        return { "errors": "THis is not your review!" }, 402
+    review.remove()
+    return { "message": "Review deleted successfully" }, 200
