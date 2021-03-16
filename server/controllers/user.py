@@ -17,10 +17,12 @@ router = Blueprint(__name__, "users")
 
 @router.route("/signup", methods=["POST"])
 def signup():
-    try:
-        user = user_schema.load(request.json)
-    except ValidationError as e:
-        return { 'errors': e.messages, 'messages': 'Something went wrong.' }
+    # try:
+    # print('something went well')
+    user = user_schema.load(request.json)
+    # except ValidationError as e:
+    #     print('something went wrong')
+    #     return { 'errors': e.messages, 'messages': 'Something went wrong.' }, 401
     user.save()
     return user_schema.jsonify(user)
 
@@ -37,7 +39,7 @@ def login():
         return { "message": "Unauthorized" }
 
     token = user.generate_token()
-    return { "token": token, "message": "login successfull" }
+    return { "token": token, "message": "login successfull" }, 201
 
 #GET all users
 

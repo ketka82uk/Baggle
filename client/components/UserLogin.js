@@ -8,43 +8,39 @@ export default function UserLogin({ history }) {
     password: ''
   })
 
+  const [error,updateError] = useState(false)
+
   function handleChange(event) {
     const { name, value } = event.target
     updateFormData({ ...formData, [name]: value })
+    updateError(false)
   }
 
   async function handleSubmit(event) {
     event.preventDefault()
     try {
       const { data } = await axios.post('api/login', formData)
-      if (localStorage) {
+      if ((localStorage) && (data.message === 'login successfull')) {
+        console.log(data)
         localStorage.setItem('token', data.token)
+        history.push('/')
+        location.reload()
+      } else {
+        updateError(true)
       }
-      history.push('/')
-      location.reload()
     } catch (err) {
       console.log(err.response.data)
+      updateError(true)
     }
   }
 
-
   return <div className="main">
-
-    {/*
-    // * TITLE SECTION
-    */}
 
     <section className="section">
       <div className="container">
         <h1>Login</h1>
       </div>
     </section>
-
-    <div>Update so that you're pushed to profile after login</div>
-
-    {/*
-    // * BODY SECTION
-    */}
 
     <section className="section">
       <div className="container">
@@ -62,7 +58,7 @@ export default function UserLogin({ history }) {
                 onChange={handleChange}
                 name={'email'}
               />
-              
+              {error && <small className="has-text-danger">Invalid email or password</small>}
 
             </div>
             <div className="field">
@@ -76,7 +72,7 @@ export default function UserLogin({ history }) {
                 onChange={handleChange}
                 name={'password'}
               />
-              
+              {error && <small className="has-text-danger">Invalid email or password</small>}
             </div>
             <button>Submit</button>
           </form>

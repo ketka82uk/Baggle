@@ -22,16 +22,13 @@ export default function UserSignup({ history }) {
     avatar_facial_hair: '',
     avatar_clothes: '',
     avatar_clothes_color: '',
-    avatar_skin: '',
-    image: ''
+    avatar_skin: ''
   })
 
   const [errors, updateErrors] = useState({
     username: '',
     email: '',
     password: '',
-    // passwordConfirmation: '',
-    // image: '',
     bio: '',
     location: ''
   })
@@ -51,23 +48,30 @@ export default function UserSignup({ history }) {
     }
     delete newFormData.search
     try {
+      for (const [key, value] of Object.entries(newFormData)) {
+        if (value === '') {
+          console.log(`error found in ${key}`)
+          updateErrors({
+            ...errors,
+            [key]: `Please provide ${key}` 
+          })
+          return
+        }
+      }
+
       const { data } = await axios.post('api/signup', newFormData)
       updateRegistrationSuccess(true)
       console.log('signing up user')
-      // history.push('/login')
+      history.push('/login')
     } catch (err) {
       console.log('ERROR!')
-      console.log(err.response.data)
-      updateErrors(err.response.data.errors)
+      console.log({ err })
     }
   }
-
+  console.log(formData)
+  console.log(errors)
 
   return <div className="main">
-
-    {/*
-    // * TITLE SECTION
-    */}
 
     <section className="section">
       <div className="container">
@@ -75,16 +79,13 @@ export default function UserSignup({ history }) {
       </div>
     </section>
 
-    {/*
-    // * BODY SECTION
-    */}
-
     <section className="section">
       <div className="container">
         <AvatarPicker
           formData={formData}
           updateFormData={updateFormData} />
       </div>
+      {/* {errors.username && <small className="has-text-danger">Invalid username</small>} */}
       <div className="container">
 
         <UserSignupForm
