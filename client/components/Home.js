@@ -148,9 +148,7 @@ export default function Home({ history }) {
             <div className="search-container">
               <form onSubmit={handleSubmit}>
                 <div className="tile is-8 search-container">
-
-
-
+                  
                   <div className="tile box center-row">
                     <div className="left-search">
                       <input

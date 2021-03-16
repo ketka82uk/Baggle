@@ -5,6 +5,7 @@ import Avatar from 'avataaars'
 import { getLoggedInUserId } from '../lib/auth'
 import Moment from 'react-moment'
 import Icon from '@material-ui/core/Icon'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 export default function UserList() {
 
@@ -90,7 +91,7 @@ export default function UserList() {
   
 
   if (loading) {
-    return <div>Page is loading</div>
+    return <div className='searchBox'><ClipLoader loading={loading} size={100} /></div>
   }
 
   return <div className="main">
@@ -115,7 +116,7 @@ export default function UserList() {
           {logIn ? <button className="button" onClick={filterFollows}>Bagglers I follow</button> : <div></div>}
           {logIn ? <button className="button" onClick={filterFollowers}>Bagglers who follow me</button> : <div></div>}
           {logIn ? <button className="button" onClick={clearSearch}>Everyone</button> : <div></div>}
-        </div>
+        </div>+
       </div>
     </div>
 
