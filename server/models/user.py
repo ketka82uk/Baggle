@@ -28,6 +28,7 @@ class User(db.Model, BaseModel):
         return email
     
     bio = db.Column(db.Text, nullable=True, unique=False)
+    town = db.Column(db.Text, nullable=True, unique=False)
     location = db.Column(db.Text, nullable=True, unique=False)
     lat = db.Column(db.Float, nullable=True)
     lng = db.Column(db.Float, nullable=True)
