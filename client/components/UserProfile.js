@@ -16,10 +16,10 @@ export default function UserProfile({ match, history }) {
   const [positiveRating, updatePositiveRating] = useState(0)
   const [negativeRating, updateNegativeRating] = useState(0)
   const [rated, updateRated] = useState(false)
-  const [currentUser, updateCurrentUser] = useState('')
   const [user, updateUser] = useState('')
   const [logIn, updateLogin] = useState(false)
   const [isProfileOwner, updateIsProfileOwner] = useState(false)
+  const [currentUserId, setCurrentUserId] = useState(0)
   const [commentData, updateCommentData] = useState({
     content: '',
     positive_rating: false,
@@ -30,6 +30,16 @@ export default function UserProfile({ match, history }) {
   // ! GETS USER DATA AND COMPARES LOGGED IN USER TO PROFILE OWNER
 
   const userId = Number(match.params.userId)
+
+  useEffect(() => {
+    const handleLogin = () => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        setCurrentUserId(getLoggedInUserId())
+      }
+    }
+    handleLogin()
+  }, [])
 
   useEffect(() => {
     async function fetchData() {
@@ -50,32 +60,6 @@ export default function UserProfile({ match, history }) {
     fetchData()
   }, [])
 
-  useEffect(() => {
-    const handleLogin = () => {
-      const token = localStorage.getItem('token')
-      if (token) {
-        //change the button to logout
-        updateLogin(true)
-        updateCurrentUser(getLoggedInUserId())
-      }
-    }
-    handleLogin()
-  }, [])
-
-  useEffect(() => {
-    const isUserProfileOwner = () => {
-      if (user === currentUser) {
-        updateIsProfileOwner(true)
-      } else {
-        updateIsProfileOwner(false)
-      }
-    }
-    isUserProfileOwner()
-  }, [])
-
-  console.log(isProfileOwner)
-  console.log(user)
-  console.log(currentUser)
 
   //! DELETE AND EDIT FUNCTIONS
 
@@ -88,7 +72,7 @@ export default function UserProfile({ match, history }) {
 
   async function handleFollow() {
     try {
-      await axios.post(`/api/users/${currentUser}/users/${userId}`)
+      await axios.post(`/api/users/${currentUserId}/users/${userId}`)
     } catch (err) {
       console.log(err.response.data)
     }
@@ -152,9 +136,6 @@ export default function UserProfile({ match, history }) {
       console.log(err.response.data)
     }
   }
-
-
-  console.log(profile.follows)
 
 
   if (loading) {
@@ -351,7 +332,7 @@ export default function UserProfile({ match, history }) {
             // * WISHLIST SECTION
             */}
 
-            {isProfileOwner && <article className="tile box is-vertical">
+            {isCreator(userId) && <article className="tile box is-vertical">
               <div className="contents">
                 <div className="grid-header">
                   <h2 className="title">Wishlist</h2>

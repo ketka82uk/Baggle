@@ -2,43 +2,48 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Avatar from 'avataaars'
+import { getLoggedInUserId } from '../lib/auth'
 
 export default function UserList() {
 
   const [userData, updateUserData] = useState([])
-  const [search, updateSearch] = useState('')
-  const [currentUser, updateCurrentUser] = useState([])
+  const [userMemoryData, updateMemoryData] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [currentUser, updateCurrentUser] = useState({})
   const [loading, updateLoading] = useState(true)
   const [follows, updateFollows] = useState('All')
   const [followed, updateFollowed] = useState('All')
   const [followers, updateFollowers] = useState([])
   const [numberOfUsers, updateNumberOfUsers] = useState(0)
+  const [logIn, updateLogin] = useState(false)
+
 
   useEffect(() => {
     async function fetchData() {
       const { data } = await axios.get('/api/users')
       updateUserData(data)
+      updateMemoryData(data)
       updateLoading(false)
       updateNumberOfUsers(data.length)
     }
     fetchData()
   }, [])
 
+
   useEffect(() => {
-    async function fetchCurrentUser() {
-      const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token')
+    if (!token) return
+    updateLogin(true)
+    async function fetchUser() {
       try {
-        const { data } = await axios.get('/api/current_user', {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        const { data } = await axios.get(`/api/users/${getLoggedInUserId()}`)
         updateCurrentUser(data)
       } catch (err) {
-        console.log(err.response.data)
+        console.log(err)
       }
     }
-    fetchCurrentUser()
-  }, [])
-
+    fetchUser()
+  })
 
   function filterFollows() {
     const filteredData = currentUser.follows
@@ -52,13 +57,20 @@ export default function UserList() {
     updateNumberOfUsers(filteredData.length)
   }
 
-  function handleSearch() {
-    const filteredData = userData.filter(user => {
-      user.username.toLowerCase().includes(search.toLowerCase())
+  async function handleChange(event) {
+    event.preventDefault()
+    const value = event.target.value
+    setSearchTerm(value)
+  }
+
+  function filterUsers() {
+    return userData.filter((user) => {
+      return user.username.toLowerCase().includes(searchTerm.toLowerCase())
     })
-    console.log(filteredData)
-    updateUserData(filteredData)
-    updateNumberOfUsers(filteredData.length)
+  }
+
+  function clearSearch() {
+    updateUserData(userMemoryData)
   }
   
 
@@ -67,10 +79,6 @@ export default function UserList() {
   }
 
   return <div className="main">
-
-    {/*
-    // * TITLE SECTION
-    */}
 
     <section className="section">
       <div className="container">
@@ -86,14 +94,21 @@ export default function UserList() {
       </div>
     </section>
 
-    {/*
-    // * BODY SECTION
-    */}
-
-    <button className="button" onClick={filterFollows}>Bagglers I follow</button>
-    <button className="button" onClick={filterFollowers}>Bagglers who follow me</button>
-    <input onChange={(event) => updateSearch(event.target.value)} placeholder="Search..." />
-    <button className="button" onClick={handleSearch}>Search</button>
+    <div className="columns is-full is-centered">
+      <div className="column is-one-third">
+        {logIn ? <button className="button" onClick={filterFollows}>Bagglers I follow</button> : <div></div>}
+        {logIn ? <button className="button" onClick={filterFollowers}>Bagglers who follow me</button> : <div></div>}
+        {logIn ? <button className="button" onClick={clearSearch}>Everyone</button> : <div></div>}
+        <input
+          type="text"
+          placeholder="Search for fellow bagglers..."
+          className="input is-info is-half"
+          onChange={(event) => handleChange(event)}
+          value={searchTerm}
+        />
+        {/* <button className="button" onClick={handleSearch}>Search</button> */}
+      </div>
+    </div>
 
     <section className="section">
       <div className="container">
@@ -101,13 +116,12 @@ export default function UserList() {
       </div>
       <div className="container">
         <div className="columns is-multiline">
-          {userData.map((user) => {
+          {filterUsers().map((user) => {
             return <div className="column is-one-fifth" key={user.id}>
               <Link to={`/users/${user.id}`}>
                 <div className="card">
                   <div className="card-image">
                     <img src={user.image} />
-
                   </div>
                   <div className="card-content">
                     <div className="content"></div>

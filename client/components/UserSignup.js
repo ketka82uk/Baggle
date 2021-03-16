@@ -11,9 +11,11 @@ export default function UserSignup({ history }) {
   const [formData, updateFormData] = useState({
     username: '',
     email: '',
+    location: '',
+    lat: 0,
+    lng: 0,
     password: '',
     bio: '',
-    location: '',
     avatar_hair: '',
     avatar_accessories: '',
     avatar_hair_color: '',
@@ -31,13 +33,16 @@ export default function UserSignup({ history }) {
   async function handleSubmit(event) {
     event.preventDefault()
     const newFormData = {
-      ...formData,
+      ...formData
     }
+    delete newFormData.search
+    console.log(newFormData)
     try {
       const { data } = await axios.post('api/signup', newFormData)
-      console.log(data.id)
+      console.log('signing up user')
       history.push('/login')
     } catch (err) {
+      console.log('ERROR!')
       console.log(err.response.data)
     }
   }
@@ -71,6 +76,7 @@ export default function UserSignup({ history }) {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
           formData={formData}
+          updateFormData={updateFormData}
         />
 
       </div>

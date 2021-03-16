@@ -23,7 +23,6 @@ export default function Navbar() {
     handleLogin()
   }, [])
 
-
   // get current logged in user, to personalise NavBar
   useEffect(() => {
     async function fetchUser() {
