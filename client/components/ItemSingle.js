@@ -7,8 +7,12 @@ import '../styles/style.scss'
 
 
 export default function ItemSingle({ match, history }) {
+
+
   const itemid = match.params.itemid
+
   const [item, updateItem] = useState({})
+  const [offeredList, updateOfferedList] = useState([])
   const [currentUser, updateCurrentUser] = useState([])
   const [text, setText] = useState('')
   const [loading, updateLoading] = useState(true)
@@ -16,7 +20,7 @@ export default function ItemSingle({ match, history }) {
   const [userData, updateUserData] = useState([])
   const [modalState, setModalState] = useState(false)
   const [currentUserInventory, updateCurrentUserInventory] = useState([])
-  const [offeredItemid, updateOfferedItemid] = useState(0)
+  // const [offeredItemid, updateOfferedItemid] = useState(0)
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -24,54 +28,49 @@ export default function ItemSingle({ match, history }) {
       try {
         const { data } = await axios.get(`/api/items/${itemid}`)
         updateItem(data)
+        updateOfferedList(data.offers)
       } catch (err) {
         console.log(err)
       }
     }
     fetchItem()
   }, [])
-  // console.log(item)
 
 
 
-
-  // function handleChange(event) {
-  //   const { name, value } = event.target
-  //   updateOfferedItemid({ ...offeredItemid, [name]: value })
-  // }
-
-  // async function handleSubmit(event) {
-  //   event.preventDefault()
-  //   const token = localStorage.getItem('token')
-
-  //   const newFormData = {
-  //     ...offeredItemid
-  //   }
-  //   try {
-  //     const { data } = await axios.post('/api/offers/5/4', {
-  //       headers: { Authorization: `Bearer ${token}` }
-  //     })
-  //     console.log(data._id)
-  //     history.push(`/items/${data.item}`)
-  //   } catch (err) {
-  //     console.log(err.response.data)
-  //   }
-  // }
 
   // console.log(itemid)
-  useEffect(() => {
-    async function fetch() {
-      try {
-        const { data } = await axios.put('/api/offers/5/20')
-        updateItem(data)
-      } catch (err) {
-        console.log(err)
-      }
+
+  async function fetch(offeredItemid) {
+    try {
+      console.log(offeredItemid)
+      console.log(itemid)
+      const { data } = await axios.put(`/api/offers/${itemid}/${offeredItemid}`, {},
+        { headers: { Authorization: `Bearer ${token}` } })
+      updateItem(data)
+    } catch (err) {
+      console.log(err)
     }
+    // history.push('/items')
+    location.reload()
+  }
 
-    fetch()
-  }, [])
 
+
+
+  async function Swap(offeredItemid) {
+    try {
+      console.log(offeredItemid)
+      console.log(itemid)
+      const { data } = await axios.put(`/api/swap/${itemid}/${offeredItemid}`, {},
+        { headers: { Authorization: `Bearer ${token}` } })
+      updateItem(data)
+    } catch (err) {
+      console.log(err)
+    }
+    // history.push('/items')
+    location.reload()
+  }
 
 
 
@@ -93,11 +92,14 @@ export default function ItemSingle({ match, history }) {
   }, [])
   // console.log(userData)
 
-  const toggleModal = () => {
-    setModalState(!modalState)
-  }
+  // const toggleModal = () => {
+  //   setModalState(!modalState)
+  // }
 
-
+  // function updateOffer(e) {
+  //   updateOfferedItemid(e.target.id)
+  //   fetch()
+  // }
 
   async function handleComment() {
 
@@ -135,7 +137,8 @@ export default function ItemSingle({ match, history }) {
     await axios.delete(`/api/items/${itemid}/comment/${commentId}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    history.push('/items')
+    // history.push(`/items/${itemid}`)
+    location.reload()
 
   }
 
@@ -193,41 +196,20 @@ export default function ItemSingle({ match, history }) {
   if (!item.owner) {
     return null
   }
-  console.log(currentUserInventory['index'])
-  console.log(currentUser)
+  console.log(currentUserInventory)
+  // console.log(currentUser.inventory)
   // console.log(currentUser['inventory.id'])
 
+
+  if (item) {
+    console.log('ownerid:')
+    // console.log(item.owner['id'])
+    // const owner = item.owner
+    console.log(item.owner['id'])
+  }
+
   return <div className="columns">
-    <div className="Mod">
-      <div className={`modalBackground modalShowing-${modalState}`}>
-        <div className="innerModal">
-          <div className="modalImage">
-            <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
-            />
-          </div>
-          <div className="modalText">
-            <h2> Would you like to make an offer?</h2>
 
-            <form action="">
-              {currentUserInventory.map((item, index) => {
-                return <div key={index} >
-                  <div>
-                    <button className="request" onClick={() => handleSubmit()}>   {item.name}  </button>
-                  </div>
-                </div>
-
-              })}
-            </form>
-            <button className="exit" onClick={() => toggleModal()}>
-              Exit
-          </button>
-
-          </div>
-        </div>
-
-      </div>
-      <button onClick={() => toggleModal()}>Baggle</button>
-    </div>
     <div className="column">
       <figure className='image'>
         <img src={item.image} alt={item.name} />
@@ -250,8 +232,28 @@ export default function ItemSingle({ match, history }) {
       <h2 className="subtitle">{`Description: ${item.description}`}</h2>
       {/* <h2 className="subtitle">{`Image: ${item.owner.image}`}</h2> */}
       <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
+      {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
+        const available = item.listed
+        return <div key={item.id} >
+          <div>
+            {available ? <button className='button is-primary' id={item.id} onClick={(e) => fetch(e.target.id)}>  {item.id} {item.name}  </button> :
+              <button className='button is-warning'> {item.name} </button>
+            }
+          </div>
+        </div>
 
+      })}
+      {offeredList.map((offeredItem, index) => {
+        return <div key={offeredItem.id} >
+          <div>
+            <div id={offeredItem.id} >{offeredItem.name}</div>
+          </div>
+          <div>
+            {isCreator(item.owner['id']) && <button id={offeredItem.id} className='is-warning' onClick={(e) => Swap(e.target.id)}>SWAP!</button>}
+          </div>
+        </div>
 
+      })}
       <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
 
       {
@@ -353,41 +355,7 @@ export default function ItemSingle({ match, history }) {
 }
 
 
-{/* <toggleModal
-         handleChange={handleChange}
-         handleSubmit={handleSubmit}
-         offeredItemid={offeredItemid}
-         /> */}
 
 
 
-      //    <div className="Mod">
-      //    <div className={`modalBackground modalShowing-${modalState}`}>
-      //      <div className="innerModal">
-      //        <div className="modalImage">
-      //          <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
-      //          />
-      //        </div>
-      //        <div className="modalText">
-      //          <h2> Would you like to make an offer?</h2>
 
-      //          <form action="">
-      //            {currentUserInventory.map((item, index) => {
-      //              return <div key={index} >
-      //                <div>
-      //                  <button>   {item.name}  </button>
-      //                </div>
-      //              </div>
-
-      //            })}
-      //          </form>
-      //          <button className="exit" onClick={() => toggleModal()}>
-      //            Exit
-      //        </button>
-
-      //        </div>
-      //      </div>
-
-      //    </div>
-      //    <button onClick={() => toggleModal()}>Baggle</button>
-      //  </div>

@@ -32,8 +32,21 @@ def swap_item(item1_id, item2_id):
     user1.successfull_trans = user1.successfull_trans + 1
     user2.successfull_trans = user2.successfull_trans + 1
 
+    item1.listed = True
+    item2.listed = True
+        
+    # change all items in offers list to available...
+    offers = item1.offers
+    for offer in offers:
+        offer.listed = True
+
+    # then clear the offers list
+    item1.offers = []
+
+    item1.save()
     user1.save()
     user2.save()
+
 
     items = Item.query.all()
 
@@ -52,7 +65,8 @@ def add_item_to_offer(item1_id, item2_id):
     item1 = Item.query.get(item1_id)
     item2 = Item.query.get(item2_id)
     
-    
+    item2.listed = False
+    item1.listed = False
     
     item1.offers.append(item2)
     item2.save()

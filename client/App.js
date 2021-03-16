@@ -22,6 +22,7 @@ import TestLogo from './components/TestLogo.js'
 import AvatarPicker from './components/AvatarPicker.js'
 import toggleModal from './components/toggleModal'
 
+
 const App = () => (
   <BrowserRouter>
     <Navbar />
@@ -38,6 +39,7 @@ const App = () => (
       <Route exact path="/signup" component={UserSignup} />
       <Route exact path="/test/fonts" component={TestLogo} />
       <Route exact path="/modal" component={toggleModal} />
+     
     </Switch>
     <Footer />
   </BrowserRouter>

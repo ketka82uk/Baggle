@@ -4,15 +4,15 @@ from serializers.user import UserSchema
 from models.item import Item
 from models.comment import Comment
 from serializers.comment import CommentSchema
-from models.review import Review
-from serializers.review import ReviewSchema
+# from models.review import Review
+# from serializers.review import ReviewSchema
 from marshmallow.exceptions import ValidationError
 from decorators.logger import logger
 from decorators.secure_route import secure_route
 
 user_schema = UserSchema()
 comment_schema = CommentSchema()
-review_schema = ReviewSchema()
+# review_schema = ReviewSchema()
 
 router = Blueprint(__name__, "users")
 
@@ -154,18 +154,18 @@ def get_all_user_comments():
 
 #POST comment on another user
 
-@router.route("/users/<int:user1_id>/comments/<int:user2_id>", methods=["POST"])
-def review_user(user1_id, user2_id):
-    comment_dict = request.json
-    user1 = User.query.get(user1_id)
-    user2 = User.query.get(user2_id)
-    comment = comment_schema.load(comment_dict)
-    comment.user = author
-    print(comment.user)
-    comment.reviewee = reviewee
-    print(comment.reviewee)
-    comment.save()
-    return comment_schema.jsonify(comment)
+# @router.route("/users/<int:user1_id>/comments/<int:user2_id>", methods=["POST"])
+# def review_user(user1_id, user2_id):
+#     comment_dict = request.json
+#     user1 = User.query.get(user1_id)
+#     user2 = User.query.get(user2_id)
+#     comment = comment_schema.load(comment_dict)
+#     comment.user = author
+#     print(comment.user)
+#     comment.reviewee = reviewee
+#     print(comment.reviewee)
+#     comment.save()
+#     return comment_schema.jsonify(comment)
 
 # DELETE comment
 
