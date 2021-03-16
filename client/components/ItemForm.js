@@ -19,11 +19,11 @@ const debouncedSave = debounce((searchQuery, updateSearchResults) => {
     })
 }, 500)
 
-const inputFields = ['name', 'typeof', 'category', 'description', 'image', 'listed']
+const inputFields = ['name', 'category', 'description', 'image', 'listed']
 
 
 export default function ItemForm({ formData, handleSubmit, handleChange, updateFormData }) {
-  
+
   // const [creationSuccess, updateCreationSuccess] = useState(false)
   const [searchQuery, updateSearchQuery] = useState('')
   const [searchResults, updateSearchResults] = useState([])
@@ -45,51 +45,173 @@ export default function ItemForm({ formData, handleSubmit, handleChange, updateF
 
   return <div className="section">
     <div className="container">
-      <form onSubmit={handleSubmit}>
-        {inputFields.map(field => {
-          return <div key={field} className="field">
-            <label className="label">
-              {field[0].toUpperCase() + field.slice(1)}
-            </label>
-            <div className="control">
-              <input
-                className="input"
-                type="text"
-                value={formData[field]}
+
+      <form className="form" onSubmit={handleSubmit}>
+
+        <div className="field">
+          <label className="label">name</label>
+          <div className="control">
+            <input
+              className="input"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+              name={'name'} />
+          </div>
+        </div>
+
+        <div className="field"></div>
+        <label className="label">typeof</label>
+        <div className="control">
+          <div className="select">
+            <select
+              value={formData.typeof}
+              onChange={handleChange}
+              name={'typeof'} >
+
+              <option>Goods</option>
+              <option>Service</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">category</label>
+          <div className="control">
+            <div className="select">
+              <select
+                value={formData.category}
                 onChange={handleChange}
-                name={field}
-              />
+                name={'category'} >
+
+                <option>Children</option>
+                <option>Clothing</option>
+                <option>Food And Drink</option>
+                <option>Entertainment</option>
+                <option>Home And Garden</option>
+                <option>Motors</option>
+              </select>
             </div>
           </div>
-        })}
-        {/* ---------------- James ----------------- */}
-        <div className='field'>
-          <label className='label'>Your Location</label>
-          <div className='control'>
-            <input
-              className='input'
-              placeholder='Search...'
-              type='text'
-              value={formData.search || ''}
-              onChange={createSearchQuery}
-              name={'search'}
-            />
-          </div>
-          {searchResults.length > 0 &&
-            <div className='dropdown is-active is-fullwidth'>
-              <div className='dropdown-menu'>
-                <div className='dropdown-content'>
-                  {searchResults.map((place) => {
-                    return <div key={place.id}>
-                      <div className='dropdown-item' id='cardHover' onClick={() => handlePlaceSelect(place)}>{place.placeName}</div>
-                      <hr className="dropdown-divider"></hr></div>
-                  })}
-                </div>
-              </div>
-            </div>}
+
         </div>
-        <button className="button mt-5 is-success">Submit</button>
-      </form>
-    </div>
-  </div>
+        <div className="field">
+          <label className="label">description</label>
+          <div className="control">
+            <textarea
+              className="textarea"
+              type="text"
+              value={formData.description}
+              onChange={handleChange}
+              name={'description'} />
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">image</label>
+          <div className="control">
+            <input
+              className="input"
+              type="text"
+              value={formData.image}
+              onChange={handleChange}
+              name={'image'} />
+          </div>
+        </div>
+
+        <button className="button">Submit</button>
+      </form >
+    </div >
+  </div >
 }
+
+
+
+//  <div className="control">
+//   <div className="select">
+//     <select>
+//       <option>Goods</option>
+//       <option>Service</option>
+//     </select>
+//   </div>
+// </div> 
+
+
+
+
+
+
+
+
+
+
+
+// return <div className="section">
+//   <div className="container">
+//     <form onSubmit={handleSubmit}>
+//       {inputFields.map(field => {
+//         return <div key={field} className="field">
+//           <label className="label">
+//             {field[0].toUpperCase() + field.slice(1)}
+//           </label>
+//           <div className="control">
+//             <input
+//               className="input"
+//               type="text"
+//               value={formData[field]}
+//               onChange={handleChange}
+//               name={field}
+//             />
+//           </div>
+//         </div>
+//       })}
+//       {/* ---------------- James ----------------- */}
+//       <div className='field'>
+//         <label className='label'>Your Location</label>
+//         <div className='control'>
+//           <input
+//             className='input'
+//             placeholder='Search...'
+//             type='text'
+//             value={formData.search || ''}
+//             onChange={createSearchQuery}
+//             name={'search'}
+//           />
+//         </div>
+//         {searchResults.length > 0 &&
+//           <div className='dropdown is-active is-fullwidth'>
+//             <div className='dropdown-menu'>
+//               <div className='dropdown-content'>
+//                 {searchResults.map((place) => {
+//                   return <div key={place.id}>
+//                     <div className='dropdown-item' id='cardHover' onClick={() => handlePlaceSelect(place)}>{place.placeName}</div>
+//                     <hr className="dropdown-divider"></hr></div>
+//                 })}
+//               </div>
+//             </div>
+//           </div>}
+//       </div>
+//       <button className="button mt-5 is-success">Submit</button>
+//     </form>
+//   </div>
+// </div>
+
+
+
+{/* <div className="field">
+<label className="label">typeof</label>
+<div className="control">
+  <div className="select">
+    <select
+    <option> 'Goods' </option>
+    <option> 'Service' </option>
+
+      className="select"
+      type="text"
+      value={formData.typeof}
+      onChange={handleChange}
+      name={'typeof'} />
+
+  </div>
+</div>
+</div> */}

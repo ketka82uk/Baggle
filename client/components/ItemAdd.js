@@ -13,7 +13,7 @@ export default function ItemAdd({ history, match }) {
     category: '',
     description: '',
     image: '',
-    listed: ''
+    listed: 'true'
   })
   const [userId, setUserId] = useState('')
 
@@ -35,6 +35,7 @@ export default function ItemAdd({ history, match }) {
   }
 
   async function handleSubmit(event) {
+    console.log('subitting item')
     event.preventDefault()
     const token = localStorage.getItem('token')
     try {
@@ -86,26 +87,3 @@ export default function ItemAdd({ history, match }) {
   </div>
 }
 
-// return <div className="main">
-
-//   {/*
-//   // * TITLE SECTION
-//   */}
-
-//   <section className="section">
-//     <div className="container">
-//       <h1>Add Item</h1>
-//     </div>
-//   </section>
-
-//   {/*
-//   // * BODY SECTION
-//   */}
-
-//   <section className="section">
-//     <div className="container">
-//       <p>Body section</p>
-//     </div>
-//   </section>
-
-// </div>

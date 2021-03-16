@@ -64,7 +64,7 @@ export default function Home( { history } ) {
     async function fetchUser() {
       try {
         const { data } = await axios.get(`/api/users/${userId}`)
-        setUserLocation( { lat: data.lat, lng: data.lng })
+        setUserLocation( { lat: data.lat, long: data.lng })
       } catch (err) {
         console.log(err)
       }
@@ -99,7 +99,8 @@ export default function Home( { history } ) {
       pathname: '/items',
       state: {
         searchTerm: searchTerm,
-        searchLocation: selectedLocation
+        selectedLocation: selectedLocation,
+        searchLocation: searchLocation
         // get this out on the other side by: props.location.state.searchFilter
       }
     })
@@ -113,7 +114,20 @@ export default function Home( { history } ) {
   return <div className="main">
 
     <section className="hero is-primary is-medium">
-      <div className="hero-body has-text-centered">
+      <div className="hero-body">
+
+          <div className="columns">
+            <div className="column is-1">Hello</div>
+            <div className="column is-8">
+              <div className="logo-title">Baggle</div>
+            </div>
+            <div className="column is-3">Hello</div>
+
+          </div>
+
+
+
+
         <p className="title">
           Not for sale
         </p>
@@ -140,6 +154,7 @@ export default function Home( { history } ) {
             placeholder="Search for an item near you!"
             onChange={createSearchQuery}
             value={searchLocation}
+            autoComplete="off"
           />
           <div className="control">
             <button className="button is-primary">Submit</button>

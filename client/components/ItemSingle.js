@@ -7,10 +7,10 @@ import '../styles/style.scss'
 
 
 export default function ItemSingle({ match, history }) {
-
-
+  
   const itemid = match.params.itemid
-
+  const [title, setTitle] = useState('')
+  const [comment, setComment] = useState('')
   const [item, updateItem] = useState({})
   const [offeredList, updateOfferedList] = useState([])
   const [currentUser, updateCurrentUser] = useState([])
@@ -20,9 +20,11 @@ export default function ItemSingle({ match, history }) {
   const [userData, updateUserData] = useState([])
   const [modalState, setModalState] = useState(false)
   const [currentUserInventory, updateCurrentUserInventory] = useState([])
-  // const [offeredItemid, updateOfferedItemid] = useState(0)
+  
   const token = localStorage.getItem('token')
-
+  const [commentData , updateCommentData] = useState({
+    content: ''
+  })
   useEffect(() => {
     async function fetchItem() {
       try {
@@ -100,19 +102,23 @@ export default function ItemSingle({ match, history }) {
   //   updateOfferedItemid(e.target.id)
   //   fetch()
   // }
-
-  async function handleComment() {
-
-    const { data } = await axios.post(`/api/items/${itemid}/comments`, { text }, {
+  async function handleComment(e) {
+    e.preventDefault()
+    const newCommentData = {
+      ...commentData
+    }
+    const { data } = await axios.post(`/api/items/${itemid}/comments`, { text,newCommentData }, {
       headers: { Authorization: `Bearer ${token}` }
     })
 
-
-    setText('')
-
+    setTitle('')
+    setComment('')
     updateItem(data)
 
   }
+
+
+  
 
   async function fetchCurrentUserInventory() {
     const token = localStorage.getItem('token')
@@ -196,8 +202,8 @@ export default function ItemSingle({ match, history }) {
   if (!item.owner) {
     return null
   }
-  console.log(currentUserInventory)
-  // console.log(currentUser.inventory)
+  // console.log(currentUserInventory)
+  console.log(currentUser)
   // console.log(currentUser['inventory.id'])
 
 
@@ -283,7 +289,7 @@ export default function ItemSingle({ match, history }) {
 
       {
         <figure className="image is-128x128">
-          <img className="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" />
+          <img className="is-rounded" src={currentUser.profile_image} />
         </figure>
 
       }

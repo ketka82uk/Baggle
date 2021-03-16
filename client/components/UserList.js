@@ -2,43 +2,62 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Avatar from 'avataaars'
+import { getLoggedInUserId } from '../lib/auth'
+import Moment from 'react-moment'
 
 export default function UserList() {
 
   const [userData, updateUserData] = useState([])
-  const [search, updateSearch] = useState('')
-  const [currentUser, updateCurrentUser] = useState([])
+  const [userMemoryData, updateMemoryData] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [currentUser, updateCurrentUser] = useState({})
   const [loading, updateLoading] = useState(true)
   const [follows, updateFollows] = useState('All')
   const [followed, updateFollowed] = useState('All')
   const [followers, updateFollowers] = useState([])
   const [numberOfUsers, updateNumberOfUsers] = useState(0)
+  const [logIn, updateLogin] = useState(false)
+
 
   useEffect(() => {
     async function fetchData() {
       const { data } = await axios.get('/api/users')
       updateUserData(data)
+      updateMemoryData(data)
       updateLoading(false)
       updateNumberOfUsers(data.length)
     }
     fetchData()
   }, [])
 
+
   useEffect(() => {
-    async function fetchCurrentUser() {
-      const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token')
+    if (!token) return
+    updateLogin(true)
+    async function fetchUser() {
       try {
-        const { data } = await axios.get('/api/current_user', {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        const { data } = await axios.get(`/api/users/${getLoggedInUserId()}`)
         updateCurrentUser(data)
       } catch (err) {
-        console.log(err.response.data)
+        console.log(err)
       }
     }
-    fetchCurrentUser()
-  }, [])
+    fetchUser()
+  })
 
+  function getRating(user) {
+    const totalRatings = user.positive_rating + user.negative_rating
+    const positivePercentage = Math.floor(user.positive_rating / totalRatings * 100)
+    return positivePercentage
+  }
+
+  // function getBaggles(user) {
+  //   const availableBaggles = user.inventory.filter((item) => {
+  //   return item.listed
+  //   })
+  //   return availableBaggles
+  // }
 
   function filterFollows() {
     const filteredData = currentUser.follows
@@ -52,13 +71,20 @@ export default function UserList() {
     updateNumberOfUsers(filteredData.length)
   }
 
-  function handleSearch() {
-    const filteredData = userData.filter(user => {
-      user.username.toLowerCase().includes(search.toLowerCase())
+  async function handleChange(event) {
+    event.preventDefault()
+    const value = event.target.value
+    setSearchTerm(value)
+  }
+
+  function filterUsers() {
+    return userData.filter((user) => {
+      return user.username.toLowerCase().includes(searchTerm.toLowerCase())
     })
-    console.log(filteredData)
-    updateUserData(filteredData)
-    updateNumberOfUsers(filteredData.length)
+  }
+
+  function clearSearch() {
+    updateUserData(userMemoryData)
   }
   
 
@@ -68,32 +94,21 @@ export default function UserList() {
 
   return <div className="main">
 
-    {/*
-    // * TITLE SECTION
-    */}
-
-    <section className="section">
-      <div className="container">
-        <h1>Bagglers</h1>
+    <div className="columns is-full is-centered">
+      <div className="column is-one-third">
+        {logIn ? <button className="button" onClick={filterFollows}>Bagglers I follow</button> : <div></div>}
+        {logIn ? <button className="button" onClick={filterFollowers}>Bagglers who follow me</button> : <div></div>}
+        {logIn ? <button className="button" onClick={clearSearch}>Everyone</button> : <div></div>}
+        <input
+          type="text"
+          placeholder="Search for fellow bagglers..."
+          className="input is-info is-half"
+          onChange={(event) => handleChange(event)}
+          value={searchTerm}
+        />
+        {/* <button className="button" onClick={handleSearch}>Search</button> */}
       </div>
-      <div className="todo">
-        <ul>
-          <li>Filter by followed users and users who follow you</li>
-          <li>Sort by users according to distance and rating</li>
-          <li>To find users you follow - map through users and see if they appear in your follow list</li>
-          <li>To find users who follow you - map through users and see if they appear in your follower list</li>
-        </ul>
-      </div>
-    </section>
-
-    {/*
-    // * BODY SECTION
-    */}
-
-    <button className="button" onClick={filterFollows}>Bagglers I follow</button>
-    <button className="button" onClick={filterFollowers}>Bagglers who follow me</button>
-    <input onChange={(event) => updateSearch(event.target.value)} placeholder="Search..." />
-    <button className="button" onClick={handleSearch}>Search</button>
+    </div>
 
     <section className="section">
       <div className="container">
@@ -101,20 +116,28 @@ export default function UserList() {
       </div>
       <div className="container">
         <div className="columns is-multiline">
-          {userData.map((user) => {
+          {filterUsers().map((user) => {
             return <div className="column is-one-fifth" key={user.id}>
               <Link to={`/users/${user.id}`}>
                 <div className="card">
-                  <div className="card-image">
-                    <img src={user.image} />
-
+                  <div 
+                  className="card-image" 
+                  style={{ 
+                    backgroundImage: `url(${user.image})`,
+                    backgroundSize: 'cover'
+                  }}>
+                    <figure className="image is-4by3">
+                    <img src={user.profile_image} />
+                    </figure>
                   </div>
                   <div className="card-content">
-                    <div className="content"></div>
-                    <p>{user.username}</p>
-                    <p>{user.rating}</p>
+                  
+                    <p className="title">{user.username}</p>
+                    <p className="subtitle">Rating: {getRating(user)}%</p>
                     <p>{user.location}</p>
-                    <p>{user.created_at}</p>
+                    <p>{user.inventory.length}</p>
+                    <p className="subtitle is-6">Baggling since <Moment format ="Do MMM YYYY">{user.created_at}</Moment></p>
+                  
                   </div>
                 </div>
               </Link>

@@ -18,7 +18,7 @@ class Item(db.Model, BaseModel):
     typeof = db.Column(db.String(40), nullable=False)
     category = db.Column(db.String(40), nullable=False)
     description = db.Column(db.Text, nullable=True)
-    listed = db.Column(db.Boolean, nullable=False)
+    listed = db.Column(db.Boolean, nullable=False )
     image = db.Column(db.Text, nullable=True)
     wishlisted = db.Column(db.Integer, nullable=True)
     address = db.Column(db.Text, nullable=True)
