@@ -97,10 +97,7 @@ export default function UserList() {
 
     <div className="columns is-full is-centered">
       <div className="column is-one-third">
-        {logIn ? <button className="button" onClick={filterFollows}>Bagglers I follow</button> : <div></div>}
-        {logIn ? <button className="button" onClick={filterFollowers}>Bagglers who follow me</button> : <div></div>}
-        {logIn ? <button className="button" onClick={clearSearch}>Everyone</button> : <div></div>}
-        
+
         <div className="tile box">
           <div className="icon-holder">
           <Icon>search</Icon>
@@ -114,6 +111,11 @@ export default function UserList() {
         />
         </div>
         {/* <button className="button" onClick={handleSearch}>Search</button> */}
+        <div className="columns">
+          {logIn ? <button className="button" onClick={filterFollows}>Bagglers I follow</button> : <div></div>}
+          {logIn ? <button className="button" onClick={filterFollowers}>Bagglers who follow me</button> : <div></div>}
+          {logIn ? <button className="button" onClick={clearSearch}>Everyone</button> : <div></div>}
+        </div>
       </div>
     </div>
 
@@ -142,7 +144,6 @@ export default function UserList() {
                     <p className="title">{user.username}</p>
                     <p className="subtitle is-6">{getRating(user)}% approval!</p>
                     <p>{user.location}</p>
-                    <p>{user.inventory.length}</p>
                     <p className="subtitle is-6">Baggling since <Moment format ="Do MMM YYYY">{user.created_at}</Moment></p>
                   
                   </div>
