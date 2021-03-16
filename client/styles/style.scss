@@ -1,14 +1,81 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+$family-sans-serif: 'Poppins', sans-serif;
+$title-font: 'Mouse Memoirs', sans-serif;
+
+
+// COLORS
+// Bulma red - #ff3860
+// Bulma green - #00d1b2
+
 body {
-  background-color: lightgray
+  background-color: lightgray;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+// ! BULMA OVERRIDE
+
+.title {
+  font-family: 'Mouse Memoirs', sans-serif !important;
+}
+
+.button {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+// ! NAVBAR
+
+.navbar-logo {
+  font-family: 'Mouse Memoirs', sans-serif !important;
+  font-size: 30px;
 }
 
 // ! PROFILE PAGE
 
+// ! PROFILE PAGE
+
+
+
+.row {
+  display: flex;
+  flex-direction: row;
+
+}
+
+.rating-container {
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+}
+
+.neg-rating {
+  border-top: 1px solid black;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  font-size: 50px;
+  color: #ff3860;
+  font-family: $title-font
+}
+
+.pos-rating {
+  border-bottom: 1px solid black;
+  flex: 1;
+  flex-direction: row;
+  align-items: flex-end;
+  font-size: 50px;
+  color: #00d1b2;
+  font-family: $title-font
+}
+
 .banner-profile-image-container {
-  background-color: white;
+  background-color: #363636;
   width: 200px;
-  border-radius: 50px;
+  border-radius: 200px;
   padding: 10px;
+  padding-bottom: 25px;
 }
 
 .banner-with-image {
@@ -20,20 +87,19 @@ body {
 }
 
 .banner-text {
-  font-size: 40px;
+  font-family: $title-font;
+  font-size: 70px;
   text-shadow: 2px 2px 2px black;
 
 }
 
-.thumbnail-container {
-  border: solid 1px black;
-}
-
-.grid-container {
-  border: solid 1px black;
+.grid-header {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  border-bottom: solid 1px rgba(80, 80, 80, 0.2);
+  margin-bottom: 15px;
+  font-family: 'Quicksand', sans-serif;
 }
 
 
@@ -42,6 +108,28 @@ body {
   border: 3px solid black;
 }
 
+// ! SIGNUP PAGE
+
+.avatar-select {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 70px;
+  border-radius: 50px;
+  background: gray;
+}
+
+.avatar-select-option {
+  border: none;
+  background: none;
+  height: 20px;
+  font-family: 'Quicksand';
+  font-size: 14px;
+}
+
+// ! MODAL
 
 
 .Mod {

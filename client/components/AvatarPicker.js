@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import Avatar from 'avataaars'
+import Icon from '@material-ui/core/Icon'
 
 
 export default function AvatarPicker({ formData, updateFormData }) {
@@ -39,45 +40,60 @@ export default function AvatarPicker({ formData, updateFormData }) {
   }
 
   return <>
-    <div>
-      <div className="container">
-        <select onChange={(event) => updateHair(event.target.value)}>
+    <div className="container">
+        <div className="columns">
+
+          <div className="column">Hello</div>
+
+          <div className="column is-four-fifths">
+          
+
+
+      <div className="avatar-select">
+        <select className="avatar-select-option" onChange={(event) => updateHair(event.target.value)}>
           {hairOptions.map((option, i) => {
             return <option value={option.value} key={i}>{option}</option>
           })}
         </select>
-        <select onChange={(event) => updateAccessories(event.target.value)}>
+        <select className="avatar-select-option" onChange={(event) => updateAccessories(event.target.value)}>
           {accessoriesOptions.map((option, i) => {
             return <option value={option.value} key={i}>{option}</option>
           })}
         </select>
-        <select onChange={(event) => updateHairColor(event.target.value)}>
+        <select className="avatar-select-option" onChange={(event) => updateHairColor(event.target.value)}>
           {hairColorOptions.map((option, i) => {
             return <option value={option.value} key={i}>{option}</option>
           })}
         </select>
-        <select onChange={(event) => updateFacialHair(event.target.value)}>
+        <select className="avatar-select-option" onChange={(event) => updateFacialHair(event.target.value)}>
           {facialHairOptions.map((option, i) => {
             return <option value={option.value} key={i}>{option}</option>
           })}
         </select>
-        <select onChange={(event) => updateClothes(event.target.value)}>
+        <select className="avatar-select-option" onChange={(event) => updateClothes(event.target.value)}>
           {clothesOptions.map((option, i) => {
             return <option value={option.value} key={i}>{option}</option>
           })}
         </select>
-        <select onChange={(event) => updateClothesColor(event.target.value)}>
+        <select className="avatar-select-option" onChange={(event) => updateClothesColor(event.target.value)}>
           {clothesColorOptions.map((option, i) => {
             return <option value={option.value} key={i}>{option}</option>
           })}
         </select>
-        <select onChange={(event) => updateSkin(event.target.value)}>
+        <select className="avatar-select-option" onChange={(event) => updateSkin(event.target.value)}>
           {skinColorOptions.map((option, i) => {
             return <option value={option.value} key={i}>{option}</option>
           })}
         </select>
       </div>
-      <div className="avatar-container">
+      </div>
+
+      <div className="column"><Icon></Icon></div>
+
+      </div>
+        
+
+        <div className="avatar-container">
           <Avatar
             style={{ height: '200px' }}
             avatarStyle='Transparent'
@@ -95,6 +111,9 @@ export default function AvatarPicker({ formData, updateFormData }) {
             skinColor={skin}
           />
         </div>
+
+
+        
     </div>
     {!confirmed && <button className="button" onClick={updateAvatarData}>Confirm avatar</button>}
   </>

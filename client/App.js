@@ -4,6 +4,8 @@ import './styles/style.scss'
 import './styles/font_test.scss'
 import axios from 'axios'
 import 'bulma'
+import Moment from 'react-moment'
+
 
 import About from './components/About.js'
 import Footer from './components/Footer.js'
