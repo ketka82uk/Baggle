@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Avatar from 'avataaars'
 import { getLoggedInUserId } from '../lib/auth'
 import Moment from 'react-moment'
+import Icon from '@material-ui/core/Icon'
 
 export default function UserList() {
 
@@ -99,6 +100,11 @@ export default function UserList() {
         {logIn ? <button className="button" onClick={filterFollows}>Bagglers I follow</button> : <div></div>}
         {logIn ? <button className="button" onClick={filterFollowers}>Bagglers who follow me</button> : <div></div>}
         {logIn ? <button className="button" onClick={clearSearch}>Everyone</button> : <div></div>}
+        
+        <div className="tile box">
+          <div className="icon-holder">
+          <Icon>search</Icon>
+          </div>
         <input
           type="text"
           placeholder="Search for fellow bagglers..."
@@ -106,6 +112,7 @@ export default function UserList() {
           onChange={(event) => handleChange(event)}
           value={searchTerm}
         />
+        </div>
         {/* <button className="button" onClick={handleSearch}>Search</button> */}
       </div>
     </div>
@@ -133,7 +140,7 @@ export default function UserList() {
                   <div className="card-content">
                   
                     <p className="title">{user.username}</p>
-                    <p className="subtitle">Rating: {getRating(user)}%</p>
+                    <p className="subtitle is-6">{getRating(user)}% approval!</p>
                     <p>{user.location}</p>
                     <p>{user.inventory.length}</p>
                     <p className="subtitle is-6">Baggling since <Moment format ="Do MMM YYYY">{user.created_at}</Moment></p>

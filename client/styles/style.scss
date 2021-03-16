@@ -3,6 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 $family-sans-serif: 'Poppins', sans-serif;
 $title-font: 'Mouse Memoirs', sans-serif;
+$primary-color: #B24231;
+$secondary-color: #004460;
+$third-color: #61E8E8;
 
 
 // COLORS
@@ -10,7 +13,7 @@ $title-font: 'Mouse Memoirs', sans-serif;
 // Bulma green - #00d1b2
 
 body {
-  background-color: lightgray;
+  background-color: whitesmoke;
   font-family: 'Poppins', sans-serif !important;
 }
 
@@ -18,6 +21,34 @@ body {
   font-family: 'Mouse Memoirs', sans-serif !important;
   font-size: 20px !important;
   font-weight: none;
+}
+
+input {
+  border: none !important;
+  box-shadow: none !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 18px !important;
+}
+
+textarea:focus, input:focus{
+  outline: none
+}
+
+label {
+  font-weight: bold !important;
+}
+
+.icon-holder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 2px solid lightgray;
+  padding-right: 10px;
+}
+
+.red-text {
+  font-weight: bold;
+  color: $primary-color
 }
 
 // ! BULMA OVERRIDE
@@ -31,22 +62,115 @@ body {
 }
 
 .color-link-button {
-  color: white;
+  color: white !important;
+  background-color: $primary-color !important
 }
+
+.center-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.hero-control-button {
+  height: 50px;
+}
+
+
+.input-large {
+  font-size: 30px;
+}
+
+.hero-foot {
+  background-color: $secondary-color
+}
+
 
 // ! NAVBAR
 
 .navbar-logo {
   font-family: 'Mouse Memoirs', sans-serif !important;
   font-size: 40px;
-  color: green;
+  color:$primary-color;
+}
+
+.navbar-brand {
+  background-color: whitesmoke
+}
+
+.navbar-menu {
+  background-color: whitesmoke
+}
+
+.navbar-bold {
+  color: $secondary-color;
+  font-weight: bold;
+}
+
+:hover.navbar-bold {
+  color: $primary-color !important;
+  font-weight: bold;
 }
 
 // ! HOME PAGE
 
-.logo-title {
-  
+.hero-background {
+  background-color: $secondary-color !important;
 }
+
+.hero-button {
+  background-color: $primary-color;
+  font-family: 'Poppins', sans-serif;
+  padding: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  border: none;
+  border-radius: 7px;
+  color: white !important;
+  margin-top: 20px;
+}
+
+:hover.hero-button, :hover.submit-hero {
+  border: 2px solid white;
+  background: none;
+}
+
+.submit-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 70px;
+  margin-left: 10px;
+  background-color: $primary-color;
+  font-family: 'Poppins', sans-serif;
+  padding: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  border: none;
+  border-radius: 7px;
+  color: white;
+}
+
+.logo-title {
+  font-family: 'Mouse Memoirs', sans-serif;
+  font-size: 200px;
+  line-height: 1.2em;
+  color: $primary-color;
+  text-shadow: 2px 2px 2px black;
+}
+
+.hero-subtitle {
+  color: white;
+}
+
+.search-container {
+  margin-top: 50px;
+}
+
+.right-search {
+  border-left: 3px solid $primary-color
+}
+
+
 
 
 // ! PROFILE PAGE
@@ -70,22 +194,21 @@ body {
   display: flex;
   flex-direction: row;
   font-size: 50px;
-  color: #ff3860;
+  color: $primary-color;
   font-family: $title-font
 }
 
 .pos-rating {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid $secondary-color;
   flex: 1;
   flex-direction: row;
   align-items: flex-end;
   font-size: 50px;
-  color: #00d1b2;
+  color: green;
   font-family: $title-font
 }
 
 .banner-profile-image-container {
-  background-color: #363636;
   width: 200px;
   border-radius: 200px;
   padding: 10px;
@@ -103,6 +226,7 @@ body {
 .banner-text {
   font-family: $title-font;
   font-size: 70px;
+  color: white;
   text-shadow: 2px 2px 2px black;
 
 }

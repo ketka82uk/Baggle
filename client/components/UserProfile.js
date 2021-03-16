@@ -8,6 +8,8 @@ import Moment from 'react-moment'
 import Icon from '@material-ui/core/Icon'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import Avatar from '@material-ui/core/Avatar'
+import UserUpdateForm from './UserUpdateForm.js'
+import ImageUpload from './ImageUpload.js'
 
 export default function UserProfile({ match, history }) {
 
@@ -20,20 +22,27 @@ export default function UserProfile({ match, history }) {
   const [logIn, updateLogin] = useState(false)
   const [isProfileOwner, updateIsProfileOwner] = useState(false)
   const [currentUserId, setCurrentUserId] = useState(0)
-  const [commentData, updateCommentData] = useState({
+  const [currentUser, updateCurrentUser] = useState({})
+  const [editState, updateEditState] = useState(false)
+  const [reviewData, updateCommentData] = useState({
     content: '',
     positive_rating: false,
     negative_rating: false
+  })
+  const [formData, updateFormData] = useState({
+    username: '',
+    bio: '',
+    image: '',
   })
 
 
   // ! GETS USER DATA AND COMPARES LOGGED IN USER TO PROFILE OWNER
 
   const userId = Number(match.params.userId)
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     const handleLogin = () => {
-      const token = localStorage.getItem('token')
       if (token) {
         setCurrentUserId(getLoggedInUserId())
       }
@@ -52,6 +61,7 @@ export default function UserProfile({ match, history }) {
         const negativePercent = data.negative_rating / totalRatings * 100
         updatePositiveRating(positivePercent)
         updateNegativeRating(negativePercent)
+        updateFormData({ username: data.username, bio: data.bio })
         updateLoading(false)
       } catch (err) {
         console.log(err)
@@ -59,6 +69,34 @@ export default function UserProfile({ match, history }) {
     }
     fetchData()
   }, [])
+
+  useEffect(() => {
+    async function fetchCurrentUser() {
+      const token = localStorage.getItem('token')
+      try {
+        const { data } = await axios.get('/api/current_user', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        updateCurrentUser(data)
+      } catch (err) {
+        console.log(err.response.data)
+      }
+    }
+    fetchCurrentUser()
+  }, [])
+
+
+
+
+  //! FILTER FUNCTIONS
+
+  function profileFollowsYou() {
+    if (profile.follows.includes(currentUser)) {
+      console.log('They follow me')
+    } else { 'They don\'t follow me' }
+  }
+
+
 
 
   //! DELETE AND EDIT FUNCTIONS
@@ -76,16 +114,6 @@ export default function UserProfile({ match, history }) {
     } catch (err) {
       console.log(err.response.data)
     }
-  }
-
-  async function handlePositive() {
-    console.log(rating)
-    updateRated(true)
-  }
-
-  async function handleNegative() {
-    console.log(rating)
-    updateRated(true)
   }
 
   // ! 9x9 MAPPING FUNCTIONS
@@ -116,25 +144,89 @@ export default function UserProfile({ match, history }) {
 
   // ! HANDLE SUBMIT AND CHANGE FUNCTIONS
 
-
-  function handleCommentChange(event) {
-    updateCommentData({ ...commentData, [event.target.name]: event.target.value })
-  }
-
-  async function handleCommentSubmit(event) {
-    event.preventDefault()
-    const newCommentData = {
-      ...commentData
-    }
+  async function handlePositive() {
+    const originalPositive = profile.positive_rating
+    const newPositive = originalPositive + 1
+    const newProfileData = { positive_rating: newPositive }
     try {
-      const { data } = await axios.post(`/api/users/${userId}/comments`, newCommentData,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-      history.push(`/users/${userId}`)
+      const { data } = await axios.put(`/api/users/${userId}`, newProfileData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      location.reload()
     } catch (err) {
       console.log(err.response.data)
     }
+  }
+
+  async function handleNegative() {
+    const originalNegative = profile.negative_rating
+    const newNegative = originalNegative + 1
+    const newProfileData = { negative_rating: newNegative }
+    try {
+      const { data } = await axios.put(`/api/users/${userId}`, newProfileData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      location.reload()
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
+
+  function handleReviewChange(event) {
+    updateCommentData({ ...reviewData, [event.target.name]: event.target.value })
+  }
+
+  async function handleReviewSubmit(event) {
+    event.preventDefault()
+    const newReviewData = { ...reviewData }
+    try {
+      const { data } = await axios.post(`/api/users/${userId}/review`, newReviewData,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      location.reload()
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
+  async function handleReviewDelete(reviewId) {
+    // event.preventDefault()
+    try {
+      axios.delete(`/api/reviews/${reviewId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      location.reload()
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
+  function handleEditChange(event) {
+    updateFormData({ ...formData, [event.target.name]: event.target.value })
+  }
+
+  async function handleEditSubmit(event) {
+    event.preventDefault()
+    const newFormData = {
+      ...formData
+    }
+    try {
+      await axios.put(`/api/users/${currentUserId}`, newFormData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      console.log('editing data user')
+      updateEditState(false)
+      location.reload()
+    } catch (err) {
+      console.log('ERROR!')
+      console.log(err)
+    }
+  }
+
+  function toggleEditState() {
+    updateEditState(true)
   }
 
 
@@ -153,7 +245,7 @@ export default function UserProfile({ match, history }) {
     // * TITLE SECTION
     */}
 
-      <section className="hero is-dark is-small">
+      <section className="hero is-small">
         <div className="hero-body banner-with-image" style={{
           backgroundImage: `url(${profile.image})`,
           backgroundSize: 'cover'
@@ -177,7 +269,7 @@ export default function UserProfile({ match, history }) {
             <div className="container my-2">
               <ul>
                 <li>
-                  <a>Profile</a>
+                  <a onClick={profileFollowsYou()}>Profile</a>
                 </li>
                 <li>
                   <a>Up for Baggle</a>
@@ -221,29 +313,49 @@ export default function UserProfile({ match, history }) {
                 <div className="grid-header">
                   <h2 className="title">About</h2>
                   {!isCreator(userId) && <button className="button">Contact</button>}
-                  {isCreator(userId) && <button className="button">Edit profile  <Icon>create</Icon></button>}
+                  {isCreator(userId) && <button className="button" onClick={toggleEditState}>Edit profile  <Icon>create</Icon></button>}
                 </div>
 
-                <div className="tags has-addons mb-0">
+                {/* {!isCreator(userId) && <div className="tags has-addons mb-0">
                   <span className="tag">{profile.username}</span>
                   <span className="tag is-primary">follows you</span>
-                </div>
+                </div>}
 
                 <div className="tags has-addons mb-0">
                   <span className="tag">{profile.username}</span>
                   <span className="tag is-danger">doesn't follow you</span>
-                </div>
+                </div> */}
 
+                {editState === false ?
+                  <div className="contents">
+                    <div className="container mb-4">
+                      <label>Username</label>
+                      <p>{profile.username}</p>
+                    </div>
+                    <div className="container mb-4">
+                      <label>Location</label>
+                      <p>{profile.location}</p>
+                    </div>
+                    <div className="container mb-4">
+                      <label>Bio</label>
+                      <p>{profile.bio}</p>
+                    </div>
 
-                <div className="contents">
-                  <label>Username</label>
-                  <p>{profile.username}</p>
-                  <label>Location</label>
-                  <p>{profile.location}</p>
-                  <label>Bio</label>
-                  <p>{profile.bio}</p>
-                  {profile.created_at && <p>Baggling since <Moment format="Do MMM YYYY">{profile.created_at}</Moment></p>}
-                </div>
+                    {profile.created_at && <p>Baggling since <span className="red-text"><Moment format="Do MMM YYYY">{profile.created_at}</Moment></span></p>}
+                  </div> :
+                  <div>
+                    <UserUpdateForm
+                      handleEditSubmit={handleEditSubmit}
+                      handleEditChange={handleEditChange}
+                      formData={formData}
+                    />
+                    <ImageUpload
+                      formData={formData}
+                      updateFormData={updateFormData}
+                    />
+                  </div>
+                }
+
               </div>
             </article>
 
@@ -258,7 +370,7 @@ export default function UserProfile({ match, history }) {
                   <button className="button">See All</button>
                 </div>
                 <AvatarGroup max={10}>
-                
+
                   {profile.follows.map((follow) => {
                     return <Link to={`/users/${follow.id}`}><Avatar
                       alt={follow.username}
@@ -271,7 +383,7 @@ export default function UserProfile({ match, history }) {
                         backgroundSize: 'cover'
                       }} /></Link>
                   })}
-                  
+
                 </AvatarGroup>
               </div>
             </article>
@@ -298,7 +410,7 @@ export default function UserProfile({ match, history }) {
                       value={positiveRating}
                       strokeWidth={8}
                       styles={buildStyles({
-                        pathColor: "#00d1b2",
+                        pathColor: "green",
                         trailColor: "transparent"
                       })}
                     >
@@ -307,15 +419,15 @@ export default function UserProfile({ match, history }) {
                           value={negativeRating}
                           styles={buildStyles({
                             trailColor: "transparent",
-                            pathColor: "#ff3860"
+                            pathColor: "#B24231"
                           })}
                         />
                       </div>
                     </CircularProgressbarWithChildren>
                   </div>
                   <div className="rating-container">
-                    <div className="pos-rating"><p>{positiveRating}% 👍<Icon>thumbUp</Icon></p></div>
-                    <div className="neg-rating"><p>{negativeRating}% 👎</p></div>
+                    <div className="pos-rating"><p>{Math.floor(positiveRating)}% 👍<Icon>thumbUp</Icon></p></div>
+                    <div className="neg-rating"><p>{Math.floor(negativeRating)}% 👎</p></div>
                   </div>
                 </div>
               </div>
@@ -414,19 +526,21 @@ export default function UserProfile({ match, history }) {
         </div>
         <h1>{profile.username}'s Baggle board</h1>
         <h2>Submit a comment or review</h2>
-        {profile.comments.map(comment => {
-          return <article key={comment.id} className="media">
+        {profile.other_reviews.map(review => {
+          return <article key={review.id} className="media">
             <div className="media-content">
               <div className="content">
-                <p className="title">{comment.user.username}</p>
-                <p className="text">{comment.created_at}</p>
-                <p className="text">{comment.content}</p>
+                <p className="title">{review.author.username}</p>
+                <p className="text">{review.created_at}</p>
+                <p className="text">{review.content}</p>
               </div>
             </div>
 
             <div className="container">
-              <button className="button">Delete Comment</button>
-              <button className="button">Edit Comment</button>
+              {isCreator(review.author.id) && <button
+                className="button"
+                onClick={() => handleReviewDelete(review.id)}
+              >Delete Review</button>}
             </div>
           </article>
         })}
@@ -438,8 +552,8 @@ export default function UserProfile({ match, history }) {
                 <textarea
                   className="textarea"
                   placeholder="Make a comment..."
-                  onChange={handleCommentChange}
-                  value={commentData.content}
+                  onChange={handleReviewChange}
+                  value={reviewData.content}
                   name={'content'}
                 />
               </p>
@@ -447,7 +561,7 @@ export default function UserProfile({ match, history }) {
             <div className="field">
               <p className="control">
                 <button
-                  onClick={handleCommentSubmit}
+                  onClick={handleReviewSubmit}
                   className="button is-info"
                 >
                   Submit

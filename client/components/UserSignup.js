@@ -22,12 +22,23 @@ export default function UserSignup({ history }) {
     avatar_facial_hair: '',
     avatar_clothes: '',
     avatar_clothes_color: '',
-    avatar_skin: '',
-    image: ''
+    avatar_skin: ''
   })
 
+  const [errors, updateErrors] = useState({
+    username: '',
+    email: '',
+    password: '',
+    bio: '',
+    location: ''
+  })
+
+  const [registrationSuccess, updateRegistrationSuccess] = useState(false)
+
   function handleChange(event) {
-    updateFormData({ ...formData, [event.target.name]: event.target.value })
+    const { name, value } = event.target
+    updateFormData({ ...formData, [name]: value })
+    updateErrors({ ...errors, [name]: '' })
   }
 
   async function handleSubmit(event) {
@@ -36,23 +47,31 @@ export default function UserSignup({ history }) {
       ...formData
     }
     delete newFormData.search
-    console.log(newFormData)
     try {
+      for (const [key, value] of Object.entries(newFormData)) {
+        if (value === '') {
+          console.log(`error found in ${key}`)
+          updateErrors({
+            ...errors,
+            [key]: `Please provide ${key}` 
+          })
+          return
+        }
+      }
+
       const { data } = await axios.post('api/signup', newFormData)
+      updateRegistrationSuccess(true)
       console.log('signing up user')
       history.push('/login')
     } catch (err) {
       console.log('ERROR!')
-      console.log(err.response.data)
+      console.log({ err })
     }
   }
-
+  console.log(formData)
+  console.log(errors)
 
   return <div className="main">
-
-    {/*
-    // * TITLE SECTION
-    */}
 
     <section className="section">
       <div className="container">
@@ -60,16 +79,13 @@ export default function UserSignup({ history }) {
       </div>
     </section>
 
-    {/*
-    // * BODY SECTION
-    */}
-
     <section className="section">
       <div className="container">
         <AvatarPicker
           formData={formData}
           updateFormData={updateFormData} />
       </div>
+      {/* {errors.username && <small className="has-text-danger">Invalid username</small>} */}
       <div className="container">
 
         <UserSignupForm
@@ -77,6 +93,8 @@ export default function UserSignup({ history }) {
           handleSubmit={handleSubmit}
           formData={formData}
           updateFormData={updateFormData}
+          errors={errors}
+          registrationSuccess={registrationSuccess}
         />
 
       </div>

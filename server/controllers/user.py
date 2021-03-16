@@ -17,10 +17,12 @@ router = Blueprint(__name__, "users")
 
 @router.route("/signup", methods=["POST"])
 def signup():
-    try:
-        user = user_schema.load(request.json)
-    except ValidationError as e:
-        return { 'errors': e.messages, 'messages': 'Something went wrong.' }
+    # try:
+    # print('something went well')
+    user = user_schema.load(request.json)
+    # except ValidationError as e:
+    #     print('something went wrong')
+    #     return { 'errors': e.messages, 'messages': 'Something went wrong.' }, 401
     user.save()
     return user_schema.jsonify(user)
 
@@ -37,7 +39,7 @@ def login():
         return { "message": "Unauthorized" }
 
     token = user.generate_token()
-    return { "token": token, "message": "login successfull" }
+    return { "token": token, "message": "login successfull" }, 201
 
 #GET all users
 
@@ -132,6 +134,20 @@ def get_all_user_comments():
         return { "errors": e.messages, "messages": "Something went wrong" }
     return comment_schema.jsonify(comments, many=True), 200
 
+#POST comment on another user
+
+# @router.route("/users/<int:user1_id>/comments/<int:user2_id>", methods=["POST"])
+# def review_user(user1_id, user2_id):
+#     comment_dict = request.json
+#     user1 = User.query.get(user1_id)
+#     user2 = User.query.get(user2_id)
+#     comment = comment_schema.load(comment_dict)
+#     comment.user = author
+#     print(comment.user)
+#     comment.reviewee = reviewee
+#     print(comment.reviewee)
+#     comment.save()
+#     return comment_schema.jsonify(comment)
 
 
 @router.route("/users/<int:user_id>/comments/<int:comment_id>", methods=["DELETE"])
