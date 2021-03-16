@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { isCreator } from '../lib/auth'
+import { isCreator, getLoggedInUserId } from '../lib/auth'
 import { Link } from 'react-router-dom'
 import '../styles/style.scss'
 import Icon from '@material-ui/core/Icon'
@@ -13,8 +13,9 @@ export default function ItemSingle({ match, history }) {
   const itemid = match.params.itemid
   const [title, setTitle] = useState('')
   const [item, updateItem] = useState({})
+  const [userId, setUserId] = useState('')
   const [offeredList, updateOfferedList] = useState([])
-  const [currentUser, updateCurrentUser] = useState([])
+  const [currentUser, updateCurrentUser] = useState({})
   const [loading, updateLoading] = useState(true)
   const [wishlisted, updateWishlisted] = useState(0)
   const [userData, updateUserData] = useState([])
@@ -22,6 +23,8 @@ export default function ItemSingle({ match, history }) {
   const [currentUserInventory, updateCurrentUserInventory] = useState([])
   const [editState, updateEditState] = useState(false)
   const [singleItem, getSingleItem] = useState({})
+  const [logIn, updateLogin] = useState(false)
+  const [onWishlist, toggleOnWishlist] = useState(false)
 
   const token = localStorage.getItem('token')
   const [commentData, updateCommentData] = useState('')
@@ -56,6 +59,19 @@ export default function ItemSingle({ match, history }) {
       updateFormData(mappedData)
     }
     fetchData()
+  }, [])
+
+  useEffect(() => {
+    const handleLogin = () => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        updateLogin(true)
+        setUserId(getLoggedInUserId())
+      } else {
+        updateLogin(false)
+      }
+    }
+    handleLogin()
   }, [])
 
 
@@ -193,23 +209,41 @@ export default function ItemSingle({ match, history }) {
 
   // ! CATHY
 
-  async function fetchCurrentUser() {
-    const token = localStorage.getItem('token')
-    try {
-      const { data } = await axios.get('/api/current_user', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      updateCurrentUser(data)
-    } catch (err) {
-      console.log(err.response.data)
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const { data } = await axios.get(`/api/users/${userId}`)
+        // console.log(data)
+        updateCurrentUser(data)
+      } catch (err) {
+        console.log(err)
+      }
     }
-  }
+    fetchUser()
+  }, [userId])
+
+  console.log(currentUser.wishlist)
+
+  useEffect(() => {
+    if (!currentUser.wishlist) return
+    const wishlist = currentUser.wishlist
+    wishlist.forEach((wishItem) => {
+      if (parseInt(itemid) === parseInt(wishItem.id)) {
+        console.log('found on wishlist!')
+        console.log(itemid, wishItem.id)
+        toggleOnWishlist(true)
+        return
+      } else {
+        console.log(itemid, wishItem.id)
+        // toggleOnWishlist(false)
+      }
+    })
+  }, [currentUser])
 
 
   // console.log(item.wishlisted)
 
   useEffect(() => {
-    fetchCurrentUser()
     updateLoading(false)
   }, [])
 
@@ -233,8 +267,18 @@ export default function ItemSingle({ match, history }) {
     } catch (err) {
       console.log(err.response.data)
     }
-
   }
+
+  console.log(onWishlist)
+
+  // async function handleRemoveFromWishlist() {
+  //   const oldWishlist = currentUser.wishlist
+  //   console.log(oldWishlist)
+  //   const newList = oldWishlist.filter((item) => {
+  //     return item['id'] !== itemid
+  //   })
+  //   console.log(newList)
+  // }
 
   if (loading) {
     return <div>Page is Loading</div>
@@ -355,9 +399,11 @@ export default function ItemSingle({ match, history }) {
             {isCreator(item.owner['id']) && <button id={offeredItem.id} className='is-warning' onClick={(e) => Swap(e.target.id)}>SWAP!</button>}
           </div>
         </div>
-
       })}
-      <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
+
+      {(logIn && !onWishlist) ? <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
+        : <button className="button">Added to wishlist</button>
+      }
 
       {item.comments && item.comments.map(comment => {
         return <article key={comment._id} className="media">

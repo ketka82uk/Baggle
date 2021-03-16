@@ -135,7 +135,7 @@ export default function ItemList({ match, location }) {
     <div className="container">
       <div className="columns is-multiline is-mobile">
         {filterItems().map((item, index) => {
-          return <div key={index} className="column is-one-third-desktop is-half-tablet is-half-mobile">
+          return <div key={index} className="column is-one-quarter-desktop is-half-tablet is-half-mobile">
             <Link to={`/items/${item.id}`}>
               <div className="card">
                 <div className="card-content">
