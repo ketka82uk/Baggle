@@ -61,7 +61,7 @@ export default function ItemForm({ formData, handleSubmit, handleChange, updateF
         </div>
 
         <div className="field"></div>
-        <label className="label">typeof</label>
+        <label className="label">Type</label>
         <div className="control">
           <div className="select">
             <select
@@ -76,7 +76,7 @@ export default function ItemForm({ formData, handleSubmit, handleChange, updateF
         </div>
 
         <div className="field">
-          <label className="label">category</label>
+          <label className="label">Category</label>
           <div className="control">
             <div className="select">
               <select
@@ -93,8 +93,8 @@ export default function ItemForm({ formData, handleSubmit, handleChange, updateF
               </select>
             </div>
           </div>
-
         </div>
+        
         <div className="field">
           <label className="label">description</label>
           <div className="control">

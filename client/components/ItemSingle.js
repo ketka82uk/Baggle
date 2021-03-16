@@ -3,6 +3,8 @@ import axios from 'axios'
 import { isCreator } from '../lib/auth'
 import { Link } from 'react-router-dom'
 import '../styles/style.scss'
+import Icon from '@material-ui/core/Icon'
+import ItemUpdateForm from './ItemUpdateForm'
 
 
 
@@ -18,9 +20,12 @@ export default function ItemSingle({ match, history }) {
   const [userData, updateUserData] = useState([])
   const [modalState, setModalState] = useState(false)
   const [currentUserInventory, updateCurrentUserInventory] = useState([])
+  const [editState, updateEditState] = useState(false)
+  const [singleItem, getSingleItem] = useState({})
 
   const token = localStorage.getItem('token')
   const [commentData, updateCommentData] = useState('')
+
   useEffect(() => {
     async function fetchItem() {
       try {
@@ -34,10 +39,25 @@ export default function ItemSingle({ match, history }) {
     fetchItem()
   }, [])
 
+  const [formData, updateFormData] = useState({
+    name: '',
+    typeof: '',
+    category: '',
+    description: '',
+    image: '',
+    listed: 'true'
+  })
 
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await axios.get(`/api/items/${itemid}`)
+      getSingleItem(data)
+      const mappedData = { ...data }
+      updateFormData(mappedData)
+    }
+    fetchData()
+  }, [])
 
-
-  // console.log(itemid)
 
   async function fetch(offeredItemid) {
     try {
@@ -102,6 +122,11 @@ export default function ItemSingle({ match, history }) {
     updateCommentData(event.target.value)
   }
 
+  function handleEditChange(event) {
+    const { name, value } = event.target
+    updateFormData({ ...formData, [name]: value })
+  }
+
   async function handleComment(e) {
     e.preventDefault()
     const newCommentData = { content: commentData }
@@ -118,6 +143,23 @@ export default function ItemSingle({ match, history }) {
     // updateItem(data)
   }
 
+  async function handleEditSubmit(event) {
+    event.preventDefault()
+    const newFormData = {
+      ...formData
+    }
+    try {
+      await axios.put(`/api/items/${itemid}`, newFormData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      console.log('editing item')
+      updateEditState(false)
+      location.reload()
+    } catch (err) {
+      console.log('ERROR!')
+      console.log(err)
+    }
+  }
 
 
 
@@ -253,24 +295,56 @@ export default function ItemSingle({ match, history }) {
       <figure className='image'>
         <img src={item.image} alt={item.name} />
       </figure>
-      {isCreator(item.owner['id']) && <button
-        className="button is-danger"
-        onClick={handleDelete}
-      >☠️ Delete Item</button>}
-      {isCreator(item.owner.id) && <Link
-        to={`/items/${itemid}`}
-        className="button is-secondary"
-      >Update Item</Link>}
-
     </div>
 
     <div className="column">
-      <h1 className="title">{item.name}</h1>
+      <article className="tile box is-vertical">
+        <div className="contents">
+          <div className="grid-header">
+            <h2 className="title">About</h2>
+            {isCreator(item.owner['id']) && <button className="button is-danger" onClick={handleDelete} >☠️ Delete Item</button>}
+            {isCreator(item.owner.id) && <button className="button is-info" onClick={() => updateEditState(true)}>Edit Item <Icon>create</Icon></button>}
+          </div>
+
+          {editState === false ?
+            <div className="contents">
+              <div className="container mb-4">
+                <label>Name</label>
+                <p>{item.name}</p>
+              </div>
+              <div className="container mb-4">
+                <label>Type</label>
+                <p>{item.typeof}</p>
+              </div>
+              <div className="container mb-4">
+                <label>Category</label>
+                <p>{item.category}</p>
+              </div>
+              <div className="container mb-4">
+                <label>Description</label>
+                <p>{item.description}</p>
+              </div>
+            </div> :
+            <div>
+              <ItemUpdateForm
+                handleEditSubmit={handleEditSubmit}
+                handleEditChange={handleEditChange}
+                formData={formData}
+              />
+              {/* <ImageUpload
+                formData={formData}
+                updateFormData={updateFormData}
+              /> */}
+            </div>}
+        </div>
+      </article>
+
+      {/* <h1 className="title">{item.name}</h1>
       <h2 className="subtitle">{`Type of : ${item.typeof}`}</h2>
       <h2 className="subtitle">{`Category: ${item.category}`}</h2>
       <h2 className="subtitle">{`Description: ${item.description}`}</h2>
       {/* <h2 className="subtitle">{`Image: ${item.owner.image}`}</h2> */}
-      <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
+      {/* <h2 className="subtitle">{`Availability: ${item.listed}`}</h2> */}
 
       {offeredList.map((offeredItem, index) => {
         return <div key={offeredItem.id} >
