@@ -249,112 +249,132 @@ export default function ItemSingle({ match, history }) {
       <button onClick={() => toggleModal()}>Baggle</button>
     </div>
     }
+
     <div className="column">
       <figure className='image'>
-        <img src={item.image} alt={item.name} />
+        <img src={item.image} alt={item.name} width='100px' />
       </figure>
       {isCreator(item.owner['id']) && <button
         className="button is-danger"
         onClick={handleDelete}
       >☠️ Delete Item</button>}
-      {isCreator(item.owner.id) && <Link
+      {isCreator(item.owner['id']) && <Link
         to={`/items/${itemid}`}
         className="button is-secondary"
       >Update Item</Link>}
 
     </div>
+    <article className="tile box is-vertical">
+      <div className="contents">
+        <div className="grid-header">
+          <h1 className="title">{item.name}</h1>
 
-    <div className="column">
-      <h1 className="title">{item.name}</h1>
-      <h2 className="subtitle">{`Type of : ${item.typeof}`}</h2>
-      <h2 className="subtitle">{`Category: ${item.category}`}</h2>
-      <h2 className="subtitle">{`Description: ${item.description}`}</h2>
-      {/* <h2 className="subtitle">{`Image: ${item.owner.image}`}</h2> */}
-      <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
-
-      {offeredList.map((offeredItem, index) => {
-        return <div key={offeredItem.id} >
-          <div>
-            <div id={offeredItem.id} >{offeredItem.name}</div>
-          </div>
-          <div>
-            {isCreator(item.owner['id']) && <button id={offeredItem.id} className='is-warning' onClick={(e) => Swap(e.target.id)}>SWAP!</button>}
-          </div>
         </div>
+      </div>
+      <article />
+      <div className="column">
 
-      })}
-      <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
 
-      {
 
-      }
-      {item.comments && item.comments.map(comment => {
-        return <article key={comment._id} className="media">
-          <div className="media-content">
-            <div className="content">
-              <p className="subtitle">
-                {comment.user.username}
-              </p>
-              <p>{comment.text}</p>
+        <h2 className="subtitle">{`${item.description}`}</h2>
+
+        <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
+
+        {offeredList.map((offeredItem, index) => {
+          return <div key={offeredItem.id} >
+            <div>
+              <div id={offeredItem.id} >{offeredItem.name}</div>
+            </div>
+            <div>
+              {isCreator(item.owner['id']) && <button id={offeredItem.id} className='button is-warning' onClick={(e) => Swap(e.target.id)}>Click to Swap</button>}
             </div>
           </div>
-          {
 
-          }
-          {isCreator(comment.user.id) && <div className="media-right">
-            <button
-              className="delete"
-              onClick={() => handleDeleteComment(comment.id)}>
-            </button>
-          </div>}
-        </article>
-      })}
+        })}
+        <button className='button is-primary' onClick={handleAddToWishlist}>Add to wishlist</button>
 
-      {
-        <figure className="image is-128x128">
-          <img className="is-rounded" src={currentUser.profile_image} />
-        </figure>
+        {
 
-      }
+        }
+        
+        {item.comments && item.comments.map(comment => {
+          return <article key={comment._id} className="media">
+            <div className="media-content">
+              <div className="content">
+                <p className="subtitle">
+                  {comment.user.username}
+                </p>
+                <p>{comment.text}</p>
+              </div>
+            </div>
+            {
 
-      <article className="media">
-        <div className="media-content">
-          <div className="field">
-            <p className="control">
-              <textarea
-                className="textarea"
-                placeholder="Make a comment.."
-                onChange={event => setText(event.target.value)}
-                value={text}
-              >
-                {text}
-              </textarea>
-            </p>
-          </div>
-          <div className="field">
-            <p className="control">
+            }
+            {isCreator(comment.user.id) && <div className="media-right">
               <button
-                onClick={handleComment}
-                className="button is-info"
-              >
-                Submit
+                className="delete"
+                onClick={() => handleDeleteComment(comment.id)}>
               </button>
-            </p>
+            </div>}
+          </article>
+        })}
+
+
+
+        <article className="media">
+          <div className="media-content">
+            <div className="field">
+              <p className="control">
+                <textarea
+                  className="textarea"
+                  placeholder="Make a comment.."
+                  onChange={event => setText(event.target.value)}
+                  value={text}
+                >
+                  {text}
+                </textarea>
+              </p>
+            </div>
+            <div className="field">
+              <p className="control">
+                <button
+                  onClick={handleComment}
+                  className="button is-info"
+                >
+                  Submit
+              </button>
+              </p>
+
+            </div>
 
           </div>
 
-        </div>
+
+
+        </article>
+      
+      
+      </div>
+    </article>
+  </div>
 
 
 
-      </article>
-    </div>
-  </div >
+
+
+
+
+
+
 
 }
 
 
-
+{/* <div className="container">
+  <div className="notification">
+    This container is <strong>centered</strong> on desktop.
+  </div>
+</div> */}
 
 
 
@@ -402,3 +422,71 @@ export default function ItemSingle({ match, history }) {
 //   </div>
 
 // })}
+
+
+
+
+
+{/* <div className="column">
+      <h1 className="title">{item.name}</h1>
+      <h2 className="subtitle">{` ${item.typeof}`}</h2>
+      <h2 className="subtitle">{` ${item.category}`}</h2>
+      <h2 className="subtitle">{`${item.description}`}</h2>
+      {/* <h2 className="subtitle">{`Image: ${item.owner.image}`}</h2> */}
+      // <h2 className="subtitle">{`Availability: ${item.listed}`}</h2> */}
+
+
+      // <article className="tile box is-vertical">
+      //         <div className="contents">
+      //           <div className="grid-header">
+      //           <h1 className="title">{item.name}</h1>
+      //             <button className="button">See All</button>
+      //           </div>
+      //           </div>
+      //           <article/>
+      //           <article className="tile box is-vertical">
+      //         <div className="contents">
+      //           <div className="grid-header">
+      //           <h2 className="subtitle">{` ${item.typeof}`}</h2>
+      //             <button className="button">See All</button>
+      //           </div>
+      //           </div>
+      //           <article/>
+
+
+
+
+      // <article className="tile box is-vertical">
+      //         <div className="contents">
+      //           <div className="grid-header">
+      //             <h2 className="title">About</h2>
+
+      //           </div>
+
+
+
+
+      //             <div className="contents">
+      //               <div className="container mb-4">
+      //                 <label>Username</label>
+      //                 <p>{profile.username}</p>
+      //               </div>
+      //               <div className="container mb-4">
+      //                 <label>Location</label>
+      //                 <p>{profile.location}</p>
+      //               </div>
+      //               <div className="container mb-4">
+      //                 <label>Bio</label>
+      //                 <p>{profile.bio}</p>
+      //               </div>
+
+
+      //             </div> 
+      //             <div>
+
+
+      //             </div>
+
+
+      //         </div>
+      //       </article>
