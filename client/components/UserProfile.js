@@ -730,11 +730,7 @@ export default function UserProfile({ match, history }) {
 
             <div className="container">
               {isCreator(review.author.id) && <button
-<<<<<<< HEAD
                 className="button is-danger"
-=======
-                className="button"
->>>>>>> newbranch
                 onClick={() => handleReviewDelete(review.id)}
               >Delete Review</button>}
             </div>

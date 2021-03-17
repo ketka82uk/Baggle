@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { debounce } from 'lodash'
 import sortedItems from './sortItems'
+import Moment from 'react-moment'
 
 const debouncedSave = debounce((query, updateSearchResults) => {
   axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?country=gb&access_token=pk.eyJ1IjoidXJ1MzgiLCJhIjoiY2ttNnBveXQ2MHFnaDJ4anhtdmhnbHBmeSJ9.OWgGgvZU2cJlbxp-jAJh_g`)
@@ -141,7 +142,10 @@ export default function ItemList({ match, location }) {
                 <div className="card-content">
                   <div className="media">
                     <div className="media-content">
+                      <p className="subtitle is-6">{item.owner.username}'s</p>
                       <p className="title is-4">{item.name}</p>
+                      <p className="subtitle is-6">{item.owner.town}</p>
+                      <p className="small-text">Created <Moment fromNow ago>{item.created_at}</Moment> ago.</p>
                     </div>
                   </div>
                 </div>
