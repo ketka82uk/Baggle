@@ -356,7 +356,7 @@ export default function ItemSingle({ match, history }) {
 
                 {offeredList.map((offeredItem, index) => {
                   return <div key={offeredItem.id} >
-                    <h2>Items offered for {item.name}</h2>
+                    <h2>Items offered for {item.name} :</h2>
                     <div id={offeredItem.id} > {offeredItem.name}</div>
 
                     <div>
