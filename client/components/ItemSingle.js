@@ -26,6 +26,7 @@ export default function ItemSingle({ match, history }) {
   const [logIn, updateLogin] = useState(false)
   const [onWishlist, toggleOnWishlist] = useState(false)
 
+  const [modalStateText, setModalStateText] = useState('')
   const token = localStorage.getItem('token')
   const [commentData, updateCommentData] = useState('')
 
@@ -75,7 +76,7 @@ export default function ItemSingle({ match, history }) {
   }, [])
 
 
-  async function fetch(offeredItemid) {
+  async function Offer(offeredItemid) {
     try {
       console.log(offeredItemid)
       console.log(itemid)
@@ -130,10 +131,7 @@ export default function ItemSingle({ match, history }) {
     setModalState(!modalState)
   }
 
-  // function updateOffer(e) {
-  //   updateOfferedItemid(e.target.id)
-  //   fetch()
-  // }
+  
   function handleChange(event) {
     updateCommentData(event.target.value)
   }
@@ -222,7 +220,7 @@ export default function ItemSingle({ match, history }) {
     fetchUser()
   }, [userId])
 
-  console.log(currentUser.wishlist)
+  
 
   useEffect(() => {
     if (!currentUser.wishlist) return
@@ -241,7 +239,7 @@ export default function ItemSingle({ match, history }) {
   }, [currentUser])
 
 
-  // console.log(item.wishlisted)
+  
 
   useEffect(() => {
     updateLoading(false)
@@ -263,22 +261,25 @@ export default function ItemSingle({ match, history }) {
         {
           headers: { Authorization: `Bearer ${token}` }
         })
-      console.log("added to wishlist")
+      console.log('added to wishlist')
     } catch (err) {
       console.log(err.response.data)
     }
   }
 
-  console.log(onWishlist)
+  const toggleModalText = () => {
+    setModalState(!modalState)
+    if (modalState) {
+      setModalStateText('is-active')
+    } else {
+      setModalStateText('')
+    }
+  }
 
-  // async function handleRemoveFromWishlist() {
-  //   const oldWishlist = currentUser.wishlist
-  //   console.log(oldWishlist)
-  //   const newList = oldWishlist.filter((item) => {
-  //     return item['id'] !== itemid
-  //   })
-  //   console.log(newList)
-  // }
+
+
+
+  
 
   if (loading) {
     return <div>Page is Loading</div>
@@ -289,53 +290,11 @@ export default function ItemSingle({ match, history }) {
   if (!item.owner) {
     return null
   }
-  // console.log(currentUserInventory)
-  // console.log(currentUser['inventory.id'])
-
-
-  // if (item) {
-  //   console.log('ownerid:')
-  //   // console.log(item.owner['id'])
-  //   // const owner = item.owner
-  //   console.log(item.owner['id'])
-  // }
+  
 
   return <div className="container">
     <div className="columns">
-      {<div className="Mod">
-        <div className={`modalBackground modalShowing-${modalState}`}>
-          <div className="innerModal">
-            <div className="modalImage">
-              <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
-              />
-            </div>
-            <div className="modalText">
-              <h2> Would you like to make an offer?</h2>
 
-              <form action="">
-                {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
-                  const available = item.listed
-                  return <div key={index}>
-                    <div>
-                      {available ? <button className='button is-primary' id={item.id} onClick={(e) => fetch(e.target.id)}>  {item.id} {item.name}  </button> :
-                        <button className='button is-warning'> {item.name} </button>
-                      }
-                    </div>
-                  </div>
-
-                })}
-              </form>
-              <button className="exit" onClick={() => toggleModal()}>
-                Exit
-              </button>
-
-            </div>
-          </div>
-
-        </div>
-        <button onClick={() => toggleModal()}>Baggle</button>
-      </div>
-      }
 
       <div className="column">
         <figure className='image'>
@@ -381,35 +340,76 @@ export default function ItemSingle({ match, history }) {
                       handleEditChange={handleEditChange}
                       formData={formData}
                     />
-                    {/* <ImageUpload
-                formData={formData}
-                updateFormData={updateFormData}
-              /> */}
+                    
                   </div>}
               </div>
             </article>
 
 
+            <div className="tile box is-vertical">
+              <div className="contents">
 
 
-            <h2 className="subtitle">{`${item.description}`}</h2>
+                
 
-            <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
+                <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
 
-            {offeredList.map((offeredItem, index) => {
-              return <div key={offeredItem.id} >
+                {offeredList.map((offeredItem, index) => {
+                  return <div key={offeredItem.id} >
+                    <h2>Items offered for {item.name}</h2>
+                    <div id={offeredItem.id} > {offeredItem.name}</div>
 
-                <div id={offeredItem.id} >{offeredItem.name}</div>
+                    <div>
+                      {isCreator(item.owner['id']) && <button id={offeredItem.id} className='button is-warning pr-1' onClick={(e) => Swap(e.target.id)}>Click to Swap</button>}
+                    </div>
+                  </div>
 
-                <div>
-                  {isCreator(item.owner['id']) && <button id={offeredItem.id} className='button is-warning' onClick={(e) => Swap(e.target.id)}>Click to Swap</button>}
-                </div>
+
+                })}
+
+
               </div>
+            </div>
+            <div className={`modal ${modalStateText}`}>
+              <div className="modal-background"></div>
+              <div className="modal-card">
+                <header className="modal-card-head">
+                  <h2> Would you like to make an offer?</h2>
+                </header>
+                <section className="modal-card-body">
+                  <div className="contents">
 
 
-            })}
 
-            {(logIn && !onWishlist) ? <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
+
+                    <form action="">
+                      {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
+                        const available = item.listed
+                        return <div key={index}>
+                          <div>
+                            {available ? <button className='button is-primary' id={item.id} onClick={(e) => Offer(e.target.id)}>  {item.id} {item.name}  </button> :
+                              <button className='button is-warning'> {item.name} </button>
+                            }
+                          </div>
+                        </div>
+
+                      })}
+                    </form>
+
+
+                  </div>
+                </section>
+                <footer className="modal-card-foot">
+
+                  <button className="button" onClick={() => toggleModalText()}>Close</button>
+                </footer>
+              </div>
+            </div>
+            {(logIn && <button className='button is-info mr-2'onClick={toggleModalText}>Baggle</button>
+            )}
+             
+            {(logIn && !onWishlist) ? <button className='button is-info'onClick={handleAddToWishlist}>Add to wishlist</button>
+
               : <button className="button">Added to wishlist</button>
             }
 
@@ -481,5 +481,8 @@ export default function ItemSingle({ match, history }) {
     </div>
   </div>
 }
+
+
+
 
 
