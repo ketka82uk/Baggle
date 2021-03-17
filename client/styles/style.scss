@@ -15,6 +15,7 @@ $third-color: #61E8E8;
 body {
   background-color: whitesmoke;
   font-family: 'Poppins', sans-serif !important;
+  font-size: 18px !important;
 }
 
 .baggle {
@@ -79,6 +80,10 @@ label {
 
 :hover.white-link {
   color: $primary-color !important;
+}
+
+.emoji {
+  font-size: 50px !important;
 }
 
 // ! BULMA OVERRIDE
@@ -178,7 +183,7 @@ label {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 70px;
+  height: 85px;
   margin-left: 10px;
   background-color: $primary-color;
   font-family: 'Poppins', sans-serif;
@@ -215,6 +220,42 @@ label {
   font-size: 20px;
 }
 
+.large-home-title {
+  font-size: 50px;
+}
+
+.home-image-container {
+  height: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.home-image-right {
+  margin-left: -80px;
+
+}
+
+.container-welcome {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.homepage-copy {
+  font-size: 20px
+}
+
+.carousel-section {
+  background-color: $secondary-color
+}
+
 .carousel-card {
   height: 320px;
 }
@@ -223,6 +264,12 @@ label {
 :hover.carousel-card {
   transform: scale(1.2);
   color: $primary-color !important;
+}
+
+.carousel-header {
+  color: $primary-color;
+  font-size: 70px;
+  font-family: 'Mouse Memoirs', sans-serif !important;
 }
 
 // ! SIGNUP PAGE

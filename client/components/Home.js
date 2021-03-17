@@ -34,6 +34,7 @@ export default function Home({ history }) {
   const [logIn, updateLogin] = useState(false)
   const [userId, setUserId] = useState('')
   const [userLocation, setUserLocation] = useState({})
+  const [userTown, setUserTown] = useState('')
 
   // const [categories, updateCategories] = useState([])
 
@@ -65,6 +66,7 @@ export default function Home({ history }) {
       try {
         const { data } = await axios.get(`/api/users/${userId}`)
         setUserLocation({ lat: data.lat, long: data.lng })
+        setUserTown(data.town)
       } catch (err) {
         console.log(err)
       }
@@ -111,6 +113,8 @@ export default function Home({ history }) {
     updatePostings(!postings)
   }
 
+  console.log(userTown)
+
   return <div className="main">
 
     <section className="hero hero-background" style={{ backgroundImage: 'url(https://i.imgur.com/R8agYgr.png)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%' }}>
@@ -126,7 +130,7 @@ export default function Home({ history }) {
 
               <div className="columns">
 
-                <div className="column is-5">
+                <div className="column is-8">
                   <div className="container">
                     <p className="logo-title">Baggle</p>
                     <p
@@ -137,61 +141,63 @@ export default function Home({ history }) {
                     <Link to={'/signup'}><button className="hero-button">Sign up</button></Link>
                   </div>
 
+                  <div className="search-container">
+                    <form onSubmit={handleSubmit}>
+                      <div className="tile is-8 search-container">
+
+                        <div className="tile box center-row">
+                          <div className="left-search">
+                            <input
+                              type="text"
+                              placeholder="What?"
+                              className="input is-info"
+                              onChange={(event) => handleChange(event)}
+                              value={searchTerm}
+                            />
+                          </div>
+                          <div className="right-search">
+                            <input
+                              className="input is-info"
+                              id="input-width"
+                              type="text"
+                              placeholder="Where?"
+                              onChange={createSearchQuery}
+                              value={searchLocation}
+                              autoComplete="off"
+                            />
+                          </div>
+                        </div>
+
+                        <button className="submit-hero">Submit</button>
+
+
+                        {searchResults.length > 0 &&
+                          <div className='dropdown is-active is-fullwidth'>
+                            <div className='dropdown-menu'>
+                              <div className='dropdown-content'>
+                                {searchResults.map((place) => {
+                                  return <div key={place.id}>
+                                    <div className='dropdown-item' id='cardHover' onClick={() => handlePlaceSelect(place)}>{place.placeName}</div>
+                                    <hr className="dropdown-divider"></hr></div>
+                                })}
+                              </div>
+                            </div>
+                          </div>}
+
+
+                      </div>
+                    </form>
+                  </div>
+
                 </div>
 
-                <div className="column is-7">
+                <div className="column is-4">
                 </div>
 
               </div>
             </div>
 
-            <div className="search-container">
-              <form onSubmit={handleSubmit}>
-                <div className="tile is-8 search-container">
 
-                  <div className="tile box center-row">
-                    <div className="left-search">
-                      <input
-                        type="text"
-                        placeholder="What?"
-                        className="input is-info"
-                        onChange={(event) => handleChange(event)}
-                        value={searchTerm}
-                      />
-                    </div>
-                    <div className="right-search">
-                      <input
-                        className="input-large pl-4"
-                        id="input-width"
-                        type="text"
-                        placeholder="Where?"
-                        onChange={createSearchQuery}
-                        value={searchLocation}
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-
-                  <button className="submit-hero">Submit</button>
-
-
-                  {searchResults.length > 0 &&
-                    <div className='dropdown is-active is-fullwidth'>
-                      <div className='dropdown-menu'>
-                        <div className='dropdown-content'>
-                          {searchResults.map((place) => {
-                            return <div key={place.id}>
-                              <div className='dropdown-item' id='cardHover' onClick={() => handlePlaceSelect(place)}>{place.placeName}</div>
-                              <hr className="dropdown-divider"></hr></div>
-                          })}
-                        </div>
-                      </div>
-                    </div>}
-
-
-                </div>
-              </form>
-            </div>
           </div>
         </div>
       </div>
@@ -231,30 +237,68 @@ export default function Home({ history }) {
             </div>
           </div>
 
-          <div className="main-title-text">
-            <p>Don't bin it, <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>baggle it!</span></p>
+
+
+          <div className="columns">
+
+            <div className="column is-3">
+              <div className="home-image-container">
+                <img src="https://i.imgur.com/oSz7gTP.png" />
+                <img src="https://i.imgur.com/5LGg4Kl.png" className="home-image-right" />
+              </div>
+              <div className="card">
+                <div className="card-content">
+                  <p className="quote-text">What can I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
+                  <p className="text">Anything you like! Have an item you no longer need? Baggle it! A skill that you can exchange? Baggle it! Upload your Baggle and wait for others to make offers or use it to baggle for other items.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="column is-6">
+              <div className="container-welcome">
+              <div className="main-title-text has-text-centered">
+                <p className="large-home-title">Welcome to <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '80px' }}>Baggle!</span></p>
+              </div>
+
+              
+                <div className="content px-4">
+                <p className="homepage-copy">At Baggle, we're bringing back the age-old art of bartering, saving you money and helping you connect with you community.</p>
+              <p className="homepage-copy">With Baggle you can find all the things you love, for free! Come and join our thriving community of Bagglers to make room, make swaps and make friends!</p>
+                </div>
+             
+            </div>
           </div>
 
-
-
-
-
-
-
-          With Baggle you can find all the things you love, for free! Come and join our thriving community of Bagglers to make room, make swaps and make friends! Don't bin it, Baggle it!
-        
+          <div className="column is-3">
+            <div className="home-image-container">
+              <img src="https://i.imgur.com/scvXmVz.png" />
+              <img src="https://i.imgur.com/fDkEjlD.png" className="home-image-right" />
+            </div>
+            <div className="card">
+                <div className="card-content">
+                  <p className="quote-text">How do I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
+                  <p className="text">Browse the site for items and nearby Bagglers to find something you like. Then hit that Baggle Button! Just make your you have something to Baggle!</p>
+                </div>
+              </div>
+          </div>
+          </div>
         </article>
       </div>
     </section>
-    <section>
+
+
+    <section className="carousel-section">
       <div className="container">
+        <div className="main-title-text has-text-grey-lighter mb-4">
+          <p>Latest <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>Baggles</span> recommended for you:</p>
+        </div>
         <div className='has-text is-centered'>
-          {postings ? <div className='button is-size-5' onClick={() => swapPostings()}>Latest postings</div>
-            : <div className='button is-size-5' onClick={() => swapPostings()}>Closest postings</div>}
+          {postings ? <div className='button is-size-5' onClick={() => swapPostings()}>Sort by newest first</div>
+            : <div className='button is-size-5' onClick={() => swapPostings()}>Sort by closest first</div>}
         </div>
         <div className="container is-max-widescreen">
           {categories.map((category, i) => {
-            return <div className='section' key={i}>
+            return <div className='section white-link' key={i}>
               <Carousel items={items} category={category} postings={postings} userLocation={userLocation} />
             </div>
           })}

@@ -282,6 +282,10 @@ export default function UserProfile({ match, history }) {
     updateEditState(true)
   }
 
+   function toggleUpdateRated() {
+     updateRated(true)
+   }
+
   // ! MODAL FUNCTIONS
 
   const toggleInventoryModal = () => {
@@ -329,7 +333,8 @@ export default function UserProfile({ match, history }) {
     */}
 
       <section className="hero is-small">
-        <div className="hero-body banner-with-image" style={{
+        
+        {profile.image ? <div className="hero-body banner-with-image" style={{
           backgroundImage: `url(${profile.image})`,
           backgroundSize: 'cover'
         }}>
@@ -341,7 +346,18 @@ export default function UserProfile({ match, history }) {
               <p>{profile.username}</p>
             </div>
           </div>
-        </div>
+        </div> : <div className="hero-body banner-with-image" style={{
+          backgroundColor: "#004460"
+        }}>
+          <div className="container has-text-centered">
+            <div className="banner-profile-image-container">
+              <img src={profile.profile_image} />
+            </div>
+            <div className="banner-text">
+              <p>{profile.username}</p>
+            </div>
+          </div>
+        </div> }
 
         {/*
         // * NAVBAR SECTION
@@ -583,7 +599,7 @@ export default function UserProfile({ match, history }) {
                 </div>
               </div>
 
-              <div className="tile is-child">
+              {positiveRating || negativeRating ? <div className="tile is-child">
                 <div className="tile is-parent">
                   <div style={{ width: '200px' }}>
                     <CircularProgressbarWithChildren
@@ -610,14 +626,14 @@ export default function UserProfile({ match, history }) {
                     <div className="neg-rating"><p>{Math.floor(negativeRating)}% 👎</p></div>
                   </div>
                 </div>
-              </div>
+              </div> : <div className="quote-text">{profile.username} has no reviews.</div>}
 
               <div className="tile is-child has-text-centered">
                 <div className="contents">
-                  {positiveRating < 50 && <div className="quote-text">{profile.username} is a bad Baggler!</div>}
-                  {positiveRating >= 50 && positiveRating < 70 && <div className="quote-text">{profile.username} is rated Neutral</div>}
-                  {positiveRating >= 60 && positiveRating < 95 && <div className="quote-text">{profile.username} is rated Good</div>}
-                  {positiveRating >= 90 && <div className="quote-text">{profile.username} is a Top Baggler</div>}
+                  {positiveRating < 50 && <div className="quote-text">{profile.username} is a bad Baggler! <span className="emoji">💩</span></div>}
+                  {positiveRating >= 50 && positiveRating < 60 && <div className="quote-text">{profile.username} is a Neutral Baggler. <span className="emoji">😐</span></div>}
+                  {positiveRating >= 60 && positiveRating < 90 && <div className="quote-text">{profile.username} is a Good Baggler <span className="emoji">😁</span></div>}
+                  {positiveRating >= 90 && <div className="quote-text">{profile.username} is a Top Baggler! <span className="emoji">🤩</span></div>}
                 </div>
               </div>
             </article>
@@ -696,7 +712,7 @@ export default function UserProfile({ match, history }) {
                           <p className="text"><Moment format="Do MMM YYYY @ HH:MM">{review.created_at}</Moment></p>
                           <div className="columns">
                             <p className="text column">{review.content}</p>
-                            {rating === 2 ? <p className="text column is-one-fifth">👍</p> : <p className="text">👎</p>}
+                            {rating === 2 ? <p className="text column is-one-fifth emoji">👍</p> : <p className="text emoji">👎</p>}
                           </div>
                         </div>
                       </div>
@@ -724,21 +740,22 @@ export default function UserProfile({ match, history }) {
                         </p>
                       </div>
                       <div>
-                        {!rated ? <div><button className="button is-success" onClick={(e) => handlePositive(e)}>Give positive feedback</button>
-                          <button className="button ml-2 mb-2 is-danger" onClick={(e) => handleNegative(e)}>Give negative feedback</button></div> :
-                          <div className="button is-warning">We love democracy!</div>
+                        {!rated ? <div><button className="button is-success" onClick={(e) => handlePositive(e)}>Rate Good </button>
+                          <button className="button ml-2 mb-2 is-danger" onClick={(e) => handleNegative(e)}>Rate Bad</button>
+                          <button className="button ml-2 mb-2" onClick={toggleUpdateRated}>Comment only</button></div> :
+                          <div className="red-text baggle">Baggle loves democracy!</div>
                         }
                       </div>
-                      <div className="field">
-                        <p className="control">
+                      {rated && <div className="field">
+                        
                           <button
                             onClick={handleReviewSubmit}
                             className="button is-info"
                           >
-                            Submit
+                            Submit to save your review!
                           </button>
-                        </p>
-                      </div>
+                        
+                      </div>}
                     </div>
                   </article>}
                 </div>
