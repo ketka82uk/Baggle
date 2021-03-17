@@ -55,7 +55,7 @@ export default function Carousel( { items, category, postings, userLocation } ) 
   }
 
   return <div className="has-text-left">
-    <p className="title is-3">{cleanCat()}</p>
+    <p className="carousel-header">{cleanCat()}</p>
     <Slider {...settings}>
       {mapItems(filterItems(category))}
     </Slider>
