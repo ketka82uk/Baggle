@@ -300,207 +300,186 @@ export default function ItemSingle({ match, history }) {
   //   console.log(item.owner['id'])
   // }
 
-  return <div className="columns">
-    {<div className="Mod">
-      <div className={`modalBackground modalShowing-${modalState}`}>
-        <div className="innerModal">
-          <div className="modalImage">
-            <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
-            />
-          </div>
-          <div className="modalText">
-            <h2> Would you like to make an offer?</h2>
+  return <div className="container">
+    <div className="columns">
+      {<div className="Mod">
+        <div className={`modalBackground modalShowing-${modalState}`}>
+          <div className="innerModal">
+            <div className="modalImage">
+              <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
+              />
+            </div>
+            <div className="modalText">
+              <h2> Would you like to make an offer?</h2>
 
-            <form action="">
-              {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
-                const available = item.listed
-                return <div key={index}>
-                  <div>
-                    {available ? <button className='button is-primary' id={item.id} onClick={(e) => fetch(e.target.id)}>  {item.id} {item.name}  </button> :
-                      <button className='button is-warning'> {item.name} </button>
-                    }
+              <form action="">
+                {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
+                  const available = item.listed
+                  return <div key={index}>
+                    <div>
+                      {available ? <button className='button is-primary' id={item.id} onClick={(e) => fetch(e.target.id)}>  {item.id} {item.name}  </button> :
+                        <button className='button is-warning'> {item.name} </button>
+                      }
+                    </div>
                   </div>
-                </div>
-              })}
-            </form>
 
-            <button className="exit" onClick={() => toggleModal()}>
-              Exit
-            </button>
+                })}
+              </form>
+              <button className="exit" onClick={() => toggleModal()}>
+                Exit
+              </button>
 
+            </div>
           </div>
+
         </div>
-
+        <button onClick={() => toggleModal()}>Baggle</button>
       </div>
-      <button onClick={() => toggleModal()}>Baggle</button>
-    </div>
-    }
-    <div className="column">
-      <figure className='image'>
-        <img src={item.image} alt={item.name} />
-      </figure>
-    </div>
+      }
 
-    <div className="column">
-      <article className="tile box is-vertical">
+      <div className="column">
+        <figure className='image'>
+          <img src={item.image} alt={item.name} width='100px' />
+        </figure>
+      </div>
+      <div className="tile box is-vertical">
         <div className="contents">
           <div className="grid-header">
-            <h2 className="title">About</h2>
-            {isCreator(item.owner['id']) && <button className="button is-danger" onClick={handleDelete} >☠️ Delete Item</button>}
-            {isCreator(item.owner.id) && <button className="button is-info" onClick={() => updateEditState(true)}>Edit Item <Icon>create</Icon></button>}
+            <h1 className="title">{item.name}</h1>
           </div>
+          <div className="column">
+            <article className="tile box is-vertical">
+              <div className="contents">
+                <div className="grid-header">
+                  <h2 className="title">About</h2>
+                  {isCreator(item.owner['id']) && <button className="button is-danger" onClick={handleDelete} >☠️ Delete Item</button>}
+                  {isCreator(item.owner.id) && <button className="button is-info" onClick={() => updateEditState(true)}>Edit Item <Icon>create</Icon></button>}
+                </div>
 
-          {editState === false ?
-            <div className="contents">
-              <div className="container mb-4">
-                <label>Name</label>
-                <p>{item.name}</p>
-              </div>
-              <div className="container mb-4">
-                <label>Type</label>
-                <p>{item.typeof}</p>
-              </div>
-              <div className="container mb-4">
-                <label>Category</label>
-                <p>{item.category}</p>
-              </div>
-              <div className="container mb-4">
-                <label>Description</label>
-                <p>{item.description}</p>
-              </div>
-            </div> :
-            <div>
-              <ItemUpdateForm
-                handleEditSubmit={handleEditSubmit}
-                handleEditChange={handleEditChange}
-                formData={formData}
-              />
-              {/* <ImageUpload
+                {editState === false ?
+                  <div className="contents">
+                    <div className="container mb-4">
+                      <label>Name</label>
+                      <p>{item.name}</p>
+                    </div>
+                    <div className="container mb-4">
+                      <label>Type</label>
+                      <p>{item.typeof}</p>
+                    </div>
+                    <div className="container mb-4">
+                      <label>Category</label>
+                      <p>{item.category}</p>
+                    </div>
+                    <div className="container mb-4">
+                      <label>Description</label>
+                      <p>{item.description}</p>
+                    </div>
+                  </div> :
+                  <div>
+                    <ItemUpdateForm
+                      handleEditSubmit={handleEditSubmit}
+                      handleEditChange={handleEditChange}
+                      formData={formData}
+                    />
+                    {/* <ImageUpload
                 formData={formData}
                 updateFormData={updateFormData}
               /> */}
-            </div>}
-        </div>
-      </article>
+                  </div>}
+              </div>
+            </article>
 
 
-      {offeredList.map((offeredItem, index) => {
-        return <div key={offeredItem.id} >
-          <div>
-            <div id={offeredItem.id} >{offeredItem.name}</div>
+
+
+            <h2 className="subtitle">{`${item.description}`}</h2>
+
+            <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
+
+            {offeredList.map((offeredItem, index) => {
+              return <div key={offeredItem.id} >
+
+                <div id={offeredItem.id} >{offeredItem.name}</div>
+
+                <div>
+                  {isCreator(item.owner['id']) && <button id={offeredItem.id} className='button is-warning' onClick={(e) => Swap(e.target.id)}>Click to Swap</button>}
+                </div>
+              </div>
+
+
+            })}
+
+            {(logIn && !onWishlist) ? <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
+              : <button className="button">Added to wishlist</button>
+            }
+
+            {item.comments && item.comments.map(comment => {
+              return <article key={comment._id} className="media">
+                <div className="media-content">
+                  <div className="content">
+                    <p className="subtitle">
+                      {comment.user.username}:
+                    </p>
+                    <p>{comment.content}</p>
+                  </div>
+                  <div className="field">
+                    <p className="control">
+                      <button
+                        onClick={handleComment}
+                        className="button is-info"
+                      >
+                        Submit
+                      </button>
+                    </p>
+
+                  </div>
+
+
+                </div>
+                {isCreator(comment.user.id) && <div className="media-right">
+                  <button
+                    className="delete"
+                    onClick={() => handleDeleteComment(comment.id)}>
+                  </button>
+                </div>}
+              </article>
+            })}
+
           </div>
-          <div>
-            {isCreator(item.owner['id']) && <button id={offeredItem.id} className='is-warning' onClick={(e) => Swap(e.target.id)}>SWAP!</button>}
-          </div>
+
         </div>
-      })}
 
-      {(logIn && !onWishlist) ? <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
-        : <button className="button">Added to wishlist</button>
-      }
 
-      {item.comments && item.comments.map(comment => {
-        return <article key={comment._id} className="media">
+        <article className="media">
           <div className="media-content">
-            <div className="content">
-              <p className="subtitle">
-                {comment.user.username}:
+            <div className="field">
+              <p className="control">
+                <textarea
+                  className="textarea"
+                  placeholder="Make a comment.."
+                  onChange={handleChange}
+                  value={commentData.content}
+                >
+                </textarea>
               </p>
-              <p>{comment.content}</p>
+            </div>
+            <div className="field">
+              <p className="control">
+                <button
+                  onClick={handleComment}
+                  className="button is-info"
+                >
+                  Submit
+                </button>
+
+              </p>
             </div>
           </div>
-          {isCreator(comment.user.id) && <div className="media-right">
-            <button
-              className="delete"
-              onClick={() => handleDeleteComment(comment.id)}>
-            </button>
-          </div>}
         </article>
-      })}
 
-      {/* {
-        <figure className="image is-128x128">
-          <img className="is-rounded" src={currentUser.profile_image} />
-        </figure>
-      } */}
-
-      <article className="media">
-        <div className="media-content">
-          <div className="field">
-            <p className="control">
-              <textarea
-                className="textarea"
-                placeholder="Make a comment.."
-                onChange={handleChange}
-                value={commentData.content}
-              >
-              </textarea>
-            </p>
-          </div>
-          <div className="field">
-            <p className="control">
-              <button
-                onClick={handleComment}
-                className="button is-info"
-              >
-                Submit
-              </button>
-            </p>
-          </div>
-        </div>
-      </article>
-
+      </div>
     </div>
   </div>
-
 }
 
 
-
-
-
-
-{/* <div className="Mod">
-  <div className={`modalBackground modalShowing-${modalState}`}>
-    <div className="innerModal">
-      <div className="modalImage">
-        <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
-        />
-      </div>
-      <div className="modalText">
-        <h2> Would you like to make an offer?</h2>
-
-        <form action="">
-          {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
-            return <div key={index}>
-              <div>
-                <button>   {item.name}  </button>
-              </div>
-            </div>
-
-          })}
-        </form>
-        <button className="exit" onClick={() => toggleModal()}>
-          Exit
-    </button>
-
-      </div>
-    </div>
-
-  </div>
-  <button onClick={() => toggleModal()}>Baggle</button>
-</div> */}
-
-
-
-// {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
-//   const available = item.listed
-//   return <div key={item.id} >
-//     <div>
-//       {available ? <button className='button is-primary' id={item.id} onClick={(e) => fetch(e.target.id)}>  {item.id} {item.name}  </button> :
-//         <button className='button is-warning'> {item.name} </button>
-//       }
-//     </div>
-//   </div>
-
-// })}
