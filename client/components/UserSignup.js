@@ -11,6 +11,7 @@ export default function UserSignup({ history }) {
   const [formData, updateFormData] = useState({
     username: '',
     email: '',
+    town: '',
     location: '',
     lat: 0,
     lng: 0,
@@ -41,10 +42,18 @@ export default function UserSignup({ history }) {
     updateErrors({ ...errors, [name]: '' })
   }
 
+  function getTown() {
+    const locationSplit = formData.location.split(',')
+    const town = locationSplit[locationSplit.length - 3]
+    return town
+  }
+
   async function handleSubmit(event) {
     event.preventDefault()
+    const town = getTown()
     const newFormData = {
-      ...formData
+      ...formData,
+      town: town
     }
     delete newFormData.search
     try {
@@ -53,7 +62,7 @@ export default function UserSignup({ history }) {
           console.log(`error found in ${key}`)
           updateErrors({
             ...errors,
-            [key]: `Please provide ${key}` 
+            [key]: `Please provide ${key}`
           })
           return
         }
@@ -75,27 +84,36 @@ export default function UserSignup({ history }) {
 
     <section className="section">
       <div className="container">
-        <h1>User Signup</h1>
-      </div>
-    </section>
 
-    <section className="section">
-      <div className="container">
-        <AvatarPicker
-          formData={formData}
-          updateFormData={updateFormData} />
-      </div>
-      {/* {errors.username && <small className="has-text-danger">Invalid username</small>} */}
-      <div className="container">
+        <div className="columns">
 
-        <UserSignupForm
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          formData={formData}
-          updateFormData={updateFormData}
-          errors={errors}
-          registrationSuccess={registrationSuccess}
-        />
+          <div className="column"></div>
+
+          <div className="column is-half">
+            {/* {errors.username && <small className="has-text-danger">Invalid username</small>} */}
+            <div className="container">
+              <div className="main-title-text">
+                Create your account and start <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>baggling</span> today!
+            </div>
+              <AvatarPicker
+                formData={formData}
+                updateFormData={updateFormData} />
+            </div>
+            <div className="container">
+              <UserSignupForm
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                formData={formData}
+                updateFormData={updateFormData}
+                errors={errors}
+                registrationSuccess={registrationSuccess}
+              />
+            </div>
+          </div>
+
+          <div className="column"></div>
+
+        </div>
 
       </div>
     </section>

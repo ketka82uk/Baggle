@@ -13,7 +13,7 @@ export default function About() {
 
     <section className="section">
       <div className="container">
-        <p>Body section</p>
+        <p>This website was created by ...  using a Flask, SQLAlchemy back-end. </p>
       </div>
     </section>
 

@@ -5,7 +5,7 @@ import Icon from '@material-ui/core/Icon'
 
 
 export default function AvatarPicker({ formData, updateFormData }) {
-  
+
   const [hair, updateHair] = useState('NoHair')
   const [accessories, updateAccessories] = useState('Blank')
   const [hairColor, updateHairColor] = useState('Black')
@@ -23,7 +23,7 @@ export default function AvatarPicker({ formData, updateFormData }) {
   const clothesColorOptions = ['Gray01', 'Black', 'Blue01', 'Pink', 'Red', 'White']
   const skinColorOptions = ['Yellow', 'Light', 'DarkBrown', 'Brown', 'Black']
 
-  
+
   function updateAvatarData() {
     updateFormData({
       ...formData,
@@ -41,80 +41,99 @@ export default function AvatarPicker({ formData, updateFormData }) {
 
   return <>
     <div className="container">
-        <div className="columns">
+      <div className="columns">
 
-          <div className="column">Hello</div>
+        
 
-          <div className="column is-four-fifths">
+        <div className="column is-half">
+
+
+
+          <div className="avatar-select">
+            <label>Hair</label>
+            <select className="select" onChange={(event) => updateHair(event.target.value)}>
+              {hairOptions.map((option, i) => {
+                return <option value={option.value} key={i}>{option}</option>
+              })}
+            </select>
+            <label>Glasses</label>
+            <select className="select" onChange={(event) => updateAccessories(event.target.value)}>
+              {accessoriesOptions.map((option, i) => {
+                return <option value={option.value} key={i}>{option}</option>
+              })}
+            </select>
+            <label>Hair color</label>
+            <select className="select" onChange={(event) => updateHairColor(event.target.value)}>
+              {hairColorOptions.map((option, i) => {
+                return <option value={option.value} key={i}>{option}</option>
+              })}
+            </select>
+            <label>Facial hair</label>
+            <select className="select" onChange={(event) => updateFacialHair(event.target.value)}>
+              {facialHairOptions.map((option, i) => {
+                return <option value={option.value} key={i}>{option}</option>
+              })}
+            </select>
+            <label>Clothes</label>
+            <select className="select" onChange={(event) => updateClothes(event.target.value)}>
+              {clothesOptions.map((option, i) => {
+                return <option value={option.value} key={i}>{option}</option>
+              })}
+            </select>
+            <label>Clothes colour</label>
+            <select className="select" onChange={(event) => updateClothesColor(event.target.value)}>
+              {clothesColorOptions.map((option, i) => {
+                return <option value={option.value} key={i}>{option}</option>
+              })}
+            </select>
+            <label>Skin color</label>
+            <select className="select" onChange={(event) => updateSkin(event.target.value)}>
+              {skinColorOptions.map((option, i) => {
+                return <option value={option.value} key={i}>{option}</option>
+              })}
+            </select>
+          </div>
+
           
-
-
-      <div className="avatar-select">
-        <select className="avatar-select-option" onChange={(event) => updateHair(event.target.value)}>
-          {hairOptions.map((option, i) => {
-            return <option value={option.value} key={i}>{option}</option>
-          })}
-        </select>
-        <select className="avatar-select-option" onChange={(event) => updateAccessories(event.target.value)}>
-          {accessoriesOptions.map((option, i) => {
-            return <option value={option.value} key={i}>{option}</option>
-          })}
-        </select>
-        <select className="avatar-select-option" onChange={(event) => updateHairColor(event.target.value)}>
-          {hairColorOptions.map((option, i) => {
-            return <option value={option.value} key={i}>{option}</option>
-          })}
-        </select>
-        <select className="avatar-select-option" onChange={(event) => updateFacialHair(event.target.value)}>
-          {facialHairOptions.map((option, i) => {
-            return <option value={option.value} key={i}>{option}</option>
-          })}
-        </select>
-        <select className="avatar-select-option" onChange={(event) => updateClothes(event.target.value)}>
-          {clothesOptions.map((option, i) => {
-            return <option value={option.value} key={i}>{option}</option>
-          })}
-        </select>
-        <select className="avatar-select-option" onChange={(event) => updateClothesColor(event.target.value)}>
-          {clothesColorOptions.map((option, i) => {
-            return <option value={option.value} key={i}>{option}</option>
-          })}
-        </select>
-        <select className="avatar-select-option" onChange={(event) => updateSkin(event.target.value)}>
-          {skinColorOptions.map((option, i) => {
-            return <option value={option.value} key={i}>{option}</option>
-          })}
-        </select>
-      </div>
-      </div>
-
-      <div className="column"><Icon></Icon></div>
-
-      </div>
-        
-
-        <div className="avatar-container">
-          <Avatar
-            style={{ height: '200px' }}
-            avatarStyle='Transparent'
-            topType={hair}
-            hairColor={hairColor}
-            accessoriesType={accessories}
-            hatColor={clothesColor}
-            facialHairType={facialHair}
-            facialHairColor={hairColor}
-            clotheType={clothes}
-            clotheColor={clothesColor}
-            eyeType='Default'
-            eyebrowType='Default'
-            mouthType='Smile'
-            skinColor={skin}
-          />
         </div>
+        <div className="column">
+         
+        <div className="avatar-container mt-4">
+        <Avatar
+          style={{ height: '200px' }}
+          avatarStyle='Transparent'
+          topType={hair}
+          hairColor={hairColor}
+          accessoriesType={accessories}
+          hatColor={clothesColor}
+          facialHairType={facialHair}
+          facialHairColor={hairColor}
+          clotheType={clothes}
+          clotheColor={clothesColor}
+          eyeType='Default'
+          eyebrowType='Default'
+          mouthType='Smile'
+          skinColor={skin}
+        />
+        </div>
+        <div className="container mt-4 quote-text">
+          Create your own baggler to look however you want!</div>
+          <div className="container mt-4">
+          <p>(You can change the boring background later).</p></div>
+      </div>
 
 
         
+
+
+      </div>
+
+
+      
+
+
+
     </div>
-    {!confirmed && <button className="button" onClick={updateAvatarData}>Confirm avatar</button>}
+    {!confirmed && <button className="button is-info" onClick={updateAvatarData}>Click to confirm avatar</button>}
   </>
 }

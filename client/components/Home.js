@@ -131,10 +131,10 @@ export default function Home({ history }) {
                     <p className="logo-title">Baggle</p>
                     <p
                       className="subtitle is-4"
-                      style={{ color: 'whitesmoke' }}>Barter, Bargain, Haggle, <span className="title" style={{ color: 'whitesmoke' }}>BAGGLE!</span></p>
+                      style={{ color: 'whitesmoke' }}>Barter, Bargain, Haggle, <span style={{ color: 'whitesmoke', fontSize: '35px', fontFamily: 'Mouse Memoirs' }}>Baggle!</span></p>
                   </div>
                   <div className="container mt-4">
-                  <Link to={'/signup'}><button className="hero-button">Sign up</button></Link>
+                    <Link to={'/signup'}><button className="hero-button">Sign up</button></Link>
                   </div>
 
                 </div>
@@ -148,8 +148,6 @@ export default function Home({ history }) {
             <div className="search-container">
               <form onSubmit={handleSubmit}>
                 <div className="tile is-8 search-container">
-
-
 
                   <div className="tile box center-row">
                     <div className="left-search">
@@ -203,19 +201,67 @@ export default function Home({ history }) {
 
 
 
-    <section className='column'>
-      <div className='has-text is-centered'>
-        {postings ? <div className='button is-size-5' onClick={() => swapPostings()}>Latest postings</div>
-          : <div className='button is-size-5' onClick={() => swapPostings()}>Closest postings</div>}
-      </div>
-      <div className="container is-max-widescreen">
-        {categories.map((category, i) => {
-          return <div className='section' key={i}>
-            <Carousel items={items} category={category} postings={postings} userLocation={userLocation} />
+    <section className='section'>
+      <div className="container">
+        <article className="copy-box">
+
+          <div className="columns">
+            <div className="column">
+              <div className="card">
+                <div className="card-content">
+                  <p className="quote-text">"My wardrobe is bursting! I have so many clothes but I don't want to chuck them out!"</p>
+                  <p className="subtitle is-6 has-text-right red-text"> - Jane from London</p>
+                </div>
+              </div>
+            </div>
+            <div className="column">
+              <div className="card">
+                <div className="card-content">
+                  <p className="quote-text">"I had so many courgettes on the allotment this year, I'll never eat them all!"</p>
+                  <p className="subtitle is-6 has-text-right red-text"> - Mike from Halifax</p>
+                </div>
+              </div>
+            </div>
+            <div className="column">
+              <div className="card">
+                <div className="card-content">
+                  <p className="quote-text">"I wonder if someone would prune my roses if I offered them a homemade cake?"</p>
+                  <p className="subtitle is-6 has-text-right red-text"> - Rona from Dundee</p>
+                </div>
+              </div>
+            </div>
           </div>
-        })}
+
+          <div className="main-title-text">
+            <p>Don't bin it, <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>baggle it!</span></p>
+            </div>
+
+
+
+
+
+
+
+          With Baggle you can find all the things you love, for free! Come and join our thriving community of Bagglers to make room, make swaps and make friends! Don't bin it, Baggle it!
+        
+      </article>
       </div>
-    </section>
-  </div>
+</section>
+      <section>
+        <div className="container">
+        <div className='has-text is-centered'>
+          {postings ? <div className='button is-size-5' onClick={() => swapPostings()}>Latest postings</div>
+            : <div className='button is-size-5' onClick={() => swapPostings()}>Closest postings</div>}
+        </div>
+        <div className="container is-max-widescreen">
+          {categories.map((category, i) => {
+            return <div className='section' key={i}>
+              <Carousel items={items} category={category} postings={postings} userLocation={userLocation} />
+            </div>
+          })}
+        </div>
+      </div>
+    </section >
+  </div >
 }
 

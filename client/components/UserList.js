@@ -5,6 +5,7 @@ import Avatar from 'avataaars'
 import { getLoggedInUserId } from '../lib/auth'
 import Moment from 'react-moment'
 import Icon from '@material-ui/core/Icon'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 export default function UserList() {
 
@@ -45,7 +46,7 @@ export default function UserList() {
       }
     }
     fetchUser()
-  })
+  },[])
 
   function getRating(user) {
     const totalRatings = user.positive_rating + user.negative_rating
@@ -90,17 +91,14 @@ export default function UserList() {
   
 
   if (loading) {
-    return <div>Page is loading</div>
+    return <div className='searchBox'><ClipLoader loading={loading} size={100} /></div>
   }
 
   return <div className="main">
 
     <div className="columns is-full is-centered">
       <div className="column is-one-third">
-        {logIn ? <button className="button" onClick={filterFollows}>Bagglers I follow</button> : <div></div>}
-        {logIn ? <button className="button" onClick={filterFollowers}>Bagglers who follow me</button> : <div></div>}
-        {logIn ? <button className="button" onClick={clearSearch}>Everyone</button> : <div></div>}
-        
+
         <div className="tile box">
           <div className="icon-holder">
           <Icon>search</Icon>
@@ -114,12 +112,19 @@ export default function UserList() {
         />
         </div>
         {/* <button className="button" onClick={handleSearch}>Search</button> */}
+        <div className="columns">
+          {logIn ? <button className="button" onClick={filterFollows}>Bagglers I follow</button> : <div></div>}
+          {logIn ? <button className="button" onClick={filterFollowers}>Bagglers who follow me</button> : <div></div>}
+          {logIn ? <button className="button" onClick={clearSearch}>Everyone</button> : <div></div>}
+        </div>+
       </div>
     </div>
 
     <section className="section">
       <div className="container">
-        <p>Your search found {numberOfUsers} Bagglers Baggling!</p>
+      <div className="main-title-text">
+            <p>Your search found <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>{numberOfUsers} Bagglers</span></p>
+            </div>
       </div>
       <div className="container">
         <div className="columns is-multiline">
@@ -142,7 +147,6 @@ export default function UserList() {
                     <p className="title">{user.username}</p>
                     <p className="subtitle is-6">{getRating(user)}% approval!</p>
                     <p>{user.location}</p>
-                    <p>{user.inventory.length}</p>
                     <p className="subtitle is-6">Baggling since <Moment format ="Do MMM YYYY">{user.created_at}</Moment></p>
                   
                   </div>

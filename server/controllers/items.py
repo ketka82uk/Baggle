@@ -80,6 +80,7 @@ def remove_item(item_id):
 
     if item.user != g.current_user.id:
         return {"errors": "This is not your Item!"}, 402
+        
     item.remove()
     return {"message": "Item deleted successfully"}, 200
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { debounce } from 'lodash'
 import sortedItems from './sortItems'
+import Moment from 'react-moment'
 
 const debouncedSave = debounce((query, updateSearchResults) => {
   axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?country=gb&access_token=pk.eyJ1IjoidXJ1MzgiLCJhIjoiY2ttNnBveXQ2MHFnaDJ4anhtdmhnbHBmeSJ9.OWgGgvZU2cJlbxp-jAJh_g`)
@@ -86,30 +87,35 @@ export default function ItemList({ match, location }) {
   }
 
   if (loading) {
-    return <ClipLoader loading={loading} size={100} />
+    return <div className='searchBox'><ClipLoader loading={loading} size={100} /></div>
   }
 
   return <section className="section">
     <div className='container searchBox'>
       <form>
-        <div className="columns is-full is-centered">
-          <div className="columns is-three-quarters">
-            <input
-              type="text"
-              placeholder="Start baggling!"
-              className="input is-info is-9"
-              onChange={(event) => handleChange(event)}
-              value={searchTerm}
-            />
-            <input
-              className="input is-info"
-              id="input-width"
-              type="text"
-              placeholder="Search for an item near you!"
-              onChange={createSearchQuery}
-              value={searchLocation}
-              autoComplete="off"
-            />
+        <div className="tile is-8 search-container is-centered">
+          <div className="tile box center-row">
+            <div className="left-search">
+              <input
+                type="text"
+                placeholder="What?"
+                className="input is-info"
+                onChange={(event) => handleChange(event)}
+                value={searchTerm}
+                className="input-large"
+              />
+            </div>
+            <div className="right-search">
+              <input
+                className="input-large pl-4"
+                id="input-width"
+                type="text"
+                placeholder="Where?"
+                onChange={createSearchQuery}
+                value={searchLocation}
+                autoComplete="off"
+              />
+            </div>
           </div>
           {searchResults.length > 0 &&
               <div className='dropdown is-active is-fullwidth'>
@@ -130,13 +136,16 @@ export default function ItemList({ match, location }) {
     <div className="container">
       <div className="columns is-multiline is-mobile">
         {filterItems().map((item, index) => {
-          return <div key={index} className="column is-one-third-desktop is-half-tablet is-half-mobile">
+          return <div key={index} className="column is-one-quarter-desktop is-half-tablet is-half-mobile">
             <Link to={`/items/${item.id}`}>
               <div className="card">
                 <div className="card-content">
                   <div className="media">
                     <div className="media-content">
+                      <p className="subtitle is-6">{item.owner.username}'s</p>
                       <p className="title is-4">{item.name}</p>
+                      <p className="subtitle is-6">{item.owner.town}</p>
+                      <p className="small-text">Created <Moment fromNow ago>{item.created_at}</Moment> ago.</p>
                     </div>
                   </div>
                 </div>

@@ -24,10 +24,20 @@ export default function UserProfile({ match, history }) {
   const [currentUserId, setCurrentUserId] = useState(0)
   const [currentUser, updateCurrentUser] = useState({})
   const [editState, updateEditState] = useState(false)
-  const [reviewData, updateCommentData] = useState({
+  
+
+  const [modalStateInv, setModalStateInv] = useState(false)
+  const [modalStateInvText, setModalStateInvText] = useState('')
+
+  const [modalStateWish, setModalStateWish] = useState(false)
+  const [modalStateWishText, setModalStateWishText] = useState('')
+
+  const [modalStateFriends, setModalStateFriends] = useState(false)
+  const [modalStateFriendsText, setModalStateFriendsText] = useState('')
+
+  const [reviewData, updateReviewData] = useState({
     content: '',
-    positive_rating: false,
-    negative_rating: false
+    rating: 0
   })
   const [formData, updateFormData] = useState({
     username: '',
@@ -40,11 +50,13 @@ export default function UserProfile({ match, history }) {
 
   const userId = Number(match.params.userId)
   const token = localStorage.getItem('token')
-
+  
+  
   useEffect(() => {
     const handleLogin = () => {
       if (token) {
         setCurrentUserId(getLoggedInUserId())
+        updateLogin(true)
       }
     }
     handleLogin()
@@ -116,6 +128,7 @@ export default function UserProfile({ match, history }) {
     }
   }
 
+
   // ! 9x9 MAPPING FUNCTIONS
 
   function mapGrid(itemArray) {
@@ -142,9 +155,39 @@ export default function UserProfile({ match, history }) {
     })
   }
 
+  // ! FULL MAPPING FUNCTIONS
+
+  function mapAllItems(itemArray) {
+    return itemArray.map((item) => {
+      return <div className="column is-one-quarter" key={item.id}>
+        <Link to={`/items/${item.id}`}>
+          <div className="card modal-individual-card">
+            <div className="card-image">
+              <figure className="image is-4by3">
+                <img src={item.image} />
+              </figure>
+              </div>
+              <div className="card-content py-1 px-1">
+                <p className="text mb-4"><strong>{item.name}</strong></p>
+                </div>
+                <div className="card-footer py-1 px-1 spread">
+                <p className="small-text">Created <Moment fromNow ago>{item.created_at}</Moment> ago.</p>
+              </div>
+          </div>
+        </Link>
+      </div>
+    })
+  }
+
+
   // ! HANDLE SUBMIT AND CHANGE FUNCTIONS
 
-  async function handlePositive() {
+  async function handlePositive(event) {
+    event.preventDefault()
+    updateReviewData({
+      ...reviewData,
+      rating: 2
+    })
     const originalPositive = profile.positive_rating
     const newPositive = originalPositive + 1
     const newProfileData = { positive_rating: newPositive }
@@ -152,13 +195,19 @@ export default function UserProfile({ match, history }) {
       const { data } = await axios.put(`/api/users/${userId}`, newProfileData, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      location.reload()
+      // location.reload()
     } catch (err) {
       console.log(err.response.data)
     }
+    updateRated(true)
   }
 
-  async function handleNegative() {
+  async function handleNegative(event) {
+    event.preventDefault()
+    updateReviewData({
+      ...reviewData,
+      rating: 1
+    })
     const originalNegative = profile.negative_rating
     const newNegative = originalNegative + 1
     const newProfileData = { negative_rating: newNegative }
@@ -166,15 +215,16 @@ export default function UserProfile({ match, history }) {
       const { data } = await axios.put(`/api/users/${userId}`, newProfileData, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      location.reload()
+      // location.reload()
     } catch (err) {
       console.log(err.response.data)
     }
+    updateRated(true)
   }
 
 
   function handleReviewChange(event) {
-    updateCommentData({ ...reviewData, [event.target.name]: event.target.value })
+    updateReviewData({ ...reviewData, [event.target.name]: event.target.value })
   }
 
   async function handleReviewSubmit(event) {
@@ -203,6 +253,9 @@ export default function UserProfile({ match, history }) {
     }
   }
 
+
+  // ! EDIT FUNCTIONS
+
   function handleEditChange(event) {
     updateFormData({ ...formData, [event.target.name]: event.target.value })
   }
@@ -229,6 +282,35 @@ export default function UserProfile({ match, history }) {
     updateEditState(true)
   }
 
+  // ! MODAL FUNCTIONS
+
+  const toggleInventoryModal = () => {
+    setModalStateInv(!modalStateInv)
+    if (modalStateInv) {
+      setModalStateInvText('is-active')
+    } else {
+      setModalStateInvText('')
+    }
+  }
+
+  const toggleWishlistModal = () => {
+    setModalStateWish(!modalStateWish)
+    if (modalStateWish) {
+      setModalStateWishText('is-active')
+    } else {
+      setModalStateWishText('')
+    }
+  }
+
+  const toggleFriendsModal = () => {
+    setModalStateFriends(!modalStateFriends)
+    if (modalStateFriends) {
+      setModalStateFriendsText('is-active')
+    } else {
+      setModalStateFriendsText('')
+    }
+  }
+
 
   if (loading) {
     return <div>Page is Loading</div>
@@ -240,6 +322,7 @@ export default function UserProfile({ match, history }) {
   return <div className="main">
 
     <div className="container">
+
 
       {/*
     // * TITLE SECTION
@@ -269,21 +352,23 @@ export default function UserProfile({ match, history }) {
             <div className="container my-2">
               <ul>
                 <li>
-                  <a onClick={profileFollowsYou()}>Profile</a>
+                  <a className="white-link" onClick={profileFollowsYou()}>Profile</a>
                 </li>
                 <li>
-                  <a>Up for Baggle</a>
+                  <a className="white-link" onClick={() => toggleInventoryModal()}>Up for Baggle</a>
                 </li>
+                {isCreator(userId) && <li>
+                  <a className="white-link" onClick={() => toggleWishlistModal()}>Wishlist</a>
+                </li>}
                 <li>
-                  <a>Wishlist</a>
+                  <a className="white-link" onClick={() => toggleFriendsModal()}>Baggle Buddies</a>
                 </li>
-                <li>
-                  <a>Baggle Buddies</a>
-                </li>
-                <li><a>Delete Profile</a></li>
-                <li><button className="button" onClick={handleFollow}>Follow {profile.username}</button></li>
-                <li><a>Unfollow</a></li>
-
+                {isCreator(userId) && <li>
+                  <a className="white-link">Delete Profile</a>
+                  </li>}
+                {!isCreator(userId) && !profile.followers.includes(currentUser) && <li>
+                  <button className="button" onClick={handleFollow}>Follow {profile.username}</button>
+                  </li>}
               </ul>
             </div>
           </nav>
@@ -291,8 +376,116 @@ export default function UserProfile({ match, history }) {
       </section>
 
       {/*
+    // * INVENTORY MODAL SECTION
+    */}
+
+      <div class={`modal ${modalStateInvText}`}>
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title title">{profile.username}'s Items Up for Baggle</p>
+          </header>
+          <section class="modal-card-body">
+            <div className="contents">
+
+
+              {profile.inventory.length > 0 ? 
+              <div className="columns is-multiline">
+                {mapAllItems(profile.inventory)}
+              </div> :
+              <div>{profile.username} has nothing to baggle. Shame on {profile.username}!</div>}
+
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+
+            <button class="button" onClick={() => toggleInventoryModal()}>Close</button>
+          </footer>
+        </div>
+      </div>
+
+
+      {/*
+    // * WISHLIST MODAL SECTION
+    */}
+
+      <div class={`modal ${modalStateWishText}`}>
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title title">Your Wishlist</p>
+          </header>
+          <section class="modal-card-body">
+            <div className="contents">
+
+            {profile.wishlist.length > 0 ? 
+              <div className="columns is-multiline">
+                {mapAllItems(profile.wishlist)}
+              </div> :
+              <div>A lone tumbleweed blows gently across the empty space that is your wishlist... </div>}
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+
+            <button class="button" onClick={() => toggleWishlistModal()}>Close</button>
+          </footer>
+        </div>
+      </div>
+
+
+      {/*
+    // * FRIENDS MODAL SECTION
+    */}
+
+      <div class={`modal ${modalStateFriendsText}`}>
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title title">{profile.username}'s Baggling Buddies</p>
+          </header>
+          <section class="modal-card-body">
+            <div className="contents">
+
+              {profile.follows.length > 0 ? 
+              <div className="columns is-multiline">
+                {profile.follows.map((follow) => {
+                  return <div className="column is-one-quarter" key={follow.id}>
+                    <Link to={`/users/${follow.id}`}>
+                      <div className="card modal-individual-card">
+                        <div 
+                        className="card-image"
+                        style={{ 
+                          backgroundImage: `url(${follow.image})`,
+                          backgroundSize: 'cover'
+                          }}>
+                          <figure className="image is-4by3">
+                            <img src={follow.profile_image} />
+                          </figure>
+                          </div>
+                          <div className="card-content">
+                            <p className="text mb-4"><strong>{follow.username}</strong></p>
+                          </div>
+                      </div>
+                    </Link>
+                  </div>
+                })}
+              </div> :
+              <div>🎶  All by myself, don't wanna live all by myself...  🎶 </div>}
+
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+
+            <button class="button" onClick={() => toggleFriendsModal()}>Close</button>
+          </footer>
+        </div>
+      </div>
+
+
+      {/*
         // * BODY SECTION
       */}
+
 
       <section className="section">
         <div className="columns">
@@ -349,6 +542,7 @@ export default function UserProfile({ match, history }) {
                       handleEditChange={handleEditChange}
                       formData={formData}
                     />
+                    <div className="content">Change your cover image by uploading a photo:</div>
                     <ImageUpload
                       formData={formData}
                       updateFormData={updateFormData}
@@ -367,7 +561,7 @@ export default function UserProfile({ match, history }) {
               <div className="contents">
                 <div className="grid-header">
                   <h2 className="title">Baggling Buddies</h2>
-                  <button className="button">See All</button>
+                  <button className="button" onClick={() => toggleFriendsModal()}>See All</button>
                 </div>
                 <AvatarGroup max={10}>
 
@@ -397,8 +591,7 @@ export default function UserProfile({ match, history }) {
               <div className="tile is-child py-2 px-2">
                 <div className="contents">
                   <div className="grid-header">
-                    <h2 className="title">Baggler Ratings</h2>
-                    <button className="button">See All</button>
+                    <h2 className="title mb-4">Baggler Rating</h2>
                   </div>
                 </div>
               </div>
@@ -410,7 +603,7 @@ export default function UserProfile({ match, history }) {
                       value={positiveRating}
                       strokeWidth={8}
                       styles={buildStyles({
-                        pathColor: "green",
+                        pathColor: "#00d1b2",
                         trailColor: "transparent"
                       })}
                     >
@@ -419,7 +612,7 @@ export default function UserProfile({ match, history }) {
                           value={negativeRating}
                           styles={buildStyles({
                             trailColor: "transparent",
-                            pathColor: "#B24231"
+                            pathColor: "#ff3860"
                           })}
                         />
                       </div>
@@ -432,12 +625,12 @@ export default function UserProfile({ match, history }) {
                 </div>
               </div>
 
-              <div className="tile is-child">
+              <div className="tile is-child has-text-centered">
                 <div className="contents">
-                  {positiveRating < 50 && <div>{profile.username} is a bad Baggler!</div>}
-                  {positiveRating >= 50 && positiveRating < 70 && <div>{profile.username} is rated Neutral</div>}
-                  {positiveRating >= 70 && positiveRating < 95 && <div>{profile.username} is rated Good</div>}
-                  {positiveRating >= 95 && <div>{profile.username} is a Top Baggler</div>}
+                  {positiveRating < 50 && <div className="quote-text">{profile.username} is a bad Baggler!</div>}
+                  {positiveRating >= 50 && positiveRating < 70 && <div className="quote-text">{profile.username} is rated Neutral</div>}
+                  {positiveRating >= 60 && positiveRating < 95 && <div className="quote-text">{profile.username} is rated Good</div>}
+                  {positiveRating >= 90 && <div className="quote-text">{profile.username} is a Top Baggler</div>}
                 </div>
               </div>
             </article>
@@ -450,7 +643,7 @@ export default function UserProfile({ match, history }) {
               <div className="contents">
                 <div className="grid-header">
                   <h2 className="title">Wishlist</h2>
-                  <button className="button">See All</button>
+                  <button className="button" onClick={() => toggleWishlistModal()}>See All</button>
                 </div>
                 <div className="contents">
                   <div className="grid-container">
@@ -481,7 +674,7 @@ export default function UserProfile({ match, history }) {
               <div className="contents">
                 <div className="grid-header">
                   <h2 className="title">Up for Baggle</h2>
-                  <button className="button">See All</button>
+                  <button className="button" onClick={() => toggleInventoryModal()}>See All</button>
                 </div>
                 <div className="contents">
                   <div className="grid-container">
@@ -500,10 +693,67 @@ export default function UserProfile({ match, history }) {
             <article className="tile box is-vertical">
               <div className="contents">
                 <div className="grid-header">
-                  <h2 className="title">Baggle Board</h2>
+                  <h2 className="title mb-4">{profile.username}'s Baggle Board</h2>
+                </div>
+                <div className="contents mb-4">
+                  <h2 className="subtitle">Submit a comment or leave review</h2>
                 </div>
                 <div className="contents">
-                  Reviews goes here
+                  {profile.other_reviews.map(review => {
+                    const rating = review.rating
+                    // console.log(rating)
+                    return <article key={review.id} className="media">
+                      <div className="media-content">
+                        <div className="content">
+                          <p className="title">{review.author.username}</p>
+                          <p className="text"><Moment format="Do MMM YYYY @ HH:MM">{review.created_at}</Moment></p>
+                          <div className="columns">
+                            <p className="text column">{review.content}</p>
+                            {rating === 2 ? <p className="text column is-one-fifth">👍</p> : <p className="text">👎</p>}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="container">
+                        {isCreator(review.author.id) && <button
+                          className="button is-danger"
+                          onClick={() => handleReviewDelete(review.id)}
+                        >Delete Review</button>}
+                      </div>
+                    </article>
+                  })}
+
+                  {logIn && <article className="media">
+                    <div className="media-content">
+                      <div className="field">
+                        <p className="control">
+                          <textarea
+                            className="textarea"
+                            placeholder="Make a comment..."
+                            onChange={handleReviewChange}
+                            value={reviewData.content}
+                            name={'content'}
+                          />
+                        </p>
+                      </div>
+                      <div>
+                        {!rated ? <div><button className="button is-success" onClick={(e) => handlePositive(e)}>Give positive feedback</button>
+                          <button className="button ml-2 mb-2 is-danger" onClick={(e) => handleNegative(e)}>Give negative feedback</button></div> :
+                          <div className="button is-warning">We love democracy!</div>
+                        }
+                      </div>
+                      <div className="field">
+                        <p className="control">
+                          <button
+                            onClick={handleReviewSubmit}
+                            className="button is-info"
+                          >
+                            Submit
+                          </button>
+                        </p>
+                      </div>
+                    </div>
+                  </article>}
                 </div>
               </div>
             </article>
@@ -516,61 +766,7 @@ export default function UserProfile({ match, history }) {
 
 
 
-      <section className="section">
-        <button className="button" onClick={handlePositive}>Give positive feedback</button>
-        <button className="button" onClick={handleNegative}>Give negative feedback</button>
-        <div>
-
-
-
-        </div>
-        <h1>{profile.username}'s Baggle board</h1>
-        <h2>Submit a comment or review</h2>
-        {profile.other_reviews.map(review => {
-          return <article key={review.id} className="media">
-            <div className="media-content">
-              <div className="content">
-                <p className="title">{review.author.username}</p>
-                <p className="text">{review.created_at}</p>
-                <p className="text">{review.content}</p>
-              </div>
-            </div>
-
-            <div className="container">
-              {isCreator(review.author.id) && <button
-                className="button"
-                onClick={() => handleReviewDelete(review.id)}
-              >Delete Review</button>}
-            </div>
-          </article>
-        })}
-
-        <article className="media">
-          <div className="media-content">
-            <div className="field">
-              <p className="control">
-                <textarea
-                  className="textarea"
-                  placeholder="Make a comment..."
-                  onChange={handleReviewChange}
-                  value={reviewData.content}
-                  name={'content'}
-                />
-              </p>
-            </div>
-            <div className="field">
-              <p className="control">
-                <button
-                  onClick={handleReviewSubmit}
-                  className="button is-info"
-                >
-                  Submit
-              </button>
-              </p>
-            </div>
-          </div>
-        </article>
-      </section>
+    
 
 
 

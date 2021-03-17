@@ -34,15 +34,26 @@ export default function UserLogin({ history }) {
     }
   }
 
-  return <div className="main">
+  return <div className="spread">
 
-    <section className="section">
+    {/* <section className="section">
       <div className="container">
         <h1>Login</h1>
       </div>
-    </section>
+    </section> */}
 
     <section className="section">
+      <div className="columns">
+      <div className="column"></div>
+        <div className="column is-half">
+
+          <div className="container">
+            <div className="main-title-text">
+            <p>Sign in to start <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>baggling!</span></p>
+            </div>
+            </div>
+
+
       <div className="container">
 
         <div className="form">
@@ -53,7 +64,7 @@ export default function UserLogin({ history }) {
               <input
                 className="input"
                 type="email"
-                placeholder="<img>Email"
+                placeholder="Email"
                 value={formData.email}
                 onChange={handleChange}
                 name={'email'}
@@ -67,21 +78,26 @@ export default function UserLogin({ history }) {
               <input
                 className="input"
                 type="password"
-                placeholder="<img> Password"
+                placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
                 name={'password'}
               />
               {error && <small className="has-text-danger">Invalid email or password</small>}
             </div>
-            <button>Submit</button>
+            <button className="button is-link mt-4">Submit</button>
           </form>
         </div>
 
 
+</div>
 
       </div>
+      <div className="column"></div>
+      </div>
     </section>
+
+    <section className="footer-filler"></section>
 
   </div>
 

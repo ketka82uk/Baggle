@@ -17,20 +17,16 @@ export default function UpdateItem({ history, match }) {
     description: '',
     image: '',
     listed: 'true'
-    
   })
   
 
   useEffect(() => {
     async function getFormData() {
       const { data } = await axios.get(`/api/items/${itemId}`)
-      
       console.log(data)
       updateFormData(data)
       updateLoading(false)
     }
-
-
     getFormData()
   }, [])
 
