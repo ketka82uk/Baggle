@@ -10,9 +10,9 @@ def secure_route(func):
     def wrapper(*args, **kwargs):
 
         token_with_bearer = request.headers.get('Authorization')
-
+        
         if not token_with_bearer:
-            return { 'Message': 'Unauthorized' }, 401
+            return { 'Message': 'Unauthorized, token with bearer' }, 401
 
         token = token_with_bearer.replace('Bearer ', '')
 

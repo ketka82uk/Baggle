@@ -5,6 +5,7 @@ from models.comment import Comment
 from models.image import Image
 from models.user_follows import user_follows_join
 from models.user_items import user_items_join
+from models.user_items_wish import user_items_wish_join
 from models.review import Review
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
@@ -44,7 +45,7 @@ class User(db.Model, BaseModel):
     inventory = db.relationship('Item', backref='owner', cascade='all, delete')
     image_uploads = db.relationship('Image', backref='user', cascade='all, delete')
     comments = db.relationship('Comment', backref='user', cascade='all, delete')
-    wishlist = db.relationship('Item', backref='users', secondary=user_items_join, cascade='all, delete')
+    wishlist = db.relationship('Item', backref='users', secondary=user_items_wish_join, cascade='all, delete')
     offered = db.relationship('Item', backref='offered', secondary=user_items_join, cascade='all, delete')
 
     user_reviews = db.relationship('Review', backref='author', cascade='all, delete', foreign_keys=[Review.author_id])

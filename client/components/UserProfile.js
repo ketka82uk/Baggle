@@ -24,6 +24,7 @@ export default function UserProfile({ match, history }) {
   const [currentUserId, setCurrentUserId] = useState(0)
   const [currentUser, updateCurrentUser] = useState({})
   const [editState, updateEditState] = useState(false)
+  const [follows, toggleFollows] = useState(false)
   
 
   const [modalStateInv, setModalStateInv] = useState(false)
@@ -114,15 +115,48 @@ export default function UserProfile({ match, history }) {
   //! DELETE AND EDIT FUNCTIONS
 
   async function handleDelete() {
-    await axios.delete(`/api/users/${userId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    history.push('/')
+    try {
+      await axios.delete(`/api/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      localStorage.clear()
+      history.push('/')
+      location.reload()
+    } catch (err) {
+      console.log(err.response.data)
+    }
   }
+
+  useEffect(() => {
+    if (!currentUser.follows) return
+    const followsList = currentUser.follows
+    followsList.forEach((followUser) => {
+      if (parseInt(userId) === parseInt(followUser.id)) {
+        toggleFollows(true)
+        return
+      } else {
+        console.log(currentUser.id, followUser.id)
+      }
+    })
+  }, [currentUser])
 
   async function handleFollow() {
     try {
-      await axios.post(`/api/users/${currentUserId}/users/${userId}`)
+      await axios.post(`/api/users/${currentUserId}/users/${userId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      toggleFollows(true)
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+
+  async function unFollow() {
+    try {
+      await axios.put(`/api/users/${currentUserId}/removefollower/${userId}`, { }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      toggleFollows(false)
     } catch (err) {
       console.log(err.response.data)
     }
@@ -312,6 +346,7 @@ export default function UserProfile({ match, history }) {
   }
 
 
+
   if (loading) {
     return <div>Page is Loading</div>
   }
@@ -364,11 +399,15 @@ export default function UserProfile({ match, history }) {
                   <a className="white-link" onClick={() => toggleFriendsModal()}>Baggle Buddies</a>
                 </li>
                 {isCreator(userId) && <li>
-                  <a className="white-link">Delete Profile</a>
+                  <a className="white-link" onClick={() => handleDelete()}>Delete Profile</a>
                 </li>}
-                {!isCreator(userId) && !profile.followers.includes(currentUser) && <li>
-                  <button className="button" onClick={handleFollow}>Follow {profile.username}</button>
-                </li>}
+                {!isCreator(userId) && !profile.followers.includes(currentUser) && (
+                  !follows ? <li>
+                    <button className="button" onClick={handleFollow}>Follow {profile.username}</button>
+                  </li> :
+                    <li>
+                      <button className="button" onClick={unFollow}>Unfollow {profile.username}</button>
+                    </li>)}
               </ul>
             </div>
           </nav>
@@ -437,7 +476,13 @@ export default function UserProfile({ match, history }) {
                 <div className="columns is-multiline">
                   {profile.follows.map((follow) => {
                     return <div className="column is-one-quarter" key={follow.id}>
-                      <Link to={`/users/${follow.id}`}>
+                      <Link 
+                        to={`/users/${follow.id}`}
+                        onClick={() => 
+                          setTimeout(() => {
+                            window.location.reload()
+                          }, 200)} 
+                      >
                         <div className="card modal-individual-card">
                           <div 
                             className="card-image"
@@ -553,16 +598,24 @@ export default function UserProfile({ match, history }) {
                 <AvatarGroup max={10}>
 
                   {profile.follows.map((follow, index) => {
-                    return <Link key={index} to={`/users/${follow.id}`}><Avatar
-                      alt={follow.username}
-                      key={follow.id}
-                      src={follow.profile_image}
-                      style={{
-                        height: '100px',
-                        width: '100px',
-                        backgroundImage: `url(${follow.image})`,
-                        backgroundSize: 'cover'
-                      }} /></Link>
+                    return <Link 
+                      key={index} 
+                      to={`/users/${follow.id}`}
+                      onClick={() => 
+                        setTimeout(() => {
+                          window.location.reload()
+                        }, 200)} 
+                    >
+                      <Avatar
+                        alt={follow.username}
+                        key={follow.id}
+                        src={follow.profile_image}
+                        style={{
+                          height: '100px',
+                          width: '100px',
+                          backgroundImage: `url(${follow.image})`,
+                          backgroundSize: 'cover'
+                        }} /></Link>
                   })}
 
                 </AvatarGroup>

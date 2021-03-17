@@ -4,7 +4,9 @@ import { getLoggedInUserId } from '../lib/auth'
 import axios from 'axios'
 import Avatar from '@material-ui/core/Avatar'
 
-export default function Navbar() {
+
+
+export default function Navbar( { history } ) {
   const [logIn, updateLogin] = useState(false)
   const [userId, setUserId] = useState('')
   const [userName, setUserName] = useState('')
@@ -66,11 +68,20 @@ export default function Navbar() {
         </div>
       </div>
 
-
+      {console.log(userId)}
 
       {logIn ? <div className="navbar-end">
         <div className="navbar-item"><Avatar alt={userName} src={userImage} style={{ height: '50px', width: '30px' }}/></div>
-        <div className="navbar-item"><Link to={`/users/${userId}`} className="navbar-bold">{userName && <strong>{userName}</strong>}</Link></div>
+        <div className="navbar-item">
+          <Link 
+            to={`/users/${userId}`} 
+            onClick={() => 
+              setTimeout(() => {
+                window.location.reload()
+              }, 200)} 
+            className="navbar-bold">
+            {userName && <strong>{userName}</strong>}
+          </Link></div>
         <div className="navbar-item">
           <div className="buttons">
             <div className="button" onClick={logOut}>Log out</div>
