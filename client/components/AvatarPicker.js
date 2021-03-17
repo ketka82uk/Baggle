@@ -98,39 +98,31 @@ export default function AvatarPicker({ formData, updateFormData }) {
         </div>
         <div className="column">
          
-        <div className="avatar-container mt-4">
-        <Avatar
-          style={{ height: '200px' }}
-          avatarStyle='Transparent'
-          topType={hair}
-          hairColor={hairColor}
-          accessoriesType={accessories}
-          hatColor={clothesColor}
-          facialHairType={facialHair}
-          facialHairColor={hairColor}
-          clotheType={clothes}
-          clotheColor={clothesColor}
-          eyeType='Default'
-          eyebrowType='Default'
-          mouthType='Smile'
-          skinColor={skin}
-        />
-        </div>
-        <div className="container mt-4 quote-text">
+          <div className="avatar-container mt-4">
+            <Avatar
+              style={{ height: '200px' }}
+              avatarStyle='Transparent'
+              topType={hair}
+              hairColor={hairColor}
+              accessoriesType={accessories}
+              hatColor={clothesColor}
+              facialHairType={facialHair}
+              facialHairColor={hairColor}
+              clotheType={clothes}
+              clotheColor={clothesColor}
+              eyeType='Default'
+              eyebrowType='Default'
+              mouthType='Smile'
+              skinColor={skin}
+            />
+          </div>
+          <div className="container mt-4 quote-text">
           Create your own baggler to look however you want!</div>
           <div className="container mt-4">
-          <p>(You can change the boring background later).</p></div>
-      </div>
-
-
-        
-
+            <p>(You can change the boring background later).</p></div>
+        </div>
 
       </div>
-
-
-      
-
 
 
     </div>

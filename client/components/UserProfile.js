@@ -166,13 +166,13 @@ export default function UserProfile({ match, history }) {
               <figure className="image is-4by3">
                 <img src={item.image} />
               </figure>
-              </div>
-              <div className="card-content py-1 px-1">
-                <p className="text mb-4"><strong>{item.name}</strong></p>
-                </div>
-                <div className="card-footer py-1 px-1 spread">
-                <p className="small-text">Created <Moment fromNow ago>{item.created_at}</Moment> ago.</p>
-              </div>
+            </div>
+            <div className="card-content py-1 px-1">
+              <p className="text mb-4"><strong>{item.name}</strong></p>
+            </div>
+            <div className="card-footer py-1 px-1 spread">
+              <p className="small-text">Created <Moment fromNow ago>{item.created_at}</Moment> ago.</p>
+            </div>
           </div>
         </Link>
       </div>
@@ -365,118 +365,105 @@ export default function UserProfile({ match, history }) {
                 </li>
                 {isCreator(userId) && <li>
                   <a className="white-link">Delete Profile</a>
-                  </li>}
+                </li>}
                 {!isCreator(userId) && !profile.followers.includes(currentUser) && <li>
                   <button className="button" onClick={handleFollow}>Follow {profile.username}</button>
-                  </li>}
+                </li>}
               </ul>
             </div>
           </nav>
         </div>
       </section>
 
-      {/*
-    // * INVENTORY MODAL SECTION
-    */}
 
-      <div class={`modal ${modalStateInvText}`}>
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title title">{profile.username}'s Items Up for Baggle</p>
+      <div className={`modal ${modalStateInvText}`}>
+        <div className="modal-background"></div>
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <p className="modal-card-title title">{profile.username}'s Items Up for Baggle</p>
           </header>
-          <section class="modal-card-body">
+          <section className="modal-card-body">
             <div className="contents">
 
 
               {profile.inventory.length > 0 ? 
-              <div className="columns is-multiline">
-                {mapAllItems(profile.inventory)}
-              </div> :
-              <div>{profile.username} has nothing to baggle. Shame on {profile.username}!</div>}
+                <div className="columns is-multiline">
+                  {mapAllItems(profile.inventory)}
+                </div> :
+                <div>{profile.username} has nothing to baggle. Shame on {profile.username}!</div>}
 
             </div>
           </section>
-          <footer class="modal-card-foot">
+          <footer className="modal-card-foot">
 
-            <button class="button" onClick={() => toggleInventoryModal()}>Close</button>
+            <button className="button" onClick={() => toggleInventoryModal()}>Close</button>
           </footer>
         </div>
       </div>
 
-
-      {/*
-    // * WISHLIST MODAL SECTION
-    */}
-
-      <div class={`modal ${modalStateWishText}`}>
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title title">Your Wishlist</p>
+      <div className={`modal ${modalStateWishText}`}>
+        <div className="modal-background"></div>
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <p className="modal-card-title title">Your Wishlist</p>
           </header>
-          <section class="modal-card-body">
+          <section className="modal-card-body">
             <div className="contents">
 
-            {profile.wishlist.length > 0 ? 
-              <div className="columns is-multiline">
-                {mapAllItems(profile.wishlist)}
-              </div> :
-              <div>A lone tumbleweed blows gently across the empty space that is your wishlist... </div>}
+              {profile.wishlist.length > 0 ? 
+                <div className="columns is-multiline">
+                  {mapAllItems(profile.wishlist)}
+                </div> :
+                <div>A lone tumbleweed blows gently across the empty space that is your wishlist... </div>}
             </div>
           </section>
-          <footer class="modal-card-foot">
+          <footer className="modal-card-foot">
 
-            <button class="button" onClick={() => toggleWishlistModal()}>Close</button>
+            <button className="button" onClick={() => toggleWishlistModal()}>Close</button>
           </footer>
         </div>
       </div>
 
-
-      {/*
-    // * FRIENDS MODAL SECTION
-    */}
-
-      <div class={`modal ${modalStateFriendsText}`}>
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title title">{profile.username}'s Baggling Buddies</p>
+      <div className={`modal ${modalStateFriendsText}`}>
+        <div className="modal-background"></div>
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <p className="modal-card-title title">{profile.username}'s Baggling Buddies</p>
           </header>
-          <section class="modal-card-body">
+          <section className="modal-card-body">
             <div className="contents">
 
               {profile.follows.length > 0 ? 
-              <div className="columns is-multiline">
-                {profile.follows.map((follow) => {
-                  return <div className="column is-one-quarter" key={follow.id}>
-                    <Link to={`/users/${follow.id}`}>
-                      <div className="card modal-individual-card">
-                        <div 
-                        className="card-image"
-                        style={{ 
-                          backgroundImage: `url(${follow.image})`,
-                          backgroundSize: 'cover'
-                          }}>
-                          <figure className="image is-4by3">
-                            <img src={follow.profile_image} />
-                          </figure>
+                <div className="columns is-multiline">
+                  {profile.follows.map((follow) => {
+                    return <div className="column is-one-quarter" key={follow.id}>
+                      <Link to={`/users/${follow.id}`}>
+                        <div className="card modal-individual-card">
+                          <div 
+                            className="card-image"
+                            style={{ 
+                              backgroundImage: `url(${follow.image})`,
+                              backgroundSize: 'cover'
+                            }}>
+                            <figure className="image is-4by3">
+                              <img src={follow.profile_image} />
+                            </figure>
                           </div>
                           <div className="card-content">
                             <p className="text mb-4"><strong>{follow.username}</strong></p>
                           </div>
-                      </div>
-                    </Link>
-                  </div>
-                })}
-              </div> :
-              <div>🎶  All by myself, don't wanna live all by myself...  🎶 </div>}
+                        </div>
+                      </Link>
+                    </div>
+                  })}
+                </div> :
+                <div>🎶  All by myself, don't wanna live all by myself...  🎶 </div>}
 
             </div>
           </section>
-          <footer class="modal-card-foot">
+          <footer className="modal-card-foot">
 
-            <button class="button" onClick={() => toggleFriendsModal()}>Close</button>
+            <button className="button" onClick={() => toggleFriendsModal()}>Close</button>
           </footer>
         </div>
       </div>
@@ -565,8 +552,8 @@ export default function UserProfile({ match, history }) {
                 </div>
                 <AvatarGroup max={10}>
 
-                  {profile.follows.map((follow) => {
-                    return <Link to={`/users/${follow.id}`}><Avatar
+                  {profile.follows.map((follow, index) => {
+                    return <Link key={index} to={`/users/${follow.id}`}><Avatar
                       alt={follow.username}
                       key={follow.id}
                       src={follow.profile_image}
@@ -598,21 +585,21 @@ export default function UserProfile({ match, history }) {
 
               <div className="tile is-child">
                 <div className="tile is-parent">
-                  <div style={{ width: "200px" }}>
+                  <div style={{ width: '200px' }}>
                     <CircularProgressbarWithChildren
                       value={positiveRating}
                       strokeWidth={8}
                       styles={buildStyles({
-                        pathColor: "#00d1b2",
-                        trailColor: "transparent"
+                        pathColor: '#00d1b2',
+                        trailColor: 'transparent'
                       })}
                     >
-                      <div style={{ width: "84%" }}>
+                      <div style={{ width: '84%' }}>
                         <CircularProgressbar
                           value={negativeRating}
                           styles={buildStyles({
-                            trailColor: "transparent",
-                            pathColor: "#ff3860"
+                            trailColor: 'transparent',
+                            pathColor: '#ff3860'
                           })}
                         />
                       </div>

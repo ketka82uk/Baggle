@@ -50,57 +50,57 @@ export default function Navbar() {
       <div className="navbar-item">
         <Link to={'/'}><span className="navbar-logo">Baggle</span></Link>
       </div>
+    </div>
+
+    <div className="navbar-menu">
+
+      <div className="navbar-start">
+        <div className="navbar-item">
+          <Link to={'/users'}><p className="navbar-bold">Bagglers</p></Link>
+        </div>
+        <div className="navbar-item">
+          <Link to={'/items'}><p className="navbar-bold">Baggles</p></Link>
+        </div>
+        <div className="navbar-item">
+          <Link to={'/about'}><p className="navbar-bold">About Baggle</p></Link>
+        </div>
       </div>
 
-      <div className="navbar-menu">
 
-        <div className="navbar-start">
-          <div className="navbar-item">
-            <Link to={'/users'}><p className="navbar-bold">Bagglers</p></Link>
-          </div>
-          <div className="navbar-item">
-            <Link to={'/items'}><p className="navbar-bold">Baggles</p></Link>
-          </div>
-          <div className="navbar-item">
-            <Link to={'/about'}><p className="navbar-bold">About Baggle</p></Link>
+
+      {logIn ? <div className="navbar-end">
+        <div className="navbar-item"><Avatar alt={userName} src={userImage} style={{ height: '50px', width: '30px' }}/></div>
+        <div className="navbar-item"><Link to={`/users/${userId}`} className="navbar-bold">{userName && <strong>{userName}</strong>}</Link></div>
+        <div className="navbar-item">
+          <div className="buttons">
+            <div className="button" onClick={logOut}>Log out</div>
+            <div className="color-link-button button">
+              <Link to={'/add_item'}><p style={{ color: 'white'}}>Post a <span className="baggle">Baggle</span></p></Link>
+            </div>
           </div>
         </div>
-
-
-
-        {logIn ? <div className="navbar-end">
-        <div className="navbar-item"><Avatar alt={userName} src={userImage} style={{ height: '50px', width: '30px' }}/></div>
-          <div className="navbar-item"><Link to={`/users/${userId}`} className="navbar-bold">{userName && <strong>{userName}</strong>}</Link></div>
+      </div> :
+        <div className="navbar-end">
+          <div className="navbar-item">
+            
+          </div>
+          <div className="navbar-item">
+            {userName && <strong>Hi {userName}</strong>}</div>
           <div className="navbar-item">
             <div className="buttons">
-              <div className="button" onClick={logOut}>Log out</div>
-              <div className="color-link-button button">
-                <Link to={'/add_item'}><p style={{ color: 'white'}}>Post a <span className="baggle">Baggle</span></p></Link>
+              <div className="button">
+                <Link to={'/signup'}><p className="navbar-bold">Sign up</p></Link>
+              </div>
+              <div className="button">
+                <Link to={'/login'}><p className="navbar-bold">Log in</p></Link>
               </div>
             </div>
           </div>
-        </div> :
-          <div className="navbar-end">
-            <div className="navbar-item">
-            
-                       </div>
-                       <div className="navbar-item">
-                      {userName && <strong>Hi {userName}</strong>}</div>
-            <div className="navbar-item">
-              <div className="buttons">
-                <div className="button">
-                  <Link to={'/signup'}><p className="navbar-bold">Sign up</p></Link>
-                </div>
-                <div className="button">
-                  <Link to={'/login'}><p className="navbar-bold">Log in</p></Link>
-                </div>
-              </div>
-            </div>
-          </div>}
-
-      </div>
+        </div>}
 
     </div>
+
+  </div>
   
 
 

@@ -8,7 +8,7 @@ import Modal from 'react-modal'
 export default function ToggleModal({ match }) {
 //  const item1 = match.params.currentUser.inventory.item
 //  console.log(item1)
- const item2 = match.params.item2
+  const item2 = match.params.item2
   const itemid = match.params.itemid
   const [item, updateItem] = useState([])
  

@@ -321,9 +321,9 @@ export default function ItemSingle({ match, history }) {
                     }
                   </div>
                 </div>
-
               })}
             </form>
+
             <button className="exit" onClick={() => toggleModal()}>
               Exit
             </button>
@@ -383,12 +383,6 @@ export default function ItemSingle({ match, history }) {
         </div>
       </article>
 
-      {/* <h1 className="title">{item.name}</h1>
-      <h2 className="subtitle">{`Type of : ${item.typeof}`}</h2>
-      <h2 className="subtitle">{`Category: ${item.category}`}</h2>
-      <h2 className="subtitle">{`Description: ${item.description}`}</h2>
-      {/* <h2 className="subtitle">{`Image: ${item.owner.image}`}</h2> */}
-      {/* <h2 className="subtitle">{`Availability: ${item.listed}`}</h2> */}
 
       {offeredList.map((offeredItem, index) => {
         return <div key={offeredItem.id} >
@@ -452,16 +446,12 @@ export default function ItemSingle({ match, history }) {
                 Submit
               </button>
             </p>
-
           </div>
-
         </div>
-
-
-
       </article>
+
     </div>
-  </div >
+  </div>
 
 }
 
