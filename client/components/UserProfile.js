@@ -591,7 +591,7 @@ export default function UserProfile({ match, history }) {
               <div className="tile is-child py-2 px-2">
                 <div className="contents">
                   <div className="grid-header">
-                    <h2 className="title">Baggler Ratings</h2>
+                    <h2 className="title mb-4">Baggler Rating</h2>
                   </div>
                 </div>
               </div>
@@ -603,7 +603,7 @@ export default function UserProfile({ match, history }) {
                       value={positiveRating}
                       strokeWidth={8}
                       styles={buildStyles({
-                        pathColor: "green",
+                        pathColor: "#00d1b2",
                         trailColor: "transparent"
                       })}
                     >
@@ -612,7 +612,7 @@ export default function UserProfile({ match, history }) {
                           value={negativeRating}
                           styles={buildStyles({
                             trailColor: "transparent",
-                            pathColor: "#B24231"
+                            pathColor: "#ff3860"
                           })}
                         />
                       </div>
@@ -625,12 +625,12 @@ export default function UserProfile({ match, history }) {
                 </div>
               </div>
 
-              <div className="tile is-child">
+              <div className="tile is-child has-text-centered">
                 <div className="contents">
-                  {positiveRating < 50 && <div>{profile.username} is a bad Baggler!</div>}
-                  {positiveRating >= 50 && positiveRating < 70 && <div>{profile.username} is rated Neutral</div>}
-                  {positiveRating >= 70 && positiveRating < 95 && <div>{profile.username} is rated Good</div>}
-                  {positiveRating >= 95 && <div>{profile.username} is a Top Baggler</div>}
+                  {positiveRating < 50 && <div className="quote-text">{profile.username} is a bad Baggler!</div>}
+                  {positiveRating >= 50 && positiveRating < 70 && <div className="quote-text">{profile.username} is rated Neutral</div>}
+                  {positiveRating >= 60 && positiveRating < 95 && <div className="quote-text">{profile.username} is rated Good</div>}
+                  {positiveRating >= 90 && <div className="quote-text">{profile.username} is a Top Baggler</div>}
                 </div>
               </div>
             </article>
@@ -693,39 +693,20 @@ export default function UserProfile({ match, history }) {
             <article className="tile box is-vertical">
               <div className="contents">
                 <div className="grid-header">
-                  <h2 className="title">Baggle Board</h2>
+                  <h2 className="title mb-4">{profile.username}'s Baggle Board</h2>
+                </div>
+                <div className="contents mb-4">
+                <h2 className="subtitle">Submit a comment or leave review</h2>
                 </div>
                 <div className="contents">
-                  Reviews goes here
-                </div>
-              </div>
-            </article>
-
-          </div>
-        </div>
-      </section>
-
-
-
-
-
-      <section className="section">
-        <div>
-
-
-
-        </div>
-
-        <h1>{profile.username}'s Baggle board</h1>
-        <h2>Submit a comment or review</h2>
-        {profile.other_reviews.map(review => {
+                {profile.other_reviews.map(review => {
           const rating = review.rating
           // console.log(rating)
           return <article key={review.id} className="media">
             <div className="media-content">
               <div className="content">
                 <p className="title">{review.author.username}</p>
-                <p className="text">{review.created_at}</p>
+                <p className="text"><Moment format="Do MMM YYYY @ HH:MM">{review.created_at}</Moment></p>
                 <div className="columns">
                   <p className="text column">{review.content}</p>
                   {rating === 2 ? <p className="text column is-one-fifth">👍</p> : <p className="text">👎</p>}
@@ -757,7 +738,7 @@ export default function UserProfile({ match, history }) {
             </div>
             <div>
               {!rated ? <div><button className="button is-success" onClick={(e) => handlePositive(e)}>Give positive feedback</button>
-                <button className="button is-danger" onClick={(e) => handleNegative(e)}>Give negative feedback</button></div> :
+                <button className="button ml-2 mb-2 is-danger" onClick={(e) => handleNegative(e)}>Give negative feedback</button></div> :
                 <div className="button is-warning">We love democracy!</div>
               }
             </div>
@@ -773,7 +754,19 @@ export default function UserProfile({ match, history }) {
             </div>
           </div>
         </article>}
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
       </section>
+
+
+
+
+
+    
 
 
 
