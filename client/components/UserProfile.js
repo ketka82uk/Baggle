@@ -712,7 +712,7 @@ export default function UserProfile({ match, history }) {
                           <p className="text"><Moment format="Do MMM YYYY @ HH:MM">{review.created_at}</Moment></p>
                           <div className="columns">
                             <p className="text column">{review.content}</p>
-                            {rating === 2 ? <p className="text column is-one-fifth emoji">👍</p> : <p className="text emoji">👎</p>}
+                            {rating === 2 || rating === 0 ? <p className="text column is-one-fifth emoji">👍</p> : <p className="text emoji">👎</p>}
                           </div>
                         </div>
                       </div>
