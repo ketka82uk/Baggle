@@ -113,7 +113,7 @@ export default function Home({ history }) {
 
   return <div className="main">
 
-    <section className="hero hero-background">
+    <section className="hero hero-background" style={{ backgroundImage: 'url(https://i.imgur.com/R8agYgr.png)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%' }}>
       <div className="hero-body">
 
 
@@ -139,7 +139,7 @@ export default function Home({ history }) {
 
                 </div>
 
-                <div className="column is-7"><button className="button">IMAGE GOES HERE</button>
+                <div className="column is-7">
                 </div>
 
               </div>
