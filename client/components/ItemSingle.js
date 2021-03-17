@@ -366,12 +366,10 @@ export default function ItemSingle({ match, history }) {
 
 
                 
-
-                <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
-
+                {/* <h2 className="subtitle">{`Availability: ${item.listed}`}</h2> */}
+                <h2>Items offered:</h2>
                 {offeredList.map((offeredItem, index) => {
                   return <div key={offeredItem.id} >
-                    <h2>Items offered for {item.name} :</h2>
                     <div id={offeredItem.id} > {offeredItem.name}</div>
 
                     <div>
@@ -424,8 +422,8 @@ export default function ItemSingle({ match, history }) {
             )}
              
             
-            {(logIn && !onWishlist) ? <button className='button is-info' onClick={handleAddToWishlist}>Add to wishlist</button>
-              : <button className="button" onClick={handleRemoveFromWishlist}>Remove from wishlist</button>
+            {logIn ? (!onWishlist ? <button className='button is-info' onClick={handleAddToWishlist}>Add to wishlist</button>
+              : <button className="button" onClick={handleRemoveFromWishlist}>Remove from wishlist</button>) : <div></div>
             }
 
             {item.comments && item.comments.map(comment => {
