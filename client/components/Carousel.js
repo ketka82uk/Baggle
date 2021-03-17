@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Slider from 'react-slick'
 import { getLoggedInUserId } from '../lib/auth'
 import sortedItems from './sortItems'
+import Moment from 'react-moment'
 
 export default function Carousel( { items, category, postings, userLocation } ) {
 
@@ -30,22 +31,24 @@ export default function Carousel( { items, category, postings, userLocation } ) 
   function mapItems(itemArray) {
     const limitedItems = itemArray.slice(0,8)
     return limitedItems.map((item, i) => {
-      return <div key={i}>
-        <div className="card">
+      return <div className="card carousel-card" key={i}>
+        <div className="container">
           <div className="card-image">
             <figure className="image is-4by3">
               <img src={item.image} alt="Placeholder image"/>
             </figure>
           </div>
-        </div>
+        
         <div className="card-content">
           <div className="content">
             <p className="title is-4">{item.name}</p>
+            <p className="subtitle">{item.owner.town}</p>
+            <p className="small-text">Created <Moment fromNow ago>{item.created_at}</Moment> ago by {item.owner.username}.</p>
             <Link to={`/items/${item.id}`}>
-              <div className="button">Go to</div>
+            <div className="color-link-button button"><span className="baggle">Baggle!</span></div>
             </Link>
-            <time dateTime="2016-1-1">{item.created_at}</time>
           </div>
+        </div>
         </div>
       </div>
     })

@@ -24,6 +24,16 @@ export default function UserProfile({ match, history }) {
   const [currentUserId, setCurrentUserId] = useState(0)
   const [currentUser, updateCurrentUser] = useState({})
   const [editState, updateEditState] = useState(false)
+
+  const [modalStateInv, setModalStateInv] = useState(false)
+  const [modalStateInvText, setModalStateInvText] = useState('')
+
+  const [modalStateWish, setModalStateWish] = useState(false)
+  const [modalStateWishText, setModalStateWishText] = useState('')
+
+  const [modalStateFriends, setModalStateFriends] = useState(false)
+  const [modalStateFriendsText, setModalStateFriendsText] = useState('')
+
   const [reviewData, updateCommentData] = useState({
     content: '',
     positive_rating: false,
@@ -61,7 +71,7 @@ export default function UserProfile({ match, history }) {
         const negativePercent = data.negative_rating / totalRatings * 100
         updatePositiveRating(positivePercent)
         updateNegativeRating(negativePercent)
-        updateFormData({ username : data.username, bio : data.bio })
+        updateFormData({ username: data.username, bio: data.bio })
         updateLoading(false)
       } catch (err) {
         console.log(err)
@@ -71,19 +81,19 @@ export default function UserProfile({ match, history }) {
   }, [])
 
   useEffect(() => {
-  async function fetchCurrentUser() {
-    const token = localStorage.getItem('token')
-    try {
-      const { data } = await axios.get('/api/current_user', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      updateCurrentUser(data)
-    } catch (err) {
-      console.log(err.response.data)
+    async function fetchCurrentUser() {
+      const token = localStorage.getItem('token')
+      try {
+        const { data } = await axios.get('/api/current_user', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        updateCurrentUser(data)
+      } catch (err) {
+        console.log(err.response.data)
+      }
     }
-  }
-  fetchCurrentUser()
-}, [])
+    fetchCurrentUser()
+  }, [])
 
 
 
@@ -91,12 +101,12 @@ export default function UserProfile({ match, history }) {
   //! FILTER FUNCTIONS
 
   function profileFollowsYou() {
-    if(profile.follows.includes(currentUser)) {
+    if (profile.follows.includes(currentUser)) {
       console.log('They follow me')
-    } else {'They don\'t follow me'}
+    } else { 'They don\'t follow me' }
   }
 
-  
+
 
 
   //! DELETE AND EDIT FUNCTIONS
@@ -115,6 +125,7 @@ export default function UserProfile({ match, history }) {
       console.log(err.response.data)
     }
   }
+
 
   // ! 9x9 MAPPING FUNCTIONS
 
@@ -141,6 +152,31 @@ export default function UserProfile({ match, history }) {
       return item.listed
     })
   }
+
+  // ! FULL MAPPING FUNCTIONS
+
+  function mapAllItems(itemArray) {
+    return itemArray.map((item) => {
+      return <div className="column is-one-quarter" key={item.id}>
+        <Link to={`/items/${item.id}`}>
+          <div className="card modal-individual-card">
+            <div className="card-image">
+              <figure className="image is-4by3">
+                <img src={item.image} />
+              </figure>
+              </div>
+              <div className="card-content py-1 px-1">
+                <p className="text mb-4"><strong>{item.name}</strong></p>
+                </div>
+                <div className="card-footer py-1 px-1 spread">
+                <p className="small-text">Created <Moment fromNow ago>{item.created_at}</Moment> ago.</p>
+              </div>
+          </div>
+        </Link>
+      </div>
+    })
+  }
+
 
   // ! HANDLE SUBMIT AND CHANGE FUNCTIONS
 
@@ -203,6 +239,9 @@ export default function UserProfile({ match, history }) {
     }
   }
 
+
+  // ! EDIT FUNCTIONS
+
   function handleEditChange(event) {
     updateFormData({ ...formData, [event.target.name]: event.target.value })
   }
@@ -229,6 +268,35 @@ export default function UserProfile({ match, history }) {
     updateEditState(true)
   }
 
+  // ! MODAL FUNCTIONS
+
+  const toggleInventoryModal = () => {
+    setModalStateInv(!modalStateInv)
+    if (modalStateInv) {
+      setModalStateInvText('is-active')
+    } else {
+      setModalStateInvText('')
+    }
+  }
+
+  const toggleWishlistModal = () => {
+    setModalStateWish(!modalStateWish)
+    if (modalStateWish) {
+      setModalStateWishText('is-active')
+    } else {
+      setModalStateWishText('')
+    }
+  }
+
+  const toggleFriendsModal = () => {
+    setModalStateFriends(!modalStateFriends)
+    if (modalStateFriends) {
+      setModalStateFriendsText('is-active')
+    } else {
+      setModalStateFriendsText('')
+    }
+  }
+
 
   if (loading) {
     return <div>Page is Loading</div>
@@ -240,6 +308,7 @@ export default function UserProfile({ match, history }) {
   return <div className="main">
 
     <div className="container">
+
 
       {/*
     // * TITLE SECTION
@@ -269,21 +338,26 @@ export default function UserProfile({ match, history }) {
             <div className="container my-2">
               <ul>
                 <li>
-                  <a onClick={profileFollowsYou()}>Profile</a>
+                  <a className="white-link" onClick={profileFollowsYou()}>Profile</a>
                 </li>
                 <li>
-                  <a>Up for Baggle</a>
+                  <a className="white-link" onClick={() => toggleInventoryModal()}>Up for Baggle</a>
                 </li>
+                {isCreator(userId) && <li>
+                  <a className="white-link" onClick={() => toggleWishlistModal()}>Wishlist</a>
+                </li>}
                 <li>
-                  <a>Wishlist</a>
+                  <a className="white-link" onClick={() => toggleFriendsModal()}>Baggle Buddies</a>
                 </li>
+                {isCreator(userId) && <li>
+                  <a className="white-link">Delete Profile</a>
+                  </li>}
+                {!isCreator(userId) && !profile.followers.includes(currentUser) && <li>
+                  <button className="button" onClick={handleFollow}>Follow {profile.username}</button>
+                  </li>}
                 <li>
-                  <a>Baggle Buddies</a>
-                </li>
-                <li><a>Delete Profile</a></li>
-                <li><button className="button" onClick={handleFollow}>Follow {profile.username}</button></li>
-                <li><a>Unfollow</a></li>
-
+                  <button className="button">Unfollow</button>
+                  </li>
               </ul>
             </div>
           </nav>
@@ -291,8 +365,110 @@ export default function UserProfile({ match, history }) {
       </section>
 
       {/*
+    // * INVENTORY MODAL SECTION
+    */}
+
+      <div class={`modal ${modalStateInvText}`}>
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title title">{profile.username}'s Items Up for Baggle</p>
+          </header>
+          <section class="modal-card-body">
+            <div className="contents">
+
+              <div className="columns is-multiline">
+                {mapAllItems(profile.inventory)}
+              </div>
+
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+
+            <button class="button" onClick={() => toggleInventoryModal()}>Close</button>
+          </footer>
+        </div>
+      </div>
+
+
+      {/*
+    // * WISHLIST MODAL SECTION
+    */}
+
+      <div class={`modal ${modalStateWishText}`}>
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title title">Your Wishlist</p>
+          </header>
+          <section class="modal-card-body">
+            <div className="contents">
+
+              <div className="columns is-multiline">
+                {mapAllItems(profile.wishlist)}
+              </div>
+
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+
+            <button class="button" onClick={() => toggleWishlistModal()}>Close</button>
+          </footer>
+        </div>
+      </div>
+
+
+      {/*
+    // * FRIENDS MODAL SECTION
+    */}
+
+      <div class={`modal ${modalStateFriendsText}`}>
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title title">{profile.username}'s Baggling Buddies</p>
+          </header>
+          <section class="modal-card-body">
+            <div className="contents">
+
+              <div className="columns is-multiline">
+                {profile.follows.map((follow) => {
+                  return <div className="column is-one-quarter" key={follow.id}>
+                    <Link to={`/users/${follow.id}`}>
+                      <div className="card modal-individual-card">
+                        <div 
+                        className="card-image"
+                        style={{ 
+                          backgroundImage: `url(${follow.image})`,
+                          backgroundSize: 'cover'
+                          }}>
+                          <figure className="image is-4by3">
+                            <img src={follow.profile_image} />
+                          </figure>
+                          </div>
+                          <div className="card-content">
+                            <p className="text mb-4"><strong>{follow.username}</strong></p>
+                          </div>
+                      </div>
+                    </Link>
+                  </div>
+                })}
+              </div>
+
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+
+            <button class="button" onClick={() => toggleFriendsModal()}>Close</button>
+          </footer>
+        </div>
+      </div>
+
+
+      {/*
         // * BODY SECTION
       */}
+
 
       <section className="section">
         <div className="columns">
@@ -327,35 +503,35 @@ export default function UserProfile({ match, history }) {
                 </div> */}
 
                 {editState === false ?
-                <div className="contents">
-                  <div className="container mb-4">
-                  <label>Username</label>
-                  <p>{profile.username}</p>
+                  <div className="contents">
+                    <div className="container mb-4">
+                      <label>Username</label>
+                      <p>{profile.username}</p>
+                    </div>
+                    <div className="container mb-4">
+                      <label>Location</label>
+                      <p>{profile.location}</p>
+                    </div>
+                    <div className="container mb-4">
+                      <label>Bio</label>
+                      <p>{profile.bio}</p>
+                    </div>
+
+                    {profile.created_at && <p>Baggling since <span className="red-text"><Moment format="Do MMM YYYY">{profile.created_at}</Moment></span></p>}
+                  </div> :
+                  <div>
+                    <UserUpdateForm
+                      handleEditSubmit={handleEditSubmit}
+                      handleEditChange={handleEditChange}
+                      formData={formData}
+                    />
+                    <ImageUpload
+                      formData={formData}
+                      updateFormData={updateFormData}
+                    />
                   </div>
-                  <div className="container mb-4">
-                  <label>Location</label>
-                  <p>{profile.location}</p>
-                  </div>
-                  <div className="container mb-4">
-                  <label>Bio</label>
-                  <p>{profile.bio}</p>
-                  </div>
-                  
-                  {profile.created_at && <p>Baggling since <span className="red-text"><Moment format="Do MMM YYYY">{profile.created_at}</Moment></span></p>}
-                </div> :
-                <div>
-                <UserUpdateForm
-                  handleEditSubmit={handleEditSubmit}
-                  handleEditChange={handleEditChange}
-                  formData={formData}
-                />
-                <ImageUpload
-                  formData={formData}
-                  updateFormData={updateFormData}  
-                /> 
-                </div> 
-              }
-              
+                }
+
               </div>
             </article>
 
@@ -367,10 +543,10 @@ export default function UserProfile({ match, history }) {
               <div className="contents">
                 <div className="grid-header">
                   <h2 className="title">Baggling Buddies</h2>
-                  <button className="button">See All</button>
+                  <button className="button" onClick={() => toggleFriendsModal()}>See All</button>
                 </div>
                 <AvatarGroup max={10}>
-                
+
                   {profile.follows.map((follow) => {
                     return <Link to={`/users/${follow.id}`}><Avatar
                       alt={follow.username}
@@ -383,7 +559,7 @@ export default function UserProfile({ match, history }) {
                         backgroundSize: 'cover'
                       }} /></Link>
                   })}
-                  
+
                 </AvatarGroup>
               </div>
             </article>
@@ -398,7 +574,6 @@ export default function UserProfile({ match, history }) {
                 <div className="contents">
                   <div className="grid-header">
                     <h2 className="title">Baggler Ratings</h2>
-                    <button className="button">See All</button>
                   </div>
                 </div>
               </div>
@@ -450,7 +625,7 @@ export default function UserProfile({ match, history }) {
               <div className="contents">
                 <div className="grid-header">
                   <h2 className="title">Wishlist</h2>
-                  <button className="button">See All</button>
+                  <button className="button" onClick={() => toggleWishlistModal()}>See All</button>
                 </div>
                 <div className="contents">
                   <div className="grid-container">
@@ -481,7 +656,7 @@ export default function UserProfile({ match, history }) {
               <div className="contents">
                 <div className="grid-header">
                   <h2 className="title">Up for Baggle</h2>
-                  <button className="button">See All</button>
+                  <button className="button" onClick={() => toggleInventoryModal()}>See All</button>
                 </div>
                 <div className="contents">
                   <div className="grid-container">
@@ -537,7 +712,7 @@ export default function UserProfile({ match, history }) {
             </div>
 
             <div className="container">
-              {isCreator(review.author.id) && <button 
+              {isCreator(review.author.id) && <button
                 className="button"
                 onClick={() => handleReviewDelete(review.id)}
               >Delete Review</button>}
