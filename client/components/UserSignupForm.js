@@ -57,6 +57,7 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               value={formData.username}
               onChange={handleChange}
               name={'username'}
+              placeholder="Pick a username"
             />
             {errors.username && <small className="has-text-danger">Invalid username</small>}
           </div>
@@ -70,17 +71,18 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               type="text"
               value={formData.email}
               onChange={handleChange}
-              name={'email'} />
+              name={'email'}
+              placeholder="yourname@domain.com" />
             {errors.email && <small className="has-text-danger">Invalid email</small>}
           </div>
         </div>
 
         <div className='field'>
-          <label className='label'>Locaiton</label>
+          <label className='label'>Location</label>
           <div className='control'>
             <input
               className='input'
-              placeholder='location...'
+              placeholder='Start typing your address or postcode'
               type='text'
               value={formData.search || ''}
               onChange={createSearchQuery}
@@ -112,7 +114,8 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               type="text"
               value={formData.bio}
               onChange={handleChange}
-              name={'bio'} />
+              name={'bio'}
+              placeholder="Tell us a bit about yourself" />
             {errors.bio && <small className="has-text-danger">Invalid bio</small>}
           </div>
         </div>
@@ -125,11 +128,12 @@ export default function UserSignupForm({ formData, handleSubmit, handleChange, u
               type="password"
               value={formData.password}
               onChange={handleChange}
-              name={'password'} />
+              name={'password'}
+              placeholder="Choose a password" />
             {errors.password && <small className="has-text-danger">invalid password</small>}
           </div>
         </div>
-        <button className="button">Submit</button>
+        <button className="button color-link-button mt-4">Submit</button>
       </form>
     </div>
   </div>

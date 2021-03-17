@@ -58,7 +58,7 @@ export default function ImageUpload({ formData, updateFormData }) {
     <div>
       <div className="container">
         <button className="button" onClick={handleImageUpload}>Upload image</button>
-        {!imageFormData.url && <div className="image-holder">
+        {!imageFormData.url && <div className="cover-image-placeholder">
           <div className="icon">
             <img src="https://i.imgur.com/qFTdxL6.png" alt="icon" height="20px"></img>
           </div>

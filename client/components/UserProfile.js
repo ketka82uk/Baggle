@@ -50,7 +50,8 @@ export default function UserProfile({ match, history }) {
 
   const userId = Number(match.params.userId)
   const token = localStorage.getItem('token')
-
+  
+  
   useEffect(() => {
     const handleLogin = () => {
       if (token) {
@@ -368,9 +369,6 @@ export default function UserProfile({ match, history }) {
                 {!isCreator(userId) && !profile.followers.includes(currentUser) && <li>
                   <button className="button" onClick={handleFollow}>Follow {profile.username}</button>
                   </li>}
-                <li>
-                  <button className="button">Unfollow</button>
-                  </li>
               </ul>
             </div>
           </nav>
@@ -390,9 +388,12 @@ export default function UserProfile({ match, history }) {
           <section class="modal-card-body">
             <div className="contents">
 
+
+              {profile.inventory.length > 0 ? 
               <div className="columns is-multiline">
                 {mapAllItems(profile.inventory)}
-              </div>
+              </div> :
+              <div>{profile.username} has nothing to baggle. Shame on {profile.username}!</div>}
 
             </div>
           </section>
@@ -417,10 +418,11 @@ export default function UserProfile({ match, history }) {
           <section class="modal-card-body">
             <div className="contents">
 
+            {profile.wishlist.length > 0 ? 
               <div className="columns is-multiline">
                 {mapAllItems(profile.wishlist)}
-              </div>
-
+              </div> :
+              <div>A lone tumbleweed blows gently across the empty space that is your wishlist... </div>}
             </div>
           </section>
           <footer class="modal-card-foot">
@@ -444,6 +446,7 @@ export default function UserProfile({ match, history }) {
           <section class="modal-card-body">
             <div className="contents">
 
+              {profile.follows.length > 0 ? 
               <div className="columns is-multiline">
                 {profile.follows.map((follow) => {
                   return <div className="column is-one-quarter" key={follow.id}>
@@ -466,7 +469,8 @@ export default function UserProfile({ match, history }) {
                     </Link>
                   </div>
                 })}
-              </div>
+              </div> :
+              <div>🎶  All by myself, don't wanna live all by myself...  🎶 </div>}
 
             </div>
           </section>
@@ -538,6 +542,7 @@ export default function UserProfile({ match, history }) {
                       handleEditChange={handleEditChange}
                       formData={formData}
                     />
+                    <div className="content">Change your cover image by uploading a photo:</div>
                     <ImageUpload
                       formData={formData}
                       updateFormData={updateFormData}
@@ -730,11 +735,7 @@ export default function UserProfile({ match, history }) {
 
             <div className="container">
               {isCreator(review.author.id) && <button
-<<<<<<< HEAD
-                className="button is-danger"
-=======
                 className="button"
->>>>>>> newbranch
                 onClick={() => handleReviewDelete(review.id)}
               >Delete Review</button>}
             </div>

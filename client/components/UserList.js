@@ -122,7 +122,9 @@ export default function UserList() {
 
     <section className="section">
       <div className="container">
-        <p>Your search found {numberOfUsers} Bagglers Baggling!</p>
+      <div className="main-title-text">
+            <p>Your search found <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>{numberOfUsers} Bagglers</span></p>
+            </div>
       </div>
       <div className="container">
         <div className="columns is-multiline">
