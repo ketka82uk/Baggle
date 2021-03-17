@@ -38,17 +38,17 @@ export default function Carousel( { items, category, postings, userLocation } ) 
               <img src={item.image} alt="Placeholder image"/>
             </figure>
           </div>
-        
-        <div className="card-content">
-          <div className="content">
-            <p className="title is-4">{item.name}</p>
-            <p className="subtitle">{item.owner.town}</p>
-            <p className="small-text">Created <Moment fromNow ago>{item.created_at}</Moment> ago by {item.owner.username}.</p>
-            <Link to={`/items/${item.id}`}>
-            <div className="color-link-button button"><span className="baggle">Baggle!</span></div>
-            </Link>
+          
+          <div className="card-content">
+            <div className="content">
+              <p className="title is-4">{item.name}</p>
+              <p className="subtitle">{item.owner.town}</p>
+              <p className="small-text">Created <Moment fromNow ago>{item.created_at}</Moment> ago by {item.owner.username}.</p>
+              <Link to={`/items/${item.id}`}>
+                <div className="color-link-button button"><span className="baggle">Baggle!</span></div>
+              </Link>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     })

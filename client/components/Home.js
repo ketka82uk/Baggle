@@ -157,7 +157,6 @@ export default function Home({ history }) {
                         className="input is-info"
                         onChange={(event) => handleChange(event)}
                         value={searchTerm}
-                        className="input-large"
                       />
                     </div>
                     <div className="right-search">
@@ -234,7 +233,7 @@ export default function Home({ history }) {
 
           <div className="main-title-text">
             <p>Don't bin it, <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>baggle it!</span></p>
-            </div>
+          </div>
 
 
 
@@ -244,11 +243,11 @@ export default function Home({ history }) {
 
           With Baggle you can find all the things you love, for free! Come and join our thriving community of Bagglers to make room, make swaps and make friends! Don't bin it, Baggle it!
         
-      </article>
+        </article>
       </div>
-</section>
-      <section>
-        <div className="container">
+    </section>
+    <section>
+      <div className="container">
         <div className='has-text is-centered'>
           {postings ? <div className='button is-size-5' onClick={() => swapPostings()}>Latest postings</div>
             : <div className='button is-size-5' onClick={() => swapPostings()}>Closest postings</div>}

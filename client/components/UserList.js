@@ -46,7 +46,7 @@ export default function UserList() {
       }
     }
     fetchUser()
-  })
+  },[])
 
   function getRating(user) {
     const totalRatings = user.positive_rating + user.negative_rating
@@ -101,15 +101,15 @@ export default function UserList() {
 
         <div className="tile box">
           <div className="icon-holder">
-          <Icon>search</Icon>
+            <Icon>search</Icon>
           </div>
-        <input
-          type="text"
-          placeholder="Search for fellow bagglers..."
-          className="input is-info is-half"
-          onChange={(event) => handleChange(event)}
-          value={searchTerm}
-        />
+          <input
+            type="text"
+            placeholder="Search for fellow bagglers..."
+            className="input is-info is-half"
+            onChange={(event) => handleChange(event)}
+            value={searchTerm}
+          />
         </div>
         {/* <button className="button" onClick={handleSearch}>Search</button> */}
         <div className="columns">
@@ -122,9 +122,9 @@ export default function UserList() {
 
     <section className="section">
       <div className="container">
-      <div className="main-title-text">
-            <p>Your search found <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>{numberOfUsers} Bagglers</span></p>
-            </div>
+        <div className="main-title-text">
+          <p>Your search found <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>{numberOfUsers} Bagglers</span></p>
+        </div>
       </div>
       <div className="container">
         <div className="columns is-multiline">
@@ -133,13 +133,13 @@ export default function UserList() {
               <Link to={`/users/${user.id}`}>
                 <div className="card">
                   <div 
-                  className="card-image" 
-                  style={{ 
-                    backgroundImage: `url(${user.image})`,
-                    backgroundSize: 'cover'
-                  }}>
+                    className="card-image" 
+                    style={{ 
+                      backgroundImage: `url(${user.image})`,
+                      backgroundSize: 'cover'
+                    }}>
                     <figure className="image is-4by3">
-                    <img src={user.profile_image} />
+                      <img src={user.profile_image} />
                     </figure>
                   </div>
                   <div className="card-content">

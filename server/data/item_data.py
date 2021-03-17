@@ -340,7 +340,47 @@ list_items = [
     listed=True,
     wishlisted=0,
     user=1
-    )
+    ),
+    Item(
+    name="Drive anywhere for 1 hour",
+    typeof="services",
+    category="motors",  
+    description="I have a car, I have a license. lets make it work",
+    image="https://d1ix0byejyn2u7.cloudfront.net/drive/images/uploads/headers/ws_cropper/1_0x0_790x520_0x520_become_a_better_driver.jpg",
+    listed=True,
+    wishlisted=0,
+    user=2
+    ),
+    Item(
+    name="Carwashing",
+    typeof="services",
+    category="motors",  
+    description="With a sponge, bucket and no hose pipe ban, I'll wash any car. Wax on, wax off!",
+    image="https://lisamaree.files.wordpress.com/2013/07/waxonwaxoff-kk.jpg",
+    listed=True,
+    wishlisted=0,
+    user=3
+    ),
+    Item(
+    name="Track day Vouchers",
+    typeof="services",
+    category="motors",  
+    description="I got these track day tokens for my son. He's been banned for speeding. Don't need them anymore",
+    image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvBABrLT2RnyQD9eCOa_dqwX7jk-BF6S2WuA&usqp=CAU",
+    listed=True,
+    wishlisted=0,
+    user=4
+    ),
+    Item(
+    name="Mechanic, will do anything",
+    typeof="services",
+    category="motors",  
+    description="Hi, I'm a trained mechanic, happy to fix anythong for you from a busted tyre to a busted spark plug",
+    image="https://yydxg3i41b1482qi9hidybgs-wpengine.netdna-ssl.com/wp-content/uploads/gravity_forms/25-b5d3b2d6d56821c92dc66a11062e7a51/2015/07/image-84d07ba6d864fd3deb74c8a3140c54d353799561cc7fc06f2792dba4eb421bef-V.jpg",
+    listed=True,
+    wishlisted=0,
+    user=5
+    ),
 ]
 
 list_items2 = [
