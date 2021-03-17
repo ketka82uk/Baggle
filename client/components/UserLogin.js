@@ -36,11 +36,11 @@ export default function UserLogin({ history }) {
 
   return <div className="main">
 
-    <section className="section">
+    {/* <section className="section">
       <div className="container">
         <h1>Login</h1>
       </div>
-    </section>
+    </section> */}
 
     <section className="section">
       <div className="container">
@@ -53,7 +53,7 @@ export default function UserLogin({ history }) {
               <input
                 className="input"
                 type="email"
-                placeholder="<img>Email"
+                placeholder="Email"
                 value={formData.email}
                 onChange={handleChange}
                 name={'email'}
@@ -67,14 +67,14 @@ export default function UserLogin({ history }) {
               <input
                 className="input"
                 type="password"
-                placeholder="<img> Password"
+                placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
                 name={'password'}
               />
               {error && <small className="has-text-danger">Invalid email or password</small>}
             </div>
-            <button>Submit</button>
+            <button className="button is-link">Submit</button>
           </form>
         </div>
 

@@ -7,78 +7,85 @@ import '../styles/style.scss'
 
 
 export default function ItemSingle({ match, history }) {
-
   const itemid = match.params.itemid
-  const [title, setTitle] = useState('')
+  const itemid1 = match.params.itemid1
   const [item, updateItem] = useState({})
-  const [offeredList, updateOfferedList] = useState([])
   const [currentUser, updateCurrentUser] = useState([])
+  const [text, setText] = useState('')
   const [loading, updateLoading] = useState(true)
   const [wishlisted, updateWishlisted] = useState(0)
   const [userData, updateUserData] = useState([])
   const [modalState, setModalState] = useState(false)
   const [currentUserInventory, updateCurrentUserInventory] = useState([])
-
+  const [offeredItemid, updateOfferedItemid] = useState(0)
   const token = localStorage.getItem('token')
-  const [commentData, updateCommentData] = useState('')
+
   useEffect(() => {
     async function fetchItem() {
       try {
         const { data } = await axios.get(`/api/items/${itemid}`)
         updateItem(data)
-        updateOfferedList(data.offers)
       } catch (err) {
         console.log(err)
       }
     }
     fetchItem()
   }, [])
+  console.log(item)
+  // function test(e) {
+  //   event.preventDefault()
+  //   console.log(e.currentTarget.value)
+  // }
 
 
 
+  // function handleChange(event) {
+  //   const { name, value } = event.target
+  //   updateOfferedItemid({ ...offeredItemid, [name]: value })
+  // }
 
-  // console.log(itemid)
+  // async function handleSubmit(event) {
+  //   event.preventDefault()
+  //   const token = localStorage.getItem('token')
 
-  async function fetch(offeredItemid) {
-    try {
-      console.log(offeredItemid)
-      console.log(itemid)
-      const { data } = await axios.put(`/api/offers/${itemid}/${offeredItemid}`, {},
-        { headers: { Authorization: `Bearer ${token}` } })
-      updateItem(data)
-    } catch (err) {
-      console.log(err)
+  //   const newFormData = {
+  //     ...offeredItemid
+  //   }
+  //   try {
+  //     const { data } = await axios.put(`/api/offers/${itemid}/${itemid1}`, {
+  //       headers: { Authorization: `Bearer ${token}` }
+  //     })
+  //     console.log(data._id)
+  //     history.push(`/items/${data.item}`)
+  //   } catch (err) {
+  //     console.log(err.response.data)
+  //   }
+  // }
+
+  console.log(itemid)
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const { data } = await axios.put(`/api/offers/${itemid}/10`)
+        updateItem(data)
+      } catch (err) {
+        console.log(err)
+      }
     }
-    // history.push('/items')
-    location.reload()
-  }
 
 
-
-
-  async function Swap(offeredItemid) {
-    try {
-      console.log(offeredItemid)
-      console.log(itemid)
-      const { data } = await axios.put(`/api/swap/${itemid}/${offeredItemid}`, {},
-        { headers: { Authorization: `Bearer ${token}` } })
-      updateItem(data)
-    } catch (err) {
-      console.log(err)
-    }
-    // history.push('/items')
-    location.reload()
-  }
+  }, [])
+  //  console.log(itemid)
 
 
 
 
 
   async function handleDelete() {
-    await axios.delete(`/api/items/${itemid}`, {
+    await axios.delete(`/api/item/${itemid}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    location.reload()
+    history.push('/items')
   }
   useEffect(() => {
     async function fetchData() {
@@ -94,32 +101,20 @@ export default function ItemSingle({ match, history }) {
     setModalState(!modalState)
   }
 
-  // function updateOffer(e) {
-  //   updateOfferedItemid(e.target.id)
-  //   fetch()
-  // }
-  function handleChange(event) {
-    updateCommentData(event.target.value)
+
+
+  async function handleComment() {
+
+    const { data } = await axios.post(`/api/items/${itemid}/comments`, { text }, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+
+
+    setText('')
+
+    updateItem(data)
+
   }
-
-  async function handleComment(e) {
-    e.preventDefault()
-    const newCommentData = { content: commentData }
-    try {
-      const { data } = await axios.post(`/api/items/${itemid}/comments`, newCommentData, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      location.reload()
-    } catch (err) {
-      console.log(err.response.data)
-    }
-
-    setTitle('')
-    // updateItem(data)
-  }
-
-
-
 
   async function fetchCurrentUserInventory() {
     const token = localStorage.getItem('token')
@@ -134,19 +129,18 @@ export default function ItemSingle({ match, history }) {
   }
 
   useEffect(() => {
+
     fetchCurrentUserInventory()
   }, [])
 
 
   async function handleDeleteComment(commentId) {
-    try {
-      await axios.delete(`/api/items/${itemid}/comments/${commentId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      location.reload()
-    } catch (err) {
-      console.log(err.response.data)
-    }
+
+    await axios.delete(`/api/items/${itemid}/comment/${commentId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    history.push('/items')
+
   }
 
   // ! CATHY
@@ -203,19 +197,12 @@ export default function ItemSingle({ match, history }) {
   if (!item.owner) {
     return null
   }
-  // console.log(currentUserInventory)
+  console.log(currentUserInventory[1])
+  // console.log(currentUser.inventory)
   // console.log(currentUser['inventory.id'])
 
-
-  // if (item) {
-  //   console.log('ownerid:')
-  //   // console.log(item.owner['id'])
-  //   // const owner = item.owner
-  //   console.log(item.owner['id'])
-  // }
-
   return <div className="columns">
-    {<div className="Mod">
+    <div className="Mod">
       <div className={`modalBackground modalShowing-${modalState}`}>
         <div className="innerModal">
           <div className="modalImage">
@@ -226,13 +213,10 @@ export default function ItemSingle({ match, history }) {
             <h2> Would you like to make an offer?</h2>
 
             <form action="">
-              {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
-                const available = item.listed
-                return <div key={index}>
+              {currentUserInventory.map((item, index) => {
+                return <div key={index} >
                   <div>
-                    {available ? <button className='button is-primary' id={item.id} onClick={(e) => fetch(e.target.id)}>  {item.id} {item.name}  </button> :
-                      <button className='button is-warning'> {item.name} </button>
-                    }
+                    <button className="request" onClick={() => fetch()}>   {item.name}  </button>
                   </div>
                 </div>
 
@@ -240,7 +224,7 @@ export default function ItemSingle({ match, history }) {
             </form>
             <button className="exit" onClick={() => toggleModal()}>
               Exit
-            </button>
+          </button>
 
           </div>
         </div>
@@ -248,17 +232,16 @@ export default function ItemSingle({ match, history }) {
       </div>
       <button onClick={() => toggleModal()}>Baggle</button>
     </div>
-    }
     <div className="column">
       <figure className='image'>
         <img src={item.image} alt={item.name} />
       </figure>
-      {isCreator(item.owner['id']) && <button
+      {isCreator(item.owner.id) && <button
         className="button is-danger"
         onClick={handleDelete}
       >☠️ Delete Item</button>}
       {isCreator(item.owner.id) && <Link
-        to={`/items/${itemid}`}
+        to={`/items/${item.id}`}
         className="button is-secondary"
       >Update Item</Link>}
 
@@ -272,29 +255,25 @@ export default function ItemSingle({ match, history }) {
       {/* <h2 className="subtitle">{`Image: ${item.owner.image}`}</h2> */}
       <h2 className="subtitle">{`Availability: ${item.listed}`}</h2>
 
-      {offeredList.map((offeredItem, index) => {
-        return <div key={offeredItem.id} >
-          <div>
-            <div id={offeredItem.id} >{offeredItem.name}</div>
-          </div>
-          <div>
-            {isCreator(item.owner['id']) && <button id={offeredItem.id} className='is-warning' onClick={(e) => Swap(e.target.id)}>SWAP!</button>}
-          </div>
-        </div>
 
-      })}
       <button className="button" onClick={handleAddToWishlist}>Add to wishlist</button>
 
+      {
+
+      }
       {item.comments && item.comments.map(comment => {
         return <article key={comment._id} className="media">
           <div className="media-content">
             <div className="content">
               <p className="subtitle">
-                {comment.user.username}:
+                {comment.user.username}
               </p>
-              <p>{comment.content}</p>
+              <p>{comment.text}</p>
             </div>
           </div>
+          {
+
+          }
           {isCreator(comment.user.id) && <div className="media-right">
             <button
               className="delete"
@@ -304,11 +283,42 @@ export default function ItemSingle({ match, history }) {
         </article>
       })}
 
-      {/* {
+      {
         <figure className="image is-128x128">
-          <img className="is-rounded" src={currentUser.profile_image} />
+          <img className="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" />
         </figure>
-      } */}
+
+      }
+      {/* <div className="Mod">
+        <div className={`modalBackground modalShowing-${modalState}`}>
+          <div className="innerModal">
+            <div className="modalImage">
+              <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
+              />
+            </div>
+            <div className="modalText">
+              <h2> Would you like to make an offer?</h2>
+
+              <form action="">
+                {currentUserinventory.map((item, index) => {
+                  return <div key={index}>
+                    <div>
+                      <button>   {item.name}  </button>
+                    </div>
+                  </div>
+
+                })}
+              </form>
+              <button className="exit" onClick={() => toggleModal()}>
+                Exit
+          </button>
+
+            </div>
+          </div>
+
+        </div>
+        <button onClick={() => toggleModal()}>Baggle</button>
+      </div> */}
 
       <article className="media">
         <div className="media-content">
@@ -317,9 +327,10 @@ export default function ItemSingle({ match, history }) {
               <textarea
                 className="textarea"
                 placeholder="Make a comment.."
-                onChange={handleChange}
-                value={commentData.content}
+                onChange={event => setText(event.target.value)}
+                value={text}
               >
+                {text}
               </textarea>
             </p>
           </div>
@@ -341,56 +352,63 @@ export default function ItemSingle({ match, history }) {
 
       </article>
     </div>
-  </div >
+  </div>
 
 }
 
 
+{/* <toggleModal
+         handleChange={handleChange}
+         handleSubmit={handleSubmit}
+         offeredItemid={offeredItemid}
+         /> */}
 
 
 
+      //    <div className="Mod">
+      //    <div className={`modalBackground modalShowing-${modalState}`}>
+      //      <div className="innerModal">
+      //        <div className="modalImage">
+      //          <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
+      //          />
+      //        </div>
+      //        <div className="modalText">
+      //          <h2> Would you like to make an offer?</h2>
 
-{/* <div className="Mod">
-  <div className={`modalBackground modalShowing-${modalState}`}>
-    <div className="innerModal">
-      <div className="modalImage">
-        <img src="https://images.unsplash.com/photo-1615558254521-201fe44dbf8e?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1OXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt={item.name}
-        />
-      </div>
-      <div className="modalText">
-        <h2> Would you like to make an offer?</h2>
+      //          <form action="">
+      //            {currentUserInventory.map((item, index) => {
+      //              return <div key={index} >
+      //                <div>
+      //                  <button>   {item.name}  </button>
+      //                </div>
+      //              </div>
 
-        <form action="">
-          {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
-            return <div key={index}>
-              <div>
-                <button>   {item.name}  </button>
-              </div>
-            </div>
+      //            })}
+      //          </form>
+      //          <button className="exit" onClick={() => toggleModal()}>
+      //            Exit
+      //        </button>
 
-          })}
-        </form>
-        <button className="exit" onClick={() => toggleModal()}>
-          Exit
-    </button>
+      //        </div>
+      //      </div>
 
-      </div>
-    </div>
-
-  </div>
-  <button onClick={() => toggleModal()}>Baggle</button>
-</div> */}
-
+      //    </div>
+      //    <button onClick={() => toggleModal()}>Baggle</button>
+      //  </div>
 
 
-// {!isCreator(item.owner['id']) && currentUserInventory.map((item, index) => {
-//   const available = item.listed
-//   return <div key={item.id} >
-//     <div>
-//       {available ? <button className='button is-primary' id={item.id} onClick={(e) => fetch(e.target.id)}>  {item.id} {item.name}  </button> :
-//         <button className='button is-warning'> {item.name} </button>
-//       }
-//     </div>
-//   </div>
 
-// })}
+      // <button
+      //   onClick={() => {
+      //     // ? ... is the spread operator in javascript
+      //     // * This creates a brand new bag, a copy of my original bag.
+      //     const newBag = [...bag]
+      //     // * I can mutate this however I like
+      //     newBag.push(emoji)
+      //     updateBag(newBag)
+      //     // or updateBag([...bag, emoji])
+      //     updateEmoji('')
+      //   }}
+      // >
+      //   Add Emoji!
+      // </button>

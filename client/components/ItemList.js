@@ -86,30 +86,35 @@ export default function ItemList({ match, location }) {
   }
 
   if (loading) {
-    return <ClipLoader loading={loading} size={100} />
+    return <div className='searchBox'><ClipLoader loading={loading} size={100} /></div>
   }
 
   return <section className="section">
     <div className='container searchBox'>
       <form>
-        <div className="columns is-full is-centered">
-          <div className="columns is-three-quarters">
-            <input
-              type="text"
-              placeholder="Start baggling!"
-              className="input is-info is-9"
-              onChange={(event) => handleChange(event)}
-              value={searchTerm}
-            />
-            <input
-              className="input is-info"
-              id="input-width"
-              type="text"
-              placeholder="Search for an item near you!"
-              onChange={createSearchQuery}
-              value={searchLocation}
-              autoComplete="off"
-            />
+        <div className="tile is-8 search-container is-centered">
+          <div className="tile box center-row">
+            <div className="left-search">
+              <input
+                type="text"
+                placeholder="What?"
+                className="input is-info"
+                onChange={(event) => handleChange(event)}
+                value={searchTerm}
+                className="input-large"
+              />
+            </div>
+            <div className="right-search">
+              <input
+                className="input-large pl-4"
+                id="input-width"
+                type="text"
+                placeholder="Where?"
+                onChange={createSearchQuery}
+                value={searchLocation}
+                autoComplete="off"
+              />
+            </div>
           </div>
           {searchResults.length > 0 &&
               <div className='dropdown is-active is-fullwidth'>

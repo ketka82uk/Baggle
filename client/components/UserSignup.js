@@ -11,6 +11,7 @@ export default function UserSignup({ history }) {
   const [formData, updateFormData] = useState({
     username: '',
     email: '',
+    town: '',
     location: '',
     lat: 0,
     lng: 0,
@@ -41,10 +42,18 @@ export default function UserSignup({ history }) {
     updateErrors({ ...errors, [name]: '' })
   }
 
+  function getTown() {
+    const locationSplit = formData.location.split(',')
+    const town = locationSplit[locationSplit.length - 3]
+    return town
+  }
+
   async function handleSubmit(event) {
     event.preventDefault()
+    const town = getTown()
     const newFormData = {
-      ...formData
+      ...formData,
+      town: town
     }
     delete newFormData.search
     try {
