@@ -131,7 +131,7 @@ export default function Home({ history }) {
                     <p className="logo-title">Baggle</p>
                     <p
                       className="subtitle is-4"
-                      style={{ color: 'whitesmoke' }}>Barter, Bargain, Haggle, <span className="title" style={{ color: 'whitesmoke' }}>BAGGLE!</span></p>
+                      style={{ color: 'whitesmoke' }}>Barter, Bargain, Haggle, <span style={{ color: 'whitesmoke', fontSize: '30px', fontFamily: 'Mouse Memoirs' }}>BAGGLE!</span></p>
                   </div>
                   <div className="container mt-4">
                   <Link to={'/signup'}><button className="hero-button">Sign up</button></Link>
@@ -201,7 +201,40 @@ export default function Home({ history }) {
 
 
 
-    <section className='column'>
+    <section className='section'>
+      <div className="container">
+        <article className="copy-box">
+
+          <div className="columns">
+            <div className="column">
+            <div className="card">
+            <div className="card-content">
+            "My wardrobe is bursting! I have so many clothes but I don't want to chuck them!"
+            </div>
+          </div>
+            </div>
+            <div className="column">
+            <div className="card">
+            <div className="card-content">
+            "I had so many courgettes on the allotment this year, I'll never eat them all!"
+            </div>
+          </div>
+            </div>
+            <div className="column">
+            <div className="card">
+            <div className="card-content">
+            "I wonder if someone would prune my roses if I offered them a homemade cake?"
+            </div>
+          </div>
+            </div>
+          </div>
+          
+          
+         
+         
+          
+          No problem! With Baggle you can find all the things you love, for free! Come and join our thriving community of Bagglers to make room, make swaps and make friends! Don't bin it, Baggle it!
+        </article>
       <div className='has-text is-centered'>
         {postings ? <div className='button is-size-5' onClick={() => swapPostings()}>Latest postings</div>
           : <div className='button is-size-5' onClick={() => swapPostings()}>Closest postings</div>}
@@ -212,6 +245,7 @@ export default function Home({ history }) {
             <Carousel items={items} category={category} postings={postings} userLocation={userLocation} />
           </div>
         })}
+      </div>
       </div>
     </section>
   </div>
