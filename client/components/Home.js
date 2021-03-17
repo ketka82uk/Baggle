@@ -262,8 +262,8 @@ export default function Home({ history }) {
 
               
                 <div className="content px-4">
-                <p className="homepage-copy">At Baggle, we're bringing back the age-old art of bartering, saving you money and helping you connect with you community.</p>
-              <p className="homepage-copy">With Baggle you can find all the things you love, for free! Come and join our thriving community of Bagglers to make room, make swaps and make friends!</p>
+                <p className="homepage-copy">At Baggle, we're bringing back the age-old art of bartering, saving you money and helping you connect with your community.</p>
+              <p className="homepage-copy">With Baggle you can find all the things you love, for free! Come and join our thriving community of Bagglers to make swaps and make friends!</p>
                 </div>
              
             </div>
@@ -277,7 +277,7 @@ export default function Home({ history }) {
             <div className="card">
                 <div className="card-content">
                   <p className="quote-text">How do I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
-                  <p className="text">Browse the site for items and nearby Bagglers to find something you like. Then hit that Baggle Button! Just make your you have something to Baggle!</p>
+                  <p className="text">Browse the site for items and nearby Bagglers to find something you like. Then hit that Baggle Button! Just make you have something to Baggle!</p>
                 </div>
               </div>
           </div>
