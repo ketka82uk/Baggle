@@ -129,7 +129,7 @@ list_users = [
         ),
     User(
         username="Adil", 
-        email="Adil@Adil.com", 
+        email="adil@adil.com", 
         password="Adil",
         lat=51.50016178019626, 
         lng=-3.182585796339442, 
@@ -144,6 +144,24 @@ list_users = [
         avatar_skin="Light",
         image="https://images.pexels.com/photos/268941/pexels-photo-268941.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
         profile_image="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Brown&facialHairType=BeardLight&facialHairColor=Brown&clotheType=ShirtCrewNeck&hatColor=Black&clotheColor=Black&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Light"
+        ),
+     User(
+        username="KyleMacDonald", 
+        email="kyle@kyle.com", 
+        password="kyle",
+        lat=51.50016178019626,
+        lng=-3.182585796339442, 
+        positive_rating=12,
+        negative_rating=1,
+        avatar_hair="ShortHairShortCurly",
+        avatar_accessories="Round",
+        avatar_hair_color="Brown",
+        avatar_facial_hair="Blank",
+        avatar_clothes="ShirtCrewNeck",
+        avatar_clothes_color="Black",
+        avatar_skin="Light",
+        image="https://images.pexels.com/photos/268941/pexels-photo-268941.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+        profile_image="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Round&hairColor=Brown&facialHairType=Blank&facialHairColor=Brown&clotheType=ShirtCrewNeck&hatColor=Black&clotheColor=Black&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Light"
         )
 ]
 

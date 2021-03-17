@@ -11,6 +11,16 @@ list_items = [
     wishlisted=0,
     user=1
    ),
+    Item(
+    name="House",
+    typeof="goods",
+    category="home_and_garden",  
+    description="A lovely farmhouse in Kipling, Saskatchewan. I traded it for a movie role in the film Donna on Demand. Don't ask why anyone would accept that...",
+    image="https://upload.wikimedia.org/wikipedia/commons/b/b4/Red-paperclip-news-1.jpg",
+    listed=True,
+    wishlisted=0,
+    user=9
+    ),
 
     Item(
     name="Driver for an two hours",
