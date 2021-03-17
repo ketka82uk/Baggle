@@ -85,7 +85,7 @@ def update_user(user_id):
 def delete_user(user_id):
     try:
         user = User.query.get(user_id)
-        user.remove()
+        User.remove(user)
     except ValidationError as e:
         return { "errors": e.messages, "messages": "Something went wrong" }
     return { 'message': 'User deleted successfully' }, 200
@@ -112,6 +112,15 @@ def add_item_to_wishlist(user_id, item_id):
     user.save()
     return user_schema.jsonify(user), 200
 
+
+@router.route('/users/<int:user_id>/updatewishlist/<int:item_id>', methods=["PUT"])
+@secure_route
+def remove_from_wishlist(user_id, item_id):
+    user = User.query.get(user_id)
+    item = Item.query.get(item_id)
+    user.wishlist.remove(item)
+    user.save()
+    return user_schema.jsonify(user), 200
 
 # ! COMMENTS
 
@@ -179,6 +188,7 @@ def update_comment(user_id, comment_id):
 
 @router.route('/users/<int:user_id>/users/<int:followed_user_id>', methods=["POST"])
 @logger
+@secure_route
 def follow_user(user_id, followed_user_id):
     user = User.query.get(user_id)
     followed_user = User.query.get(followed_user_id)
@@ -186,3 +196,14 @@ def follow_user(user_id, followed_user_id):
     followed_user.followers.append(user)
     user.save()
     return user_schema.jsonify(user), 200
+
+
+@router.route('/users/<int:user1_id>/removefollower/<int:user2_id>', methods=["PUT"])
+@secure_route
+def user_unfollow(user1_id, user2_id):
+    user1 = User.query.get(user1_id)
+    user2 = User.query.get(user2_id)
+    user1.follows.remove(user2)
+    user2.save()
+    user1.save()
+    return user_schema.jsonify(user2), 200

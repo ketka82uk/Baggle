@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import Carousel from './Carousel'
 
 const debouncedSave = debounce((query, updateSearchResults) => {
-  axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?country=gb&access_token=pk.eyJ1IjoidXJ1MzgiLCJhIjoiY2ttNnBveXQ2MHFnaDJ4anhtdmhnbHBmeSJ9.OWgGgvZU2cJlbxp-jAJh_g`)
+  axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?country=gb&access_token=${process.env.MAPBOX_TOKEN}`)
     .then(({ data }) => {
       const search = data.features.map(location => {
         return {
@@ -260,7 +260,7 @@ export default function Home({ history }) {
           })}
         </div>
       </div>
-    </section >
+    </section>
   </div >
 }
 

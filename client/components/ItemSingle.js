@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import '../styles/style.scss'
 import Icon from '@material-ui/core/Icon'
 import ItemUpdateForm from './ItemUpdateForm'
+import ClipLoader from 'react-spinners/ClipLoader'
+import { AccordionSummary } from '@material-ui/core'
 
 
 
@@ -227,8 +229,8 @@ export default function ItemSingle({ match, history }) {
     const wishlist = currentUser.wishlist
     wishlist.forEach((wishItem) => {
       if (parseInt(itemid) === parseInt(wishItem.id)) {
-        console.log('found on wishlist!')
-        console.log(itemid, wishItem.id)
+        // console.log('found on wishlist!')
+        // console.log(itemid, wishItem.id)
         toggleOnWishlist(true)
         return
       } else {
@@ -248,6 +250,7 @@ export default function ItemSingle({ match, history }) {
   async function handleAddToWishlist() {
     const newWishlistedTotal = item.wishlisted + 1
     updateWishlisted(newWishlistedTotal)
+    toggleOnWishlist(true)
     console.log(newWishlistedTotal)
     try {
       await axios.put(`/api/items/${itemid}`, { wishlisted: `${newWishlistedTotal}` }, {
@@ -280,9 +283,21 @@ export default function ItemSingle({ match, history }) {
 
 
   
+  // console.log(onWishlist)
+
+  async function handleRemoveFromWishlist() {
+    try {
+      const { data } = await axios.put(`/api/users/${currentUser.id}/updatewishlist/${itemid}`, { }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      toggleOnWishlist(false)
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
 
   if (loading) {
-    return <div>Page is Loading</div>
+    return <div className='searchBox'><ClipLoader loading={loading} size={100} /></div>
   }
 
   // ! END
@@ -408,9 +423,9 @@ export default function ItemSingle({ match, history }) {
             {(logIn && <button className='button is-info mr-2'onClick={toggleModalText}>Baggle</button>
             )}
              
-            {(logIn && !onWishlist) ? <button className='button is-info'onClick={handleAddToWishlist}>Add to wishlist</button>
-
-              : <button className="button">Added to wishlist</button>
+            
+            {(logIn && !onWishlist) ? <button className='button is-info' onClick={handleAddToWishlist}>Add to wishlist</button>
+              : <button className="button" onClick={handleRemoveFromWishlist}>Remove from wishlist</button>
             }
 
             {item.comments && item.comments.map(comment => {
