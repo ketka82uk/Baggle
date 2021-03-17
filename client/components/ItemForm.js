@@ -49,7 +49,7 @@ export default function ItemForm({ formData, handleSubmit, handleChange, updateF
       <form className="form" onSubmit={handleSubmit}>
 
         <div className="field">
-          <label className="label">name</label>
+          <label className="label">Item Name</label>
           <div className="control">
             <input
               className="input"
@@ -61,7 +61,7 @@ export default function ItemForm({ formData, handleSubmit, handleChange, updateF
         </div>
 
         <div className="field"></div>
-        <label className="label">Type</label>
+        <label className="label">Type of Item</label>
         <div className="control">
           <div className="select">
             <select
@@ -96,7 +96,7 @@ export default function ItemForm({ formData, handleSubmit, handleChange, updateF
         </div>
         
         <div className="field">
-          <label className="label">description</label>
+          <label className="label">Description</label>
           <div className="control">
             <textarea
               className="textarea"
@@ -108,7 +108,7 @@ export default function ItemForm({ formData, handleSubmit, handleChange, updateF
         </div>
 
         <div className="field">
-          <label className="label">image</label>
+          <label className="label">Image</label>
           <div className="control">
             <input
               className="input"

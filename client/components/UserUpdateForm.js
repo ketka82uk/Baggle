@@ -7,7 +7,7 @@ export default function UserUpdateForm({ formData, handleEditSubmit, handleEditC
   return <div className="section">
     <div className="container">
 
-      <form className="form" onSubmit={handleEditSubmit}>
+      <form className="form update-form" onSubmit={handleEditSubmit}>
 
         <div className="field">
           <label className="label">Username</label>
