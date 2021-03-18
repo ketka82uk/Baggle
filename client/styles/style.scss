@@ -11,6 +11,8 @@ $third-color: #61E8E8;
 // COLORS
 // Bulma red - #ff3860
 // Bulma green - #00d1b2
+//#f55442
+//#B24231
 
 body {
   background-color: whitesmoke;
@@ -129,6 +131,7 @@ label {
 .footer-filler {
   height: 300px;
 }
+
 
 // ! NAVBAR
 
@@ -257,12 +260,12 @@ label {
 }
 
 .carousel-card {
-  height: 320px;
+  height: 350px;
 }
 
 
 :hover.carousel-card {
-  transform: scale(1.2);
+  transform: scale(1.05);
   color: $primary-color !important;
 }
 
@@ -270,6 +273,14 @@ label {
   color: $primary-color;
   font-size: 70px;
   font-family: 'Mouse Memoirs', sans-serif !important;
+  text-shadow: 2px 2px 2px black;
+}
+
+.carousel-footer {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 // ! SIGNUP PAGE

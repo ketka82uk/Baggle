@@ -135,7 +135,7 @@ export default function Home({ history }) {
                     <p className="logo-title">Baggle</p>
                     <p
                       className="subtitle is-4"
-                      style={{ color: 'whitesmoke' }}>Barter, Bargain, Haggle, <span style={{ color: 'whitesmoke', fontSize: '35px', fontFamily: 'Mouse Memoirs' }}>Baggle!</span></p>
+                      style={{ color: 'whitesmoke' }}>Barter, bargain, haggle, <span style={{ color: 'whitesmoke', fontSize: '35px', fontFamily: 'Mouse Memoirs' }}>Baggle!</span></p>
                   </div>
                   <div className="container mt-4">
                     <Link to={'/signup'}><button className="hero-button">Sign up</button></Link>
@@ -262,8 +262,8 @@ export default function Home({ history }) {
 
               
                 <div className="content px-4">
-                <p className="homepage-copy">At Baggle, we're bringing back the age-old art of bartering, saving you money and helping you connect with your community.</p>
-              <p className="homepage-copy">With Baggle you can find all the things you love, for free! Come and join our thriving community of Bagglers to make swaps and make friends!</p>
+                <p className="homepage-copy">We're is bringing back the age-old art of bartering - saving you money and helping you connect with your community.</p>
+              <p className="homepage-copy">With Baggle, you can find all the things you love, for free! Come and join our thriving group of Bagglers to make swaps and make friends!</p>
                 </div>
              
             </div>
@@ -290,7 +290,7 @@ export default function Home({ history }) {
     <section className="carousel-section">
       <div className="container">
         <div className="main-title-text has-text-grey-lighter mb-4">
-          <p>Latest <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px' }}>Baggles</span> recommended for you:</p>
+          <p>Latest <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px', textShadow: '2px 2px 2px black' }}>Baggles</span> recommended for you:</p>
         </div>
         <div className='has-text is-centered'>
           {postings ? <div className='button is-size-5' onClick={() => swapPostings()}>Sort by newest first</div>
