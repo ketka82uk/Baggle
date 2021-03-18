@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode=development",
+    "start-dev": "webpack-dev-server --mode=development",
     "seed": "pipenv run python server/seed.py",
     "build": "pipenv install; npm i; webpack -p",
     "serve:react": "webpack-dev-server",
-    "serve:flask": "pipenv run flask run"
+    "serve:flask": "pipenv run flask run",
+    "start": "pipenv run flask run"
   },
   "author": "",
   "license": "ISC",
