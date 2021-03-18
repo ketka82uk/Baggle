@@ -11,7 +11,7 @@ import { AccordionSummary } from '@material-ui/core'
 
 
 export default function ItemSingle({ match, history }) {
-
+  const offeredListid = match.params.offeredItemid
   const itemid = match.params.itemid
   const [title, setTitle] = useState('')
   const [item, updateItem] = useState({})
@@ -31,6 +31,9 @@ export default function ItemSingle({ match, history }) {
   const [modalStateText, setModalStateText] = useState('')
   const token = localStorage.getItem('token')
   const [commentData, updateCommentData] = useState('')
+
+
+
 
   useEffect(() => {
     async function fetchItem() {
@@ -80,6 +83,7 @@ export default function ItemSingle({ match, history }) {
 
   async function Offer(offeredItemid) {
     try {
+
       console.log(offeredItemid)
       console.log(itemid)
       const { data } = await axios.put(`/api/offers/${itemid}/${offeredItemid}`, {},
@@ -105,6 +109,7 @@ export default function ItemSingle({ match, history }) {
     } catch (err) {
       console.log(err)
     }
+
     // history.push('/items')
     location.reload()
   }
@@ -129,11 +134,9 @@ export default function ItemSingle({ match, history }) {
   }, [])
   // console.log(userData)
 
-  const toggleModal = () => {
-    setModalState(!modalState)
-  }
 
-  
+
+
   function handleChange(event) {
     updateCommentData(event.target.value)
   }
@@ -222,7 +225,7 @@ export default function ItemSingle({ match, history }) {
     fetchUser()
   }, [userId])
 
-  
+
 
   useEffect(() => {
     if (!currentUser.wishlist) return
@@ -241,7 +244,7 @@ export default function ItemSingle({ match, history }) {
   }, [currentUser])
 
 
-  
+
 
   useEffect(() => {
     updateLoading(false)
@@ -282,12 +285,12 @@ export default function ItemSingle({ match, history }) {
 
 
 
-  
+
   // console.log(onWishlist)
 
   async function handleRemoveFromWishlist() {
     try {
-      const { data } = await axios.put(`/api/users/${currentUser.id}/updatewishlist/${itemid}`, { }, {
+      const { data } = await axios.put(`/api/users/${currentUser.id}/updatewishlist/${itemid}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       })
       toggleOnWishlist(false)
@@ -305,7 +308,7 @@ export default function ItemSingle({ match, history }) {
   if (!item.owner) {
     return null
   }
-  
+  console.log(offeredList)
 
   return <div className="container">
     <div className="columns">
@@ -355,34 +358,53 @@ export default function ItemSingle({ match, history }) {
                       handleEditChange={handleEditChange}
                       formData={formData}
                     />
-                    
+
                   </div>}
               </div>
             </article>
 
 
-            <div className="tile box is-vertical">
-              <div className="contents">
+            <section className="section">
+              <h2>Items offered for your Baggle</h2>
+
+              <div className="container">
+                <div className="columns is-multiline is-mobile">
+                  {offeredList.map((offered, index) => {
+                    return <div key={offered.id} className="column is-half-desktop is-half-tablet is-half-mobile">
+                      <Link
+                        to={`/items/${offered.id}`}
+                        onClick={() =>
+                          setTimeout(() => {
+                            window.location.reload()
+                          }, 200)}
+                      >
+                        <div className="card">
+                          <div className="card-content">
+                            <div className="media">
+                              <div className="media-content">
+
+                                <p className="title is-4">{offered.name}</p>
 
 
-                
-                {/* <h2 className="subtitle">{`Availability: ${item.listed}`}</h2> */}
-                <h2>Items offered:</h2>
-                {offeredList.map((offeredItem, index) => {
-                  return <div key={offeredItem.id} >
-                    <div id={offeredItem.id} > {offeredItem.name}</div>
-
-                    <div>
-                      {isCreator(item.owner['id']) && <button id={offeredItem.id} className='button is-warning pr-1' onClick={(e) => Swap(e.target.id)}>Click to Swap</button>}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="card-image">
+                            <figure className="image is-4by3">
+                              <img src={offered.image} alt={offered.name} />
+                            </figure>
+                          </div>
+                        </div>
+                      </Link>
+                      {isCreator(item.owner['id']) && <button id={offered.id} className='button is-warning pr-1' onClick={(e) => Swap(e.target.id)}>Click to Swap</button>}
                     </div>
-                  </div>
+                  })}
 
-
-                })}
-
-
+                </div>
               </div>
-            </div>
+
+
+            </section>
             <div className={`modal ${modalStateText}`}>
               <div className="modal-background"></div>
               <div className="modal-card">
@@ -418,10 +440,10 @@ export default function ItemSingle({ match, history }) {
                 </footer>
               </div>
             </div>
-            {(logIn && <button className='button is-info mr-2'onClick={toggleModalText}>Baggle</button>
+            {(logIn && <button className='button is-info mr-2' onClick={toggleModalText}>Baggle</button>
             )}
-             
-            
+
+
             {logIn ? (!onWishlist ? <button className='button is-info' onClick={handleAddToWishlist}>Add to wishlist</button>
               : <button className="button" onClick={handleRemoveFromWishlist}>Remove from wishlist</button>) : <div></div>
             }
@@ -498,4 +520,24 @@ export default function ItemSingle({ match, history }) {
 
 
 
+
+{/* <div className="card">
+  <div className="card-image">
+    <figure className="image is-4by3">
+      <img src={offeredItem.image} alt={offeredItem.name} />
+    </figure>
+  </div>
+  <div className="card-content">
+    <div className="media">
+      <div className="media-left">
+
+      </div>
+
+    </div>
+
+    <div className="content">
+      {offeredItem.description}
+    </div>
+  </div>
+</div> */}
 

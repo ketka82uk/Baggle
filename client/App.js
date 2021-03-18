@@ -22,7 +22,7 @@ import UserSignupForm from './components/UserSignupForm.js'
 import UpdateItem  from './components/UpdateItem.js'
 import TestLogo from './components/TestLogo.js'
 import AvatarPicker from './components/AvatarPicker.js'
-import toggleModal from './components/toggleModal'
+
 
 
 const App = () => (
@@ -35,12 +35,13 @@ const App = () => (
       <Route exact path="/add_item" component={ItemAdd} />
       <Route exact path="/items" component={ItemList} />
       <Route exact path="/items/:itemid" component={ItemSingle} />
+      <Route exact path="/items/:offeredid" component={ItemSingle} />
       <Route exact path="/users" component={UserList} />
       <Route exact path="/login" component={UserLogin} />
       <Route exact path="/users/:userId" component={UserProfile} />
       <Route exact path="/signup" component={UserSignup} />
       <Route exact path="/test/fonts" component={TestLogo} />
-      <Route exact path="/modal" component={toggleModal} />
+     
      
     </Switch>
     <Footer />
