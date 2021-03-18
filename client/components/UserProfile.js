@@ -171,7 +171,9 @@ export default function UserProfile({ match, history }) {
     return limitedItems.map((item, i) => {
       return <div className="column is-one-third" key={i}>
         <Link to={`/items/${item.id}`}>
-          <div className="card">
+          <div 
+            className={item.offers.length > 0 ? 'card outlined' : 'card'}
+          >
             <div className="card-image">
               <figure className="image is-square">
                 <img src={item.image} />
@@ -195,7 +197,9 @@ export default function UserProfile({ match, history }) {
     return itemArray.map((item) => {
       return <div className="column is-one-quarter" key={item.id}>
         <Link to={`/items/${item.id}`}>
-          <div className="card modal-individual-card">
+          <div
+            className={item.offers.length > 0 ? 'card modal-individual-card outlined' : 'card modal-individual-card'}
+          >
             <div className="card-image">
               <figure className="image is-4by3">
                 <img src={item.image} />
