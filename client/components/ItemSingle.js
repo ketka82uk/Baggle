@@ -337,6 +337,10 @@ export default function ItemSingle({ match, history }) {
                       <p>{item.name}</p>
                     </div>
                     <div className="container mb-4">
+                      <label>Baggled by</label>
+                      <p>{item.owner.username}</p>
+                    </div>
+                    <div className="container mb-4">
                       <label>Type</label>
                       <p>{item.typeof}</p>
                     </div>

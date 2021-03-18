@@ -51,7 +51,9 @@ export default function UserList() {
   function getRating(user) {
     const totalRatings = user.positive_rating + user.negative_rating
     const positivePercentage = Math.floor(user.positive_rating / totalRatings * 100)
-    return positivePercentage
+    if(positivePercentage > 0) {
+      return positivePercentage
+    } else return 0
   }
 
   // function getBaggles(user) {
@@ -144,10 +146,13 @@ export default function UserList() {
                   </div>
                   <div className="card-content">
                   
-                    <p className="title">{user.username}</p>
-                    <p className="subtitle is-6">{getRating(user)}% approval!</p>
-                    <p>{user.location}</p>
-                    <p className="subtitle is-6">Baggling since <Moment format ="Do MMM YYYY">{user.created_at}</Moment></p>
+                    <p className="title mb-0">{user.username}</p>
+                    {getRating(user) === 0 && <div className="content"><p className="emoji mt-0 mb-0">😶</p><p className="subtitle is-5">Unrated Baggler from {user.town}</p></div>}
+                    {getRating(user) > 90 && <div className="content"><p className="emoji mt-0 mb-0">🤩 </p><p className="subtitle is-5">Top Baggler from {user.town}</p></div>}
+                    {getRating(user) < 60 && getRating(user) >= 50 && <div className="content"><p className="emoji mt-0 mb-0">😐</p><p className="subtitle is-5">Neutral Baggler from {user.town}</p></div>}
+                    {getRating(user) < 90 && getRating(user) >= 60 && <div className="content"><p className="emoji mt-0 mb-0">😁 </p><p className="subtitle is-5">Good Baggler from {user.town}</p></div>}
+                    {getRating(user) < 50 && getRating(user) >= 1 && <div className="content"><p className="emoji mt-0 mb-0">💩 </p><p className="subtitle is-5">Bad Baggler from {user.town}</p></div>}
+                    <p className="subtitle is-6">Baggling since <span className="red-text"><Moment format ="Do MMM YYYY">{user.created_at}</Moment></span></p>
                   
                   </div>
                 </div>

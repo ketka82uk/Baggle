@@ -575,7 +575,7 @@ export default function UserProfile({ match, history }) {
                     </div>
                     <div className="container mb-4">
                       <label>Location</label>
-                      <p>{profile.location}</p>
+                      <p>{profile.town}</p>
                     </div>
                     <div className="container mb-4">
                       <label>Bio</label>
@@ -752,7 +752,8 @@ export default function UserProfile({ match, history }) {
                   <h2 className="title mb-4">{profile.username}'s Baggle Board</h2>
                 </div>
                 <div className="contents mb-4">
-                  <h2 className="subtitle">Submit a comment or leave review</h2>
+                  {logIn ? <h2 className="subtitle">Leave {profile.username} a comment or review</h2> 
+                  : <h2 className="subtitle">You need to be logged in to leave {profile.username} a review.</h2>}
                 </div>
                 <div className="contents">
                   {profile.other_reviews.map(review => {
