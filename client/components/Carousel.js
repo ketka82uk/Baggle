@@ -15,6 +15,8 @@ export default function Carousel( { items, category, postings, userLocation } ) 
     slidesToScroll: 1
   }
 
+  
+
   function filterItems(category) {
     return sortedItems(postings, userLocation, items).filter((item) => {
       return item.category === category
@@ -60,6 +62,7 @@ export default function Carousel( { items, category, postings, userLocation } ) 
       </div>
     })
   }
+
 
   return <div className="has-text-left">
     <p className="carousel-header">{cleanCat()}</p>

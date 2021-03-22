@@ -171,7 +171,7 @@ export default function UserProfile({ match, history }) {
     return limitedItems.map((item, i) => {
       return <div className="column is-one-third" key={i}>
         <Link to={`/items/${item.id}`}>
-          <div 
+          {item.offers && <div 
             className={item.offers.length > 0 ? 'card outlined' : 'card'}
           >
             <div className="card-image">
@@ -179,7 +179,7 @@ export default function UserProfile({ match, history }) {
                 <img src={item.image} />
               </figure>
             </div>
-          </div>
+          </div>}
         </Link>
       </div>
     })
@@ -733,7 +733,7 @@ export default function UserProfile({ match, history }) {
             <article className="tile box is-vertical">
               <div className="contents">
                 <div className="grid-header">
-                  <h2 className="title">Up for Baggle</h2>
+                  <h2 className="title">Baggles</h2>
                   <button className="button" onClick={() => toggleInventoryModal()}>See All</button>
                 </div>
                 <div className="contents">
@@ -756,18 +756,16 @@ export default function UserProfile({ match, history }) {
                   <h2 className="title mb-4">{profile.username}'s Baggle Board</h2>
                 </div>
                 <div className="contents mb-4">
-                  {logIn ? <h2 className="subtitle">Leave {profile.username} a comment or review</h2> 
-                  : <h2 className="subtitle">You need to be logged in to leave {profile.username} a review.</h2>}
+                  {logIn ? <p className="subtitle">Leave {profile.username} a comment or review</p> 
+                  : <p className="subtitle">You need to be logged in to leave {profile.username} a review.</p>}
                 </div>
                 <div className="contents">
                   {profile.other_reviews.map(review => {
                     const rating = review.rating
-                    // console.log(rating)
                     return <article key={review.id} className="media">
                       <div className="media-content">
                         <div className="content">
-                          <p className="title">{review.author.username}</p>
-                          <p className="text"><Moment format="Do MMM YYYY @ HH:MM">{review.created_at}</Moment></p>
+                          <p className="quote-text">{review.author.username} | | <Moment format="Do MMM YYYY @ HH:MM">{review.created_at}</Moment></p>
                           <div className="columns">
                             <p className="text column">{review.content}</p>
                             {rating === 2 && <p className="text column is-one-fifth emoji">👍</p>}

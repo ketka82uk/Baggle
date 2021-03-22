@@ -286,7 +286,7 @@ export default function ItemSingle({ match, history }) {
 
 
 
-  // console.log(onWishlist)
+console.log(item.owner)
 
   async function handleRemoveFromWishlist() {
     try {
@@ -341,7 +341,7 @@ export default function ItemSingle({ match, history }) {
                     </div>
                     <div className="container mb-4">
                       <label>Baggled by</label>
-                      <p>{item.owner.username}</p>
+                      <p>{item.owner.username} from {item.owner.town}</p>
                     </div>
                     <div className="container mb-4">
                       <label>Type</label>

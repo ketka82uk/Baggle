@@ -44,7 +44,7 @@ export default function UserSignup({ history }) {
 
   function getTown() {
     const locationSplit = formData.location.split(',')
-    const town = locationSplit[locationSplit.length - 3]
+    const town = locationSplit[locationSplit.length - 4]
     return town
   }
 

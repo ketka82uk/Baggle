@@ -15,13 +15,13 @@ export default function AvatarPicker({ formData, updateFormData }) {
   const [skin, updateSkin] = useState('Yellow')
   const [confirmed, updateConfirmed] = useState(false)
 
-  const hairOptions = ['NoHair', 'Hat', 'WinterHat2', 'LongHairBigHair']
-  const accessoriesOptions = ['Wayfarers', 'Round', 'Kurt', 'Blank']
-  const hairColorOptions = ['BlondeGolden', 'Black', 'Auburn', 'PastelPink']
+  const hairOptions = ['NoHair', 'Hat', 'WinterHat2', 'LongHairBigHair', 'LongHairFrida', 'Hijab',, 'LongHairBob', 'LongHairCurvy', 'LongHairNotTooLong', 'LongHairStraightStrand', 'ShortHairDreads2', 'ShortHairTheCaesar', 'ShortHairShaggyMullet'   ]
+  const accessoriesOptions = ['Wayfarers', 'Round', 'Kurt', 'Blank', 'Prescription2']
+  const hairColorOptions = ['BlondeGolden', 'Black', 'Auburn', 'PastelPink', 'Blonde', 'Brown', 'BrownDark', 'Platinum', 'Red', 'SilverGray' ]
   const facialHairOptions = ['BeardLight', 'Blank', 'BeardMajestic']
-  const clothesOptions = ['CollarSweater', 'Hoodie', 'Overall', 'ShirtCrewNeck']
-  const clothesColorOptions = ['Gray01', 'Black', 'Blue01', 'Pink', 'Red', 'White']
-  const skinColorOptions = ['Yellow', 'Light', 'DarkBrown', 'Brown', 'Black']
+  const clothesOptions = ['CollarSweater', 'Hoodie', 'Overall', 'ShirtCrewNeck', 'BlazerSweater', 'ShirtScoopNeck', 'ShirtVNeck']
+  const clothesColorOptions = ['Gray01', 'Black', 'Blue01', 'Pink', 'Red', 'White', 'Blue02', 'Gray02', 'Heather', 'PastelBlue', 'PastelGreen', 'PastelOrange', 'PastelRed', 'PastelYellow', 'White']
+  const skinColorOptions = ['Yellow', 'Pale', 'Light', 'DarkBrown', 'Brown', 'Black']
 
 
   function updateAvatarData() {

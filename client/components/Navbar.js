@@ -11,7 +11,7 @@ export default function Navbar( { history } ) {
   const [userId, setUserId] = useState('')
   const [userName, setUserName] = useState('')
   const [userImage, setUserImage] = useState('')
-
+  
   // get logged in token for current user
   useEffect(() => {
     const handleLogin = () => {
@@ -45,8 +45,6 @@ export default function Navbar( { history } ) {
     location.reload()
   }
 
-  console.log(userImage)
-
   return <div className="navbar" role="navigation" aria-label="main navigation">
     <div className="navbar-brand">
       <div className="navbar-item">
@@ -67,8 +65,6 @@ export default function Navbar( { history } ) {
           <Link to={'/about'}><p className="navbar-bold">About Baggle</p></Link>
         </div>
       </div>
-
-      {console.log(userId)}
 
       {logIn ? <div className="navbar-end">
         <div className="navbar-item"><Avatar alt={userName} src={userImage} style={{ height: '50px', width: '30px' }}/></div>
@@ -110,7 +106,6 @@ export default function Navbar( { history } ) {
         </div>}
 
     </div>
-
   </div>
   
 

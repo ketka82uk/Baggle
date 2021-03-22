@@ -5,6 +5,8 @@ import ClipLoader from 'react-spinners/ClipLoader'
 import { debounce } from 'lodash'
 import sortedItems from './sortItems'
 import Moment from 'react-moment'
+import { getLoggedInUserId } from '../lib/auth'
+
 
 const debouncedSave = debounce((query, updateSearchResults) => {
   axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?country=gb&access_token=${process.env.MAPBOX_TOKEN}`)
@@ -25,6 +27,7 @@ const debouncedSave = debounce((query, updateSearchResults) => {
 
 export default function ItemList({ match, location }) {
   const itemid = match.params.itemid
+
   const [items, updateItems] = useState([])
   const [loading, updateLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -32,20 +35,27 @@ export default function ItemList({ match, location }) {
   const [query, updateQuery] = useState('')
   const [searchResults, updateSearchResults] = useState([])
   const [selectedLocation, updateselectedLocation] = useState({})
+  const [userId, setUserId] = useState(0)
+  const [logIn, updateLogin] = useState(false)
+  const [userLocation, setUserLocation] = useState({})
+  const [searchLat, setSearchLat] = useState(0)
+  const [searchLong, setSearchLong] = useState(0)
+
+  
 
   useEffect(() => {
     if (location.state) {
-      console.log(location.state)
       setSearchTerm(location.state.searchTerm)
     }
     if (location.state) {
-      console.log(location.state.searchLocation)
       updateSearchLocation(location.state.searchLocation)
       updateselectedLocation(location.state.selectedLocation)
+      setSearchLat(location.state.searchLat)
+      setSearchLong(location.state.searchLong)
     }
   }, [])
 
-
+  
   useEffect(() => {
     async function getList() {
       try {
@@ -58,6 +68,33 @@ export default function ItemList({ match, location }) {
     }
     getList()
   }, [])
+
+  useEffect(() => {
+    const handleLogin = () => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        updateLogin(true)
+        setUserId(getLoggedInUserId())
+      } else {
+        updateLogin(false)
+      }
+    }
+    handleLogin()
+  }, [])
+
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const { data } = await axios.get(`/api/users/${userId}`)
+        setUserLocation({ lat: data.lat, long: data.lng })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchUser()
+  }, [userId])
+
 
   useEffect(() => {
     debouncedSave(query, updateSearchResults)
@@ -84,11 +121,42 @@ export default function ItemList({ match, location }) {
     updateselectedLocation(location)
     updateSearchResults([])
     updateSearchLocation(placeName)
+    setSearchLat(searchResults[0].location.lat)
+    setSearchLong(searchResults[0].location.long)
+  }
+
+
+  function distance(lat1, long1, lat2, long2) {
+    if ((lat1 === lat2) && (long1 === long2)) {
+      return 0
+    } else {
+      const radlat1 = Math.PI * lat1/180
+      const radlat2 = Math.PI * lat2/180
+      const theta = long1-long2
+      const radtheta = Math.PI * theta/180
+      let distance = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
+      if (distance > 1) {
+        distance = 1
+      }
+      distance = Math.acos(distance)
+      distance = distance * 180/Math.PI
+      distance = distance * 60 * 1.1515
+      distance = distance * 1.609344
+      return Math.floor(distance)
+    }
+  }
+
+  function getDistance(lat1, lat2, long1, long2) {
+
+
   }
 
   if (loading) {
     return <div className='searchBox'><ClipLoader loading={loading} size={100} /></div>
   }
+
+ 
+
 
   return <section className="section">
     <div className='container searchBox'>
@@ -144,7 +212,7 @@ export default function ItemList({ match, location }) {
                     <div className="media-content">
                       <p className="subtitle is-6">{item.owner.username}'s</p>
                       <p className="title is-4">{item.name}</p>
-                      <p className="subtitle is-6">{item.owner.town}</p>
+                      {searchLat !== 0 && <p className="subtitle is-6">{item.owner.town} || {distance(item.owner.lat, item.owner.lng, searchLat, searchLong)}km away</p>}
                       <p className="small-text">Created <Moment fromNow ago>{item.created_at}</Moment> ago.</p>
                     </div>
                   </div>
@@ -164,30 +232,4 @@ export default function ItemList({ match, location }) {
   </section>
 }
 
-// return <div className="main">
 
-//   {/*
-//   // * TITLE SECTION
-//   */}
-
-//   <section className="section">
-//     <div className="container">
-//       <h1>Item List</h1>
-//     </div>
-//   </section>
-
-//   {/*
-//   // * BODY SECTION
-//   */}
-
-//   <section className="section">
-//     <div className="container">
-//       <div><a><Link to={'/single_item'}>Filtered Item</Link></a></div>
-//       <div><a><Link to={'/single_item'}>Filtered Item</Link></a></div>
-//       <div><a><Link to={'/single_item'}>Filtered Item</Link></a></div>
-//       <div><a><Link to={'/single_item'}>Filtered Item</Link></a></div>
-//       <div><a><Link to={'/single_item'}>Filtered Item</Link></a></div>
-//     </div>
-//   </section>
-
-// </div>

@@ -30,6 +30,8 @@ export default function Home({ history }) {
   const [query, updateQuery] = useState('')
   const [searchResults, updateSearchResults] = useState([])
   const [selectedLocation, updateselectedLocation] = useState({})
+  const [searchLat, setSearchLat] = useState(0)
+  const [searchLong, setSearchLong] = useState(0)
   const [postings, updatePostings] = useState(false)
   const [logIn, updateLogin] = useState(false)
   const [userId, setUserId] = useState('')
@@ -93,6 +95,8 @@ export default function Home({ history }) {
     updateselectedLocation(location)
     updateSearchResults([])
     updateSearchLocation(placeName)
+    setSearchLat(searchResults[0].location.lat)
+    setSearchLong(searchResults[0].location.long)
   }
 
   function handleSubmit(event) {
@@ -102,7 +106,9 @@ export default function Home({ history }) {
       state: {
         searchTerm: searchTerm,
         selectedLocation: selectedLocation,
-        searchLocation: searchLocation
+        searchLocation: searchLocation,
+        searchLat: searchLat,
+        searchLong: searchLong
         // get this out on the other side by: props.location.state.searchFilter
       }
     })
@@ -113,23 +119,23 @@ export default function Home({ history }) {
     updatePostings(!postings)
   }
 
-  console.log(userTown)
 
   return <div className="main">
 
+    {/*
+        // * HERO SECTION
+        */}
+
     <section className="hero hero-background" style={{ backgroundImage: 'url(https://i.imgur.com/R8agYgr.png)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%' }}>
       <div className="hero-body">
-
-
-
         <div className="columns">
-          <div className="column is-1"></div>
-          <div className="column is-11">
 
+          <div className="column is-1"></div>
+
+          <div className="column is-11">
             <div className="title-container">
 
               <div className="columns">
-
                 <div className="column is-8">
                   <div className="container">
                     <p className="logo-title">Baggle</p>
@@ -140,7 +146,6 @@ export default function Home({ history }) {
                   <div className="container mt-4">
                     <Link to={'/signup'}><button className="hero-button">Sign up</button></Link>
                   </div>
-
                   <div className="search-container">
                     <form onSubmit={handleSubmit}>
                       <div className="tile is-8 search-container">
@@ -149,7 +154,7 @@ export default function Home({ history }) {
                           <div className="left-search">
                             <input
                               type="text"
-                              placeholder="What?"
+                              placeholder="I'm looking for..."
                               className="input is-info"
                               onChange={(event) => handleChange(event)}
                               value={searchTerm}
@@ -160,17 +165,14 @@ export default function Home({ history }) {
                               className="input is-info"
                               id="input-width"
                               type="text"
-                              placeholder="Where?"
+                              placeholder="type location"
                               onChange={createSearchQuery}
                               value={searchLocation}
                               autoComplete="off"
                             />
                           </div>
                         </div>
-
                         <button className="submit-hero">Submit</button>
-
-
                         {searchResults.length > 0 &&
                           <div className='dropdown is-active is-fullwidth'>
                             <div className='dropdown-menu'>
@@ -183,33 +185,94 @@ export default function Home({ history }) {
                               </div>
                             </div>
                           </div>}
-
-
                       </div>
                     </form>
                   </div>
-
                 </div>
-
-                <div className="column is-4">
-                </div>
-
+                <div className="column is-4"></div>
               </div>
             </div>
-
-
           </div>
+
         </div>
       </div>
     </section>
 
 
+    {/*
+        // * WELCOME SECTION
+    */}
 
 
-    <section className='section'>
+    <section className="section p-4 homepage-section2" style={{ backgroundImage: 'url(https://i.imgur.com/54ROPBh.png)', backgroundSize: 'cover' }}>
       <div className="container">
-        <article className="copy-box">
 
+        
+
+        <article className="article">
+          <div className="columns">
+            <div className="column is-3">
+              <div className="home-image-container">
+                <img src="https://i.imgur.com/oSz7gTP.png" />
+                <img src="https://i.imgur.com/5LGg4Kl.png" className="home-image-right" />
+              </div>
+
+            </div>
+            <div className="column is-6">
+              <div className="container-welcome">
+                <div className="main-title-text has-text-centered">
+                  <p className="large-home-title">Welcome to <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '80px' }}>Baggle!</span></p>
+                </div>
+                <div className="content px-4">
+                  <p className="homepage-copy">At Baggle, we're bringing back the age-old art of bartering - saving you money and helping you connect with your community.</p>
+                  <p className="homepage-copy">Here you'll find all the things you love, with no money required! Come and join our thriving group of Bagglers to make swaps and make friends!</p>
+                </div>
+              </div>
+              <div className="homepage-image-container">
+                <p className="homepage-copy">Some images go here.</p>
+              </div>
+            </div>
+            <div className="column is-3">
+              <div className="home-image-container">
+                <img src="https://i.imgur.com/scvXmVz.png" />
+                <img src="https://i.imgur.com/fDkEjlD.png" className="home-image-right" />
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <article className="article">
+          <div className="columns">
+            <div className="column">
+              <div className="card">
+                <div className="card-content">
+                  <p className="quote-text">What can I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
+                  <p className="text">Anything you like! Have an item you no longer need? Baggle it! A skill that you can exchange? Baggle it! Upload your Baggle and wait for others to make offers or use it to baggle for other items.</p>
+                </div>
+              </div>
+            </div>
+            <div className="column">
+            <div className="card">
+                <div className="card-content">
+                  <p className="quote-text">How do I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
+                  <p className="text">Browse the site for items and nearby Bagglers to find something you like. Then hit that Baggle Button! Just make you've uploaded an item or service to baggle first.</p>
+                </div>
+              </div>
+            </div>
+            <div className="column">
+              <div className="card">
+                <div className="card-content">
+                  <p className="quote-text">How do I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
+                  <p className="text">Browse the site for items and nearby Bagglers to find something you like. Then hit that Baggle Button! Just make you've uploaded an item or service to baggle first.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+
+        <article className="article">
           <div className="columns">
             <div className="column">
               <div className="card">
@@ -236,53 +299,8 @@ export default function Home({ history }) {
               </div>
             </div>
           </div>
-
-
-
-          <div className="columns">
-
-            <div className="column is-3">
-              <div className="home-image-container">
-                <img src="https://i.imgur.com/oSz7gTP.png" />
-                <img src="https://i.imgur.com/5LGg4Kl.png" className="home-image-right" />
-              </div>
-              <div className="card">
-                <div className="card-content">
-                  <p className="quote-text">What can I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
-                  <p className="text">Anything you like! Have an item you no longer need? Baggle it! A skill that you can exchange? Baggle it! Upload your Baggle and wait for others to make offers or use it to baggle for other items.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="column is-6">
-              <div className="container-welcome">
-              <div className="main-title-text has-text-centered">
-                <p className="large-home-title">Welcome to <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '80px' }}>Baggle!</span></p>
-              </div>
-
-              
-                <div className="content px-4">
-                <p className="homepage-copy">We're is bringing back the age-old art of bartering - saving you money and helping you connect with your community.</p>
-              <p className="homepage-copy">With Baggle, you can find all the things you love, for free! Come and join our thriving group of Bagglers to make swaps and make friends!</p>
-                </div>
-             
-            </div>
-          </div>
-
-          <div className="column is-3">
-            <div className="home-image-container">
-              <img src="https://i.imgur.com/scvXmVz.png" />
-              <img src="https://i.imgur.com/fDkEjlD.png" className="home-image-right" />
-            </div>
-            <div className="card">
-                <div className="card-content">
-                  <p className="quote-text">How do I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
-                  <p className="text">Browse the site for items and nearby Bagglers to find something you like. Then hit that Baggle Button! Just make you have something to Baggle!</p>
-                </div>
-              </div>
-          </div>
-          </div>
         </article>
+
       </div>
     </section>
 
