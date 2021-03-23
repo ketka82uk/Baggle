@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 $family-sans-serif: 'Poppins', sans-serif;
 $title-font: 'Mouse Memoirs', sans-serif;
-$primary-color: #f55442;
+$primary-color: #B24231;
 $secondary-color: #004460;
 $third-color: #61E8E8;
 
@@ -104,6 +104,13 @@ label {
   background-color: $primary-color !important
 }
 
+:hover.color-link-button {
+  color: $secondary-color !important;
+  background: none !important;
+  border: 3px solid $secondary-color !important;
+  font-weight: bold;
+}
+
 .center-row {
   display: flex;
   flex-direction: row;
@@ -130,6 +137,13 @@ label {
 
 .footer-filler {
   height: 300px;
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100% !important;
 }
 
 
@@ -229,6 +243,7 @@ label {
 
 .large-home-title {
   font-size: 50px;
+  line-height: 1.5em;
 }
 
 .home-image-container {
@@ -247,9 +262,6 @@ label {
 .container-welcome {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
   justify-content: flex-start;
   align-content: center;
   align-items: center;
@@ -259,6 +271,7 @@ label {
   font-size: 20px;
   text-align: justify;
   text-justify: inter-word;
+  margin-top: 0px !important;
 }
 
 .homepage-image-container {
@@ -268,12 +281,19 @@ label {
   align-content: flex-end;
 }
 
-.carousel-section {
-  background-color: $secondary-color
+.homepage-card {
+  min-height: 260px;
+  margin-bottom: 20px;
 }
 
+.carousel-section {
+  background-color: $secondary-color;
+  padding-bottom: 50px;
+}
+
+
 .carousel-card {
-  height: 350px;
+  height: 380px;
 }
 
 
@@ -294,6 +314,10 @@ label {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 10px;
+  height: 80px;
+  width: 100%;
 }
 
 // ! SIGNUP PAGE

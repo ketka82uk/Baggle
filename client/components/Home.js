@@ -221,15 +221,11 @@ export default function Home({ history }) {
             <div className="column is-6">
               <div className="container-welcome">
                 <div className="main-title-text has-text-centered">
-                  <p className="large-home-title">Welcome to <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '80px' }}>Baggle!</span></p>
+                  <p className="large-home-title mx-0 px-0">Welcome to <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '80px' }}>Baggle!</span></p>
                 </div>
-                <div className="content px-4">
+                <div className="content">
                   <p className="homepage-copy">At Baggle, we're bringing back the age-old art of bartering - saving you money and helping you connect with your community.</p>
-                  <p className="homepage-copy">Here you'll find all the things you love, with no money required! Come and join our thriving group of Bagglers to make swaps and make friends!</p>
                 </div>
-              </div>
-              <div className="homepage-image-container">
-                <p className="homepage-copy">Some images go here.</p>
               </div>
             </div>
             <div className="column is-3">
@@ -244,8 +240,16 @@ export default function Home({ history }) {
 
         <article className="article">
           <div className="columns">
+          <div className="column">
+            <div className="card homepage-card">
+                <div className="card-content">
+                  <p className="quote-text">What is <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
+                  <p className="text">Baggle is a place you'll find all the things you love, with no money required! Come and join our thriving group of Bagglers to make swaps and make friends!</p>
+                </div>
+              </div>
+            </div>
             <div className="column">
-              <div className="card">
+              <div className="card homepage-card">
                 <div className="card-content">
                   <p className="quote-text">What can I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
                   <p className="text">Anything you like! Have an item you no longer need? Baggle it! A skill that you can exchange? Baggle it! Upload your Baggle and wait for others to make offers or use it to baggle for other items.</p>
@@ -253,48 +257,10 @@ export default function Home({ history }) {
               </div>
             </div>
             <div className="column">
-            <div className="card">
+              <div className="card homepage-card">
                 <div className="card-content">
                   <p className="quote-text">How do I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
                   <p className="text">Browse the site for items and nearby Bagglers to find something you like. Then hit that Baggle Button! Just make you've uploaded an item or service to baggle first.</p>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="card">
-                <div className="card-content">
-                  <p className="quote-text">How do I <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '30px', fontWeight: 'normal' }}>Baggle?</span></p>
-                  <p className="text">Browse the site for items and nearby Bagglers to find something you like. Then hit that Baggle Button! Just make you've uploaded an item or service to baggle first.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-
-        <article className="article">
-          <div className="columns">
-            <div className="column">
-              <div className="card">
-                <div className="card-content">
-                  <p className="quote-text">"My wardrobe is bursting! I have so many clothes but I don't want to chuck them out!"</p>
-                  <p className="subtitle is-6 has-text-right red-text"> - Jane from London</p>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="card">
-                <div className="card-content">
-                  <p className="quote-text">"I had so many courgettes on the allotment this year, I'll never eat them all!"</p>
-                  <p className="subtitle is-6 has-text-right red-text"> - Mike from Halifax</p>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="card">
-                <div className="card-content">
-                  <p className="quote-text">"I wonder if someone would prune my roses if I offered them a homemade cake?"</p>
-                  <p className="subtitle is-6 has-text-right red-text"> - Rona from Dundee</p>
                 </div>
               </div>
             </div>
@@ -307,6 +273,7 @@ export default function Home({ history }) {
 
     <section className="carousel-section">
       <div className="container">
+      
         <div className="main-title-text has-text-grey-lighter mb-4">
           <p>Latest <span style={{ color: '#B24231', fontFamily: 'Mouse Memoirs', fontSize: '50px', textShadow: '2px 2px 2px black' }}>Baggles</span> recommended for you:</p>
         </div>
@@ -314,14 +281,14 @@ export default function Home({ history }) {
           {postings ? <div className='button is-size-5' onClick={() => swapPostings()}>Sort by newest first</div>
             : <div className='button is-size-5' onClick={() => swapPostings()}>Sort by closest first</div>}
         </div>
-        <div className="container is-max-widescreen">
+        <div>
           {categories.map((category, i) => {
-            return <div className='section white-link' key={i}>
+            return <div className="carousel" key={i}>
               <Carousel items={items} category={category} postings={postings} userLocation={userLocation} />
             </div>
           })}
         </div>
-      </div>
+     </div>
     </section>
   </div >
 }

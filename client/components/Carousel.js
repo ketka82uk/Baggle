@@ -50,7 +50,7 @@ export default function Carousel( { items, category, postings, userLocation } ) 
           </div>
 
           <footer className="card-footer">
-              <div className="carousel-footer container">
+              <div className="carousel-footer">
               <Link to={`/items/${item.id}`}>
                 <div className="color-link-button button"><span className="baggle">Baggle!</span></div>
               </Link>

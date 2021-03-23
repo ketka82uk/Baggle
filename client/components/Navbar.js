@@ -81,9 +81,11 @@ export default function Navbar( { history } ) {
         <div className="navbar-item">
           <div className="buttons">
             <div className="button" onClick={logOut}>Log out</div>
-            <div className="color-link-button button">
-              <Link to={'/add_item'}><p style={{ color: 'white'}}>Post a <span className="baggle">Baggle</span></p></Link>
+            <Link to={'/add_item'}>
+              <div className="color-link-button button">
+              <p>Post a <span className="baggle">  Baggle</span></p>
             </div>
+            </Link>
           </div>
         </div>
       </div> :
