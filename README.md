@@ -13,15 +13,7 @@ See Baggle! in action [here](http://gobaggle.herokuapp.com)
 
 ### The brief
 
-* One week
-* Group of four
-* **Build a full-stack application** by making your own backend and your own front-end
-* **Use a Python Flask API** using a Flask REST Framework to serve your data from a Postgres database
-* **Consume your API with a separate front-end** built with React
-* **Be a complete product** which most likely means multiple relationships and CRUD functionality for at least a couple of models
-* **Implement thoughtful user stories/wireframes** that are significant enough to help you know which features are core MVP and which you can cut
-* **Have a visually impressive design** to kick your portfolio up a notch and have something to wow future clients & employers. **ALLOW** time for this.
-* **Be deployed online** so it's publicly accessible.
+We had one week to create a full-stack application in a group of 3, building our own back-end and front-end. The app needed to be a complete product with multiple relationships and CRUD functionality.
 
 
 ### Technologies
@@ -43,7 +35,7 @@ All of us have items we don't need or skills that we don't often use. In a world
 
 ### The solution
 
-Instead of an e-commerce payment solution, Baggle! allows users to 'Baggle' for items. Each user (or Baggler) uploads items onto the site, rather like they would on eBay or Gumtree. Other users can then search for those items. If a user sees an item they want, they can offer one of their own items in exchange. If the exchange is accepted then the Baggle is made and the item is swapped.
+Instead of an e-commerce payment solution, Baggle! allows users to 'baggle' for items. Each user (or Baggler) uploads items onto the site, similar to how they would on eBay or Gumtree. Other users can then search for those items. If a user sees an item they want, they can offer one of their own uploaded items in exchange. If the exchange is accepted then the Baggle is made and the item is swapped.
 
 ## The plan
 
@@ -52,7 +44,7 @@ Instead of an e-commerce payment solution, Baggle! allows users to 'Baggle' for 
 <img src="./screenshots/wireframe.png"/>
 <img src="./screenshots/whiteboard.png"/>
 
-The next step was to plan out the user journey using whiteboarding and wireframes. We knew we wanted the following functionality:
+The first step was to plan out the user journey using whiteboarding and wireframes. We knew we wanted the following functionality:
 
 * User signup
 * User registration
@@ -73,14 +65,13 @@ The next step was to plan out the user journey using whiteboarding and wireframe
 * User can create their own avatar
 * User can change their profile header image
 
-So quite a lot for a week...
+So, quite a lot for a week...
 
 
 ## The logic
 
 ### Database relationships
-Join tables and self-referencing - items self-referencing as well as users - followers, wishlists, offers
-The first thing we needed to do to set up Baggle was to create a setup the back-end, endpoints and all the necessary relational databases using Python, Flask and PostgreSQL. We set up the following two main tables:
+The next step was to set up the back-end, endpoints and all the necessary relational databases using Python, Flask and PostgreSQL. We created the following two main tables:
 
  - users
  - items
@@ -89,8 +80,8 @@ We also set up the following join tables to create relationships:
  
   * user _ items _ join (connects items with a user)
   * user _ items _ wish_ join (connects items to a user wishlist)
-  * item _ offers _ join (a self-referencing join that connects items to other items that have been offerd in exchange)
-  * user _ follows _ join (a self-referencing join that connets users to other users who follow them
+  * item _ offers _ join (a self-referencing join that connects items to other items that have been offered in exchange)
+  * user _ follows _ join (a self-referencing join that connects users to other users who follow them)
 
 For additional site functionality, we also set up tables to hold the following data:
 
@@ -100,7 +91,7 @@ For additional site functionality, we also set up tables to hold the following d
 
 This was my first time using Python, Flask and SQL but I found it easier to get my head around than the NoSQL MongoDB database we built for project 3.
 
-We build the back-end as a team of three, but once it was all up and running and our endpoints (sort of) complete, we headed to the front-end and split the workload into chunks.
+We built the back-end as a team of three, but once it was all up and running, and our endpoints (sort of) complete, we headed to the front-end and split the workload into chunks.
 
 ## Where I took the lead
 
@@ -118,11 +109,11 @@ I also took the lead on designing the top half of the homepage and created the g
 
 ### Sign-up and avatars
 
-We had decided early that we wanted Baggle! to have a fun theme and I was keen for the user sign-up experience to reflect this. I decided to use Avataaars, making use of the free online avataaar generator [getavataaars.com](https://getavataaars.com/), which allows users to create their own avataaars from a selection of drop-downs. This site comes with React code for using the Avataaars plugin. All I then had to do was recreate the form on my own site and insert the necessary fields into my user model to allow the user to create their own Avataaar on sign-up, which changes dynamically with their selections using React useState:
+We had decided early that we wanted Baggle! to have a fun theme and I was keen for the user sign-up experience to reflect this. I decided to use Avataaars, making use of the free online avataaar generator [getavataaars.com](https://getavataaars.com/), which allows users to create their own avataaars from a selection of drop-down options. The site also came with React code for using the Avataaars plugin. All I then had to do was recreate the form on our own site and insert the necessary fields into our user model to allow the user to create their own Avataaar on sign-up, which changes dynamically with their selections using React useState:
 
 <img src="./screenshots/avatar.png"/>
 
-One problem I had to overcome using the Avataaars plugin was recreating the user avatar on other areas of the site, i.e the profile page and the navbar. While this was possible using the <Avatar/> component, I was finding that the formatting was often out and it was leading to page loading issues. I got around this by using the avataaars.io API and using form data to create a link that pulls directly from there using user input data:
+One problem I had to overcome using the Avataaars plugin was recreating the user avatar on other areas of the site, i.e the profile page and the navbar. While this was possible using the <Avatar/> component, I was finding that the formatting was often out and it was leading to page loading issues. I got around this by using the avataaars.io API and using form data to create a link that pulls directly from the API using user input data:
 
 ~~~javascript
 function updateAvatarData() {
@@ -147,7 +138,7 @@ This gives each user an avatar image that is easy to manipulate and loads quickl
 I wanted the profile page act like a user hub for Baggle!, inspired by sites like Facebook where users can access most features directly from their profile page. On their profile page, users can see the following:
 
 * User avatar and custom cover image
-* An about section (username, location, bio)
+* An About section (username, location, bio)
 * Baggles -  items the user has uploaded for bartering
 * Baggling Buddies - other users the user follows
 * Baggler Rating - a graph to show the percentage of good/bad feedback the user has received
@@ -160,7 +151,7 @@ I was important that the user can get around easily from their profile. I create
 
 <img src="./screenshots/modal.png"/>
 
-The other thing that was important to me was that users could edit their own information easily and upload their own cover photos. I used an embedded edit form, that was toggled by a useState. Pressing the 'Edit' button changes editState to true, which then replaces the div in the about section to a editable form, showing the current values which can then be replaced.
+The other thing that was important to me was that users could edit their own information easily and upload their own cover photos. I used an embedded edit form that was toggled by a useState. Pressing the 'Edit' button changes editState to true, which then replaces the div in the about section to a editable form, showing the current values which can then be replaced.
 
 ~~~javascript
 {editState === false ?
@@ -198,14 +189,14 @@ The other thing that was important to me was that users could edit their own inf
 <img src="./screenshots/edit.png"/>
 
 
-In the end, the profile section ended up being a bit of a beast, and I was super pround of it, even though a lack of time towards the end meant I wasn't able to complete a few formatting issues. There were parts that we worked on as a group - most specifically the reviews section - but in general I was really happy to contribute this part of the project.
+In the end, the profile section ended up being a bit of a beast, and I was very proud of it, even though a lack of time towards the end meant I wasn't able to rectify a few formatting issues. There were parts of the page that we worked on as a group - most specifically the reviews section, which gave me many a headache - but in general, I was really pleased to have contributed this part of the project.
 
 ### Distances on the front-end
-Our group member James worked with the Mapbox API and lat, long variables to allow users to set their own location and also to search for items by distance. I dedcided to take this further by presenting this data on the front-end so that when users search for items, it shows the item's distance from them.
+Our group member James worked with the Mapbox API and lat, long variables to allow users to set their own location and also to search for items by distance. I decided to take this further by presenting this data on the front-end so that when users search for items, it shows the item's distance from them.
 
 <img src="./screenshots/distances.png"/>
 
-This seemed easy enough in principle, we already had the latitude and longditude of each user (and by extension their associated items) captured in the database. Using Mapbox, we were also able to assign a 'town' field to each user. But I still needed a way of finding a distance between the user coordinates and the item coordinates. A bit of Googling provided a mathmatical solution to this. First, I needed to grab the search data to give me a search location. I then had to grab the lat-long from this search location and save in state. I then created a function distance() which takes the user lat-long and finds the distance to the search query lat-long using a calculation (the calculation itself is copied):
+This seemed easy enough in principle, we already had the latitude and longitude of each user (and by extension their associated items) captured in the database. Using Mapbox, we were also able to assign a 'town' field to each user and item. But I still needed a way of finding a distance between the user coordinates and the item coordinates. A bit of Googling provided a mathmatical solution to this. Firstly, I needed to grab the search data to give me a search location. I then had to grab the lat-long from this search location and save it in state. I then created a function 'distance()', which takes the user lat-long and finds the distance to the search query lat-long using a calculation:
 
 ~~~javascript
 function handlePlaceSelect({ placeName, location }) {
@@ -244,7 +235,7 @@ Using this distance function I was then able to call it in my React render, so t
 {searchLat !== 0 && <p className="subtitle is-6">{item.owner.town} || {distance(item.owner.lat, item.owner.lng, searchLat, searchLong)}km away</p>}
 ~~~
 
-Even though the JavaScript for the distance calculation is not mine (a mathmatical genuius I am not), getting the data to be able to pass into the function as arguments was still pretty tricky and I was very proud to get this element working.
+Even though the JavaScript for the distance calculation is not my own (a mathmatical genuius I am not), getting the data to be able to pass into the function as arguments was still pretty tricky and I was very proud to get this element working.
 
 ### Graphics, styling and the homepage
 
@@ -269,15 +260,15 @@ Lastly, I would have liked more coherent styling throughout and to ensure things
 ### Future additions
 It would be great to introduce more complex search features for items - being able to sort and filter would be a great addition, as well as including search by category, a distance radius and maybe even search tags to make it easier to find things.
 
-It would also be a great addition if users could look at their previous transactions and swaps, including failed transactions. This was something we planned but didn't have time to implement.
+It would also be a great addition if users could look at details of all their previous swaps, including failed swaps. This was something we planned but didn't have time to implement.
 
-Another thing to look at would be features that Baggle! would need if it were ever used in a real-world scenario. In Baggle! the swap feature is instantaneous - accept another user's offer and your items are instantly swapped between inventories. In real-life obviously things are a little more complex! It would be good to have different statuses for offers and items. For example, once an exhange is agreed it goes into a holding space and can then be marked as completed once the items are physically exchanged. It would also be good to add a shipping and delivery options.
+Another thing to look at would be features that Baggle! would need if it were ever used in a real-world scenario. In Baggle! the swap feature is instantaneous - accept another user's offer and your items are instantly swapped between inventories. In real-life, things are obviously a little more complex! It would be good to have different statuses for offers and items. For example, once an exchange is agreed, it goes into a holding space and can then be marked as completed once the items are physically exchanged. It would also be good to add shipping and delivery options.
 
 ### Bugs squished (and not-so-squished)
-Only one major bug found since deployment - when items are added to a wishlist it causes the profile page to stop loading. This is due to the code searching for the length of an array that doesn't exist when the wishlist is mapped, and should be a relatively easy fix.
+Only one major bug found since deployment - when items are added to a wishlist it causes that user's profile page to stop loading. This is due to the code searching for the length of an array that doesn't exist when the wishlist is mapped, and should be a relatively easy fix.
 
-### Key learning
-This project taught me more than any other and really cemented a lot of knowledge in terms of back-end functions and databases. By the end of this project I really felt like I could talk around any part of it, and I was especially pleased when I was able to take existing code and not only blindly copy/paste it in, but manipulate and amend it to fit in with what I needed. I also learned the importance of getting the back-end working and all endpoints in place _before_ diving into the front-end!
+### Key learning and wins
+This project taught me more than any other and really cemented a lot of knowledge in terms of back-end functions and databases. By the end of this project, I really felt like I could talk around any part of it, and I was especially pleased when I was able to take existing code and not just blindly copy/paste it in, but manipulate and amend it to fit in with what I needed. I also learned the importance of getting the back-end working and all endpoints in place _before_ diving into the front-end!
 
 ## Assets
 * Avatars - [getavataars.com](https://getavataaars.com/)
