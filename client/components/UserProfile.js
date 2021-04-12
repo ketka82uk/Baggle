@@ -25,7 +25,7 @@ export default function UserProfile({ match, history }) {
   const [currentUser, updateCurrentUser] = useState({})
   const [editState, updateEditState] = useState(false)
   const [follows, toggleFollows] = useState(false)
-  
+
 
   const [modalStateInv, setModalStateInv] = useState(false)
   const [modalStateInvText, setModalStateInvText] = useState('')
@@ -51,8 +51,8 @@ export default function UserProfile({ match, history }) {
 
   const userId = Number(match.params.userId)
   const token = localStorage.getItem('token')
-  
-  
+
+
   useEffect(() => {
     const handleLogin = () => {
       if (token) {
@@ -153,7 +153,7 @@ export default function UserProfile({ match, history }) {
 
   async function unFollow() {
     try {
-      await axios.put(`/api/users/${currentUserId}/removefollower/${userId}`, { }, {
+      await axios.put(`/api/users/${currentUserId}/removefollower/${userId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       })
       toggleFollows(false)
@@ -171,7 +171,7 @@ export default function UserProfile({ match, history }) {
     return limitedItems.map((item, i) => {
       return <div className="column is-one-third" key={i}>
         <Link to={`/items/${item.id}`}>
-          {item.offers && <div 
+          {item.offers && <div
             className={item.offers.length > 0 ? 'card outlined' : 'card'}
           >
             <div className="card-image">
@@ -320,9 +320,9 @@ export default function UserProfile({ match, history }) {
     updateEditState(true)
   }
 
-   function toggleUpdateRated() {
-     updateRated(true)
-   }
+  function toggleUpdateRated() {
+    updateRated(true)
+  }
 
   // ! MODAL FUNCTIONS
 
@@ -372,7 +372,7 @@ export default function UserProfile({ match, history }) {
     */}
 
       <section className="hero is-small">
-        
+
         {profile.image ? <div className="hero-body banner-with-image" style={{
           backgroundImage: `url(${profile.image})`,
           backgroundSize: 'cover'
@@ -396,7 +396,7 @@ export default function UserProfile({ match, history }) {
               <p>{profile.username}</p>
             </div>
           </div>
-        </div> }
+        </div>}
 
         {/*
         // * NAVBAR SECTION
@@ -445,7 +445,7 @@ export default function UserProfile({ match, history }) {
             <div className="contents">
 
 
-              {profile.inventory.length > 0 ? 
+              {profile.inventory.length > 0 ?
                 <div className="columns is-multiline">
                   {mapAllItems(profile.inventory)}
                 </div> :
@@ -469,7 +469,7 @@ export default function UserProfile({ match, history }) {
           <section className="modal-card-body">
             <div className="contents">
 
-              {profile.wishlist.length > 0 ? 
+              {profile.wishlist.length > 0 ?
                 <div className="columns is-multiline">
                   {mapAllItems(profile.wishlist)}
                 </div> :
@@ -492,21 +492,21 @@ export default function UserProfile({ match, history }) {
           <section className="modal-card-body">
             <div className="contents">
 
-              {profile.follows.length > 0 ? 
+              {profile.follows.length > 0 ?
                 <div className="columns is-multiline">
                   {profile.follows.map((follow) => {
                     return <div className="column is-one-quarter" key={follow.id}>
-                      <Link 
+                      <Link
                         to={`/users/${follow.id}`}
-                        onClick={() => 
+                        onClick={() =>
                           setTimeout(() => {
                             window.location.reload()
-                          }, 200)} 
+                          }, 200)}
                       >
                         <div className="card modal-individual-card">
-                          <div 
+                          <div
                             className="card-image"
-                            style={{ 
+                            style={{
                               backgroundImage: `url(${follow.image})`,
                               backgroundSize: 'cover'
                             }}>
@@ -618,13 +618,13 @@ export default function UserProfile({ match, history }) {
                 <AvatarGroup max={10}>
 
                   {profile.follows.map((follow, index) => {
-                    return <Link 
-                      key={index} 
+                    return <Link
+                      key={index}
                       to={`/users/${follow.id}`}
-                      onClick={() => 
+                      onClick={() =>
                         setTimeout(() => {
                           window.location.reload()
-                        }, 200)} 
+                        }, 200)}
                     >
                       <Avatar
                         alt={follow.username}
@@ -756,8 +756,8 @@ export default function UserProfile({ match, history }) {
                   <h2 className="title mb-4">{profile.username}'s Baggle Board</h2>
                 </div>
                 <div className="contents mb-4">
-                  {logIn ? <p className="subtitle">Leave {profile.username} a comment or review</p> 
-                  : <p className="subtitle">You need to be logged in to leave {profile.username} a review.</p>}
+                  {logIn ? <p className="subtitle">Leave {profile.username} a comment or review</p>
+                    : <p className="subtitle">You need to be logged in to leave {profile.username} a review.</p>}
                 </div>
                 <div className="contents">
                   {profile.other_reviews.map(review => {
@@ -805,14 +805,14 @@ export default function UserProfile({ match, history }) {
                         }
                       </div>
                       {rated && <div className="field">
-                        
-                          <button
-                            onClick={handleReviewSubmit}
-                            className="button is-info"
-                          >
-                            Submit to save your review!
-                          </button>
-                        
+
+                        <button
+                          onClick={handleReviewSubmit}
+                          className="button is-info"
+                        >
+                          Submit to save your review!
+                        </button>
+
                       </div>}
                     </div>
                   </article>}
@@ -823,16 +823,6 @@ export default function UserProfile({ match, history }) {
           </div>
         </div>
       </section>
-
-
-
-
-
-    
-
-
-
-
     </div>
   </div>
 

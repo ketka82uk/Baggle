@@ -15,7 +15,7 @@ export default function AvatarPicker({ formData, updateFormData }) {
   const [skin, updateSkin] = useState('Yellow')
   const [confirmed, updateConfirmed] = useState(false)
 
-  const hairOptions = ['NoHair', 'Hat', 'WinterHat2', 'LongHairBigHair', 'LongHairFrida', 'Hijab',, 'LongHairBob', 'LongHairCurvy', 'LongHairNotTooLong', 'LongHairStraightStrand', 'ShortHairDreads2', 'ShortHairTheCaesar', 'ShortHairShaggyMullet'   ]
+  const hairOptions = ['NoHair', 'Hat', 'WinterHat2', 'LongHairBigHair', 'LongHairFrida', 'Hijab', 'LongHairBob', 'LongHairCurvy', 'LongHairNotTooLong', 'LongHairStraightStrand', 'ShortHairDreads2', 'ShortHairTheCaesar', 'ShortHairShaggyMullet']
   const accessoriesOptions = ['Wayfarers', 'Round', 'Kurt', 'Blank', 'Prescription2']
   const hairColorOptions = ['BlondeGolden', 'Black', 'Auburn', 'PastelPink', 'Blonde', 'Brown', 'BrownDark', 'Platinum', 'Red', 'SilverGray' ]
   const facialHairOptions = ['BeardLight', 'Blank', 'BeardMajestic']

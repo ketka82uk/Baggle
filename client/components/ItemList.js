@@ -130,32 +130,26 @@ export default function ItemList({ match, location }) {
     if ((lat1 === lat2) && (long1 === long2)) {
       return 0
     } else {
-      const radlat1 = Math.PI * lat1/180
-      const radlat2 = Math.PI * lat2/180
+      const radlat1 = Math.PI * lat1 / 180
+      const radlat2 = Math.PI * lat2 / 180
       const theta = long1-long2
-      const radtheta = Math.PI * theta/180
+      const radtheta = Math.PI * theta / 180
       let distance = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
       if (distance > 1) {
         distance = 1
       }
       distance = Math.acos(distance)
-      distance = distance * 180/Math.PI
+      distance = distance * 180 / Math.PI
       distance = distance * 60 * 1.1515
       distance = distance * 1.609344
       return Math.floor(distance)
     }
   }
 
-  function getDistance(lat1, lat2, long1, long2) {
-
-
-  }
 
   if (loading) {
     return <div className='searchBox'><ClipLoader loading={loading} size={100} /></div>
   }
-
- 
 
 
   return <section className="section">
