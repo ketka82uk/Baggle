@@ -275,6 +275,6 @@ This project taught me more than any other and really cemented a lot of knowledg
 * Location search - [Mapbox](https://www.mapbox.com/)
 * Image uploads - [Cloudify](https://cloudify.co/)
 * Homepage carousel - [Slick](https://kenwheeler.github.io/slick/)
-* Grpahic creation - [Snappa](https://snappa.com/)
+* Graphic creation - [Snappa](https://snappa.com/)
 
 
